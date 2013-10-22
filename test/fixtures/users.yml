@@ -1,0 +1,49 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  home_phone: MyString
+  mobile_phone: MyString
+  email: MyString
+  street_address: MyString
+  city: MyString
+  state: 1
+  diocese: MyString
+  parish: MyString
+  password: MyString
+  office: 1
+  salutation: MyString
+  photo: 
+  about_me: MyText
+  account_status: 1
+  confessional_status: 1
+  confessional_location: 
+  confessional_date: 2013-10-15
+  confessional_start_time: 2013-10-15 22:39:49
+  confessional_end_time: 2013-10-15 22:39:49
+  confessional_details: MyText
+
+two:
+  first_name: MyString
+  last_name: MyString
+  home_phone: MyString
+  mobile_phone: MyString
+  email: MyString
+  street_address: MyString
+  city: MyString
+  state: 1
+  diocese: MyString
+  parish: MyString
+  password: MyString
+  office: 1
+  salutation: MyString
+  photo: 
+  about_me: MyText
+  account_status: 1
+  confessional_status: 1
+  confessional_location: 
+  confessional_date: 2013-10-15
+  confessional_start_time: 2013-10-15 22:39:49
+  confessional_end_time: 2013-10-15 22:39:49
+  confessional_details: MyText

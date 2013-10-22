@@ -1,0 +1,35 @@
+<h1>Listing confessional_locations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Nickname</th>
+      <th>Street address</th>
+      <th>City</th>
+      <th>State</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confessional_locations.each do |confessional_location| %>
+      <tr>
+        <td><%= confessional_location.name %></td>
+        <td><%= confessional_location.nickname %></td>
+        <td><%= confessional_location.street_address %></td>
+        <td><%= confessional_location.city %></td>
+        <td><%= confessional_location.state %></td>
+        <td><%= link_to 'Show', confessional_location %></td>
+        <td><%= link_to 'Edit', edit_confessional_location_path(confessional_location) %></td>
+        <td><%= link_to 'Destroy', confessional_location, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Confessional location', new_confessional_location_path %>

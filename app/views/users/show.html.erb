@@ -1,0 +1,114 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <strong>Home phone:</strong>
+  <%= @user.home_phone %>
+</p>
+
+<p>
+  <strong>Mobile phone:</strong>
+  <%= @user.mobile_phone %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Street address:</strong>
+  <%= @user.street_address %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @user.city %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @user.state %>
+</p>
+
+<p>
+  <strong>Diocese:</strong>
+  <%= @user.diocese %>
+</p>
+
+<p>
+  <strong>Parish:</strong>
+  <%= @user.parish %>
+</p>
+
+<p>
+  <strong>Password:</strong>
+  <%= @user.password %>
+</p>
+
+<p>
+  <strong>Office:</strong>
+  <%= @user.office %>
+</p>
+
+<p>
+  <strong>Salutation:</strong>
+  <%= @user.salutation %>
+</p>
+
+<p>
+  <strong>Photo:</strong>
+  <%= @user.photo %>
+</p>
+
+<p>
+  <strong>About me:</strong>
+  <%= @user.about_me %>
+</p>
+
+<p>
+  <strong>Account status:</strong>
+  <%= @user.account_status %>
+</p>
+
+<p>
+  <strong>Confessional status:</strong>
+  <%= @user.confessional_status %>
+</p>
+
+<p>
+  <strong>Confessional location:</strong>
+  <%= @user.confessional_location_id %>
+</p>
+
+<p>
+  <strong>Confessional date:</strong>
+  <%= @user.confessional_date %>
+</p>
+
+<p>
+  <strong>Confessional start time:</strong>
+  <%= @user.confessional_start_time %>
+</p>
+
+<p>
+  <strong>Confessional end time:</strong>
+  <%= @user.confessional_end_time %>
+</p>
+
+<p>
+  <strong>Confessional details:</strong>
+  <%= @user.confessional_details %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>
