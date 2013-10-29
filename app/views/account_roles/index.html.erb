@@ -1,0 +1,23 @@
+<h1>Listing account_roles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @account_roles.each do |account_role| %>
+      <tr>
+        <td><%= account_role.name %></td>
+        <td><%= link_to 'Show', account_role %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

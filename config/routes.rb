@@ -1,4 +1,30 @@
 MyConfessorServer::Application.routes.draw do
+
+  root 'main#index'
+
+  # Begin Static Resources
+  get 'states(.:format)', to: 'states#index', as: :states
+  get 'states/:id(.:format)', to: 'states#show', as: :state
+
+  get 'dioceses(.:format)', to: 'dioceses#index', as: :dioceses
+  get 'dioceses/:id(.:format)', to: 'dioceses#show', as: :diocese
+
+  get 'account_statuses(.:format)', to: 'account_statuses#index', as: :account_statuses
+  get 'account_statuses/:id(.:format)', to: 'account_statuses#show', as: :account_status
+
+  get 'account_roles(.:format)', to: 'account_roles#index', as: :account_roles
+  get 'account_roles/:id(.:format)', to: 'account_roles#show', as: :account_role
+
+  get 'confessor_request_statuses(.:format)', to: 'confessor_request_statuses#index', as: :confessor_request_statuses
+  get 'confessor_request_statuses/:id(.:format)', to: 'confessor_request_statuses#show', as: :confessor_request_status
+
+  get 'confessor_offices(.:format)', to: 'confessor_offices#index', as: :confessor_offices
+  get 'confessor_offices/:id(.:format)', to: 'confessor_offices#show', as: :confessor_office
+
+  get 'confessor_statuses(.:format)', to: 'confessor_statuses#index', as: :confessor_statuses
+  get 'confessor_statuses/:id(.:format)', to: 'confessor_statuses#show', as: :confessor_status
+  # End Static Resources
+
   resources :user_locations
 
   resources :users

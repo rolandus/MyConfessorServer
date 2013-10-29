@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131017030707) do
+ActiveRecord::Schema.define(version: 20131029024913) do
+
+  create_table "account_roles", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "account_statuses", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "confessional_locations", force: true do |t|
     t.string   "name"
@@ -22,6 +34,44 @@ ActiveRecord::Schema.define(version: 20131017030707) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "confessor_offices", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "confessor_request_statuses", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "confessor_statuses", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "dioceses", force: true do |t|
+    t.string   "name"
+    t.string   "full_name"
+    t.integer  "state_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "dioceses", ["state_id"], name: "index_dioceses_on_state_id"
+
+  create_table "states", force: true do |t|
+    t.string   "name"
+    t.string   "abbreviation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+  
+  add_index "states", ["name"], name: "index_states_on_name"
+  add_index "states", ["abbreviation"], name: "index_states_abbreviation"
 
   create_table "user_locations", force: true do |t|
     t.integer  "user_id"

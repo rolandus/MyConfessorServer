@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @diocese.name %>
+</p>
+
+<p>
+  <strong>Full name:</strong>
+  <%= @diocese.full_name %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <% if @diocese.state %>
+  	<%= @diocese.state.name %>
+  <% end %>
+</p>

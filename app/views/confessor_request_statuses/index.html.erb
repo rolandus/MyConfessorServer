@@ -1,0 +1,23 @@
+<h1>Listing confessor_request_statuses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confessor_request_statuses.each do |confessor_request_status| %>
+      <tr>
+        <td><%= confessor_request_status.name %></td>
+        <td><%= link_to 'Show', confessor_request_status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

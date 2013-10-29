@@ -1,0 +1,23 @@
+<h1>Listing confessor_offices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confessor_offices.each do |confessor_office| %>
+      <tr>
+        <td><%= confessor_office.name %></td>
+        <td><%= link_to 'Show', confessor_office %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

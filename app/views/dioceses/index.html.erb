@@ -1,0 +1,31 @@
+<h1>Listing dioceses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Full name</th>
+      <th>State</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dioceses.each do |diocese| %>
+      <tr>
+        <td><%= diocese.name %></td>
+        <td><%= diocese.full_name %></td>
+        <td>
+        <% if diocese.state %>
+       		<%= diocese.state.name %>
+       	<% end %>
+       	</td>
+        <td><%= link_to 'Show', diocese %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

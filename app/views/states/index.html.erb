@@ -1,0 +1,25 @@
+<h1>Listing states</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Abbreviation</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @states.each do |state| %>
+      <tr>
+        <td><%= state.name %></td>
+        <td><%= state.abbreviation %></td>
+        <td><%= link_to 'Show', state %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

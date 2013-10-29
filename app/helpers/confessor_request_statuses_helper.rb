@@ -1,0 +1,2 @@
+module ConfessorRequestStatusesHelper
+end

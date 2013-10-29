@@ -1,0 +1,23 @@
+<h1>Listing account_statuses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @account_statuses.each do |account_status| %>
+      <tr>
+        <td><%= account_status.name %></td>
+        <td><%= link_to 'Show', account_status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
