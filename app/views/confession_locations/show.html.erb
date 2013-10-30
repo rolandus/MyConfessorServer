@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @confession_location.name %>
+</p>
+
+<p>
+  <strong>Nickname:</strong>
+  <%= @confession_location.nickname %>
+</p>
+
+<p>
+  <strong>Street address:</strong>
+  <%= @confession_location.street_address %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @confession_location.city %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @confession_location.state %>
+</p>
+
+<p>
+  <strong>Postal code:</strong>
+  <%= @confession_location.postal_code %>
+</p>
+
+<%= link_to 'Edit', edit_confession_location_path(@confession_location) %> |
+<%= link_to 'Back', confession_locations_path %>

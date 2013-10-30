@@ -1,0 +1,37 @@
+<h1>Listing confession_location_changes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Nickname</th>
+      <th>Street address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Postal code</th>
+      <th>Change comments</th>
+      <th>User account</th>
+      <th>Confession location</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confession_location_changes.each do |confession_location_change| %>
+      <tr>
+        <td><%= confession_location_change.name %></td>
+        <td><%= confession_location_change.nickname %></td>
+        <td><%= confession_location_change.street_address %></td>
+        <td><%= confession_location_change.city %></td>
+        <td><%= confession_location_change.state %></td>
+        <td><%= confession_location_change.postal_code %></td>
+        <td><%= confession_location_change.change_comments %></td>
+        <td><%= confession_location_change.user_account %></td>
+        <td><%= confession_location_change.confession_location %></td>
+        <td><%= link_to 'Show', confession_location_change %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

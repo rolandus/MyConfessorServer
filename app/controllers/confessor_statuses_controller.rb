@@ -1,5 +1,5 @@
 class ConfessorStatusesController < ApplicationController
-  before_action :set_confessor_status, only: [:show, :edit, :update, :destroy]
+  before_action :set_confessor_status, only: [:show]
 
   # GET /confessor_statuses
   # GET /confessor_statuses.json
@@ -16,10 +16,5 @@ class ConfessorStatusesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_confessor_status
       @confessor_status = ConfessorStatus.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def confessor_status_params
-      params.require(:confessor_status).permit(:name)
     end
 end

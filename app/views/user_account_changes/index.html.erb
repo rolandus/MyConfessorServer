@@ -1,0 +1,42 @@
+<h1>Listing user_account_changes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Account status</th>
+      <th>Email</th>
+      <th>Home phone</th>
+      <th>Work phone</th>
+      <th>Mobile phone</th>
+      <th>Change comments</th>
+      <th>User account</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_account_changes.each do |user_account_change| %>
+      <tr>
+        <td><%= user_account_change.first_name %></td>
+        <td><%= user_account_change.last_name %></td>
+        <td><%= user_account_change.username %></td>
+        <td><%= user_account_change.password %></td>
+        <td><%= user_account_change.account_status %></td>
+        <td><%= user_account_change.email %></td>
+        <td><%= user_account_change.home_phone %></td>
+        <td><%= user_account_change.work_phone %></td>
+        <td><%= user_account_change.mobile_phone %></td>
+        <td><%= user_account_change.change_comments %></td>
+        <td><%= user_account_change.user_account %></td>
+        <td><%= link_to 'Show', user_account_change %></td>
+        <td><%= link_to 'Destroy', user_account_change, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

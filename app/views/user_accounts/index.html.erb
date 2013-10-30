@@ -1,0 +1,43 @@
+<h1>Listing user_accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Account status</th>
+      <th>Email</th>
+      <th>Home phone</th>
+      <th>Work phone</th>
+      <th>Mobile phone</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_accounts.each do |user_account| %>
+      <tr>
+        <td><%= user_account.first_name %></td>
+        <td><%= user_account.last_name %></td>
+        <td><%= user_account.username %></td>
+        <td><%= user_account.password %></td>
+        <td><%= user_account.account_status %></td>
+        <td><%= user_account.email %></td>
+        <td><%= user_account.home_phone %></td>
+        <td><%= user_account.work_phone %></td>
+        <td><%= user_account.mobile_phone %></td>
+        <td><%= link_to 'Show', user_account %></td>
+        <td><%= link_to 'Edit', edit_user_account_path(user_account) %></td>
+        <td><%= link_to 'Destroy', user_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User account', new_user_account_path %>

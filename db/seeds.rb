@@ -6,6 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+#=========== Begin Static Data. Needed in all Installations ===========#
 
 # Begin States
 State.create(name: "Alabama", abbreviation: "AL")
@@ -296,11 +297,118 @@ ConfessorStatus.create(name: "out")
 ConfessorStatus.create(name: "busy")
 # End ConfessorStatuses
 
+#=========== End Static Data. ================================#
 
+=begin
+# Begin Confession Locations
+ConfessionLocation.create(name: "Saint Mary of Pine Bluff",
+                          nickname: "Saint Mary's",
+                          street_address: "3673 County Highway P",
+                          city: "Cross Plains",
+                          state: 51,
+                          postal_code: "53528")
+ConfessionLocationChange.create(name: "Saint Mary of Pine Bluff",
+                          nickname: "Saint Mary's",
+                          street_address: "3673 County Highway P",
+                          city: "Cross Plains",
+                          state: 51,
+                          postal_code: "53528",
+                          change_comments: "created",
+                          user_account_id: 1,
+                          confession_location_id: 1)
 
+ConfessionLocation.create(name: "Saint Ignatius Catholic Church",
+                          nickname: "Saint Ignatius",
+                          street_address: "109 South 6th Street",
+                          city: "Mount Horeb",
+                          state: 51,
+                          postal_code: "53572")
+ConfessionLocation.create(name: "Saint Ignatius Catholic Church",
+                          nickname: "Saint Ignatius",
+                          street_address: "109 South 6th Street",
+                          city: "Mount Horeb",
+                          state: 51,
+                          postal_code: "53572",
+                          change_comments: "created",
+                          user_account_id: 1,
+                          confession_location_id: 2)
 
+ConfessionLocation.create(name: "Saint Christopher Catholic Parish",
+                          nickname: "Saint Christopher",
+                          street_address: "301 N Main St",
+                          city: "Verona",
+                          state: 51,
+                          postal_code: "53593")
+ConfessionLocation.create(name: "Saint Christopher Catholic Parish",
+                          nickname: "Saint Christopher",
+                          street_address: "301 N Main St",
+                          city: "Verona",
+                          state: 51,
+                          postal_code: "53593",
+                          change_comments: "created",
+                          user_account_id: 1,
+                          confession_location_id: 3)
 
+ConfessionLocation.create(name: "Saint Peter Cathedral",
+                          nickname: "Saint Peter's",
+                          street_address: "311 West Baraga Ave",
+                          city: "Marquette",
+                          state: 23,
+                          postal_code: "49855")
+ConfessionLocation.create(name: "Saint Peter Cathedral",
+                          nickname: "Saint Peter's",
+                          street_address: "311 West Baraga Ave",
+                          city: "Marquette",
+                          state: 23,
+                          postal_code: "49855",
+                          change_comments: "created",
+                          user_account_id: 1,
+                          confession_location_id: 4)
+# End Confession Locations
+=end
 
+# Begin UserAccounts
+UserAccount.create(first_name: "Roland",
+                   last_name: "Scott",
+                   username: "roland.scott@gmail.com",
+                   password: "asdf",
+                   account_status_id: 2,
+                   email: "roland.scott@gmail.com",
+                   home_phone: "6084370956",
+                   work_phone: "6087771087",
+                   mobile_phone: "6083978765")
+UserAccountChange.create(first_name: "Roland",
+                   last_name: "Scott",
+                   username: "roland.scott@gmail.com",
+                   password: "asdf",
+                   account_status_id: 2,
+                   email: "roland.scott@gmail.com",
+                   home_phone: "6084370956",
+                   work_phone: "6087771087",
+                   mobile_phone: "6083978765",
+                   change_comments: "created")
+                   
+UserAccount.create(first_name: "Richard",
+                   last_name: "Heilman",
+                   username: "father_rick@gmail.com",
+                   password: "asdf",
+                   account_status_id: 2,
+                   email: "father_rick@gmail.com",
+                   home_phone: "",
+                   work_phone: "6087982111",
+                   mobile_phone: "")
+UserAccountChange.create(first_name: "Richard",
+                   last_name: "Heilman",
+                   username: "father_rick@gmail.com",
+                   password: "asdf",
+                   account_status_id: 2,
+                   email: "father_rick@gmail.com",
+                   home_phone: "",
+                   work_phone: "6087982111",
+                   mobile_phone: "",
+                   change_comments: "created")
+                                                         
+# End User Accounts
 
 
 =begin
