@@ -27,7 +27,7 @@ class ConfessionLocationsController < ApplicationController
     @confession_location = ConfessionLocation.new(confession_location_params)
 
     respond_to do |format|
-      if @confession_location.save
+      if @confession_location.save and save_to_history @confession_location.id, "created"
         format.html { redirect_to @confession_location, notice: 'Confession location was successfully created.' }
         format.json { render action: 'show', status: :created, location: @confession_location }
       else
@@ -41,7 +41,7 @@ class ConfessionLocationsController < ApplicationController
   # PATCH/PUT /confession_locations/1.json
   def update
     respond_to do |format|
-      if @confession_location.update(confession_location_params)
+      if @confession_location.update(confession_location_params) and save_to_history @confession_location.id, params[:confession_location_change][:change_comments]
         format.html { redirect_to @confession_location, notice: 'Confession location was successfully updated.' }
         format.json { head :no_content }
       else
@@ -66,9 +66,18 @@ class ConfessionLocationsController < ApplicationController
     def set_confession_location
       @confession_location = ConfessionLocation.find(params[:id])
     end
+    
+    def save_to_history (id, comments)
+      @confession_location_change = ConfessionLocationChange.new(confession_location_params)
+      @confession_location_change.confession_location_id = id
+      @confession_location_change.change_comments = comments
+      @confession_location_change.user_account_id = 2 #TODO - This needs to be the logged-in user!
+      @confession_location_change.save
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def confession_location_params
       params.require(:confession_location).permit(:name, :nickname, :street_address, :city, :state_id, :postal_code)
     end
+        
 end

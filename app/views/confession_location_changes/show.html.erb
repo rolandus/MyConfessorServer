@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Confession location ID:</strong>
+  <%= @confession_location_change.confession_location.id %>
+</p>
+
+<p>
   <strong>Name:</strong>
   <%= @confession_location_change.name %>
 </p>
@@ -22,7 +27,7 @@
 
 <p>
   <strong>State:</strong>
-  <%= @confession_location_change.state %>
+  <%= @confession_location_change.state.name %>
 </p>
 
 <p>
@@ -36,13 +41,13 @@
 </p>
 
 <p>
-  <strong>User account:</strong>
-  <%= @confession_location_change.user_account %>
+  <strong>Changed by:</strong>
+  <%= @confession_location_change.user_account.username %>
 </p>
 
 <p>
-  <strong>Confession location:</strong>
-  <%= @confession_location_change.confession_location %>
+  <strong>Changed on:</strong>
+  <%= @confession_location_change.user_account.created_at.to_s(:rfc822) %>
 </p>
 
 <%= link_to 'Back', confession_location_changes_path %>

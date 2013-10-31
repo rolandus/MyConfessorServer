@@ -299,19 +299,19 @@ ConfessorStatus.create(name: "busy")
 
 #=========== End Static Data. ================================#
 
-=begin
+
 # Begin Confession Locations
 ConfessionLocation.create(name: "Saint Mary of Pine Bluff",
                           nickname: "Saint Mary's",
                           street_address: "3673 County Highway P",
                           city: "Cross Plains",
-                          state: 51,
+                          state_id: 51,
                           postal_code: "53528")
 ConfessionLocationChange.create(name: "Saint Mary of Pine Bluff",
                           nickname: "Saint Mary's",
                           street_address: "3673 County Highway P",
                           city: "Cross Plains",
-                          state: 51,
+                          state_id: 51,
                           postal_code: "53528",
                           change_comments: "created",
                           user_account_id: 1,
@@ -321,13 +321,13 @@ ConfessionLocation.create(name: "Saint Ignatius Catholic Church",
                           nickname: "Saint Ignatius",
                           street_address: "109 South 6th Street",
                           city: "Mount Horeb",
-                          state: 51,
+                          state_id: 51,
                           postal_code: "53572")
-ConfessionLocation.create(name: "Saint Ignatius Catholic Church",
+ConfessionLocationChange.create(name: "Saint Ignatius Catholic Church",
                           nickname: "Saint Ignatius",
                           street_address: "109 South 6th Street",
                           city: "Mount Horeb",
-                          state: 51,
+                          state_id: 51,
                           postal_code: "53572",
                           change_comments: "created",
                           user_account_id: 1,
@@ -337,13 +337,13 @@ ConfessionLocation.create(name: "Saint Christopher Catholic Parish",
                           nickname: "Saint Christopher",
                           street_address: "301 N Main St",
                           city: "Verona",
-                          state: 51,
+                          state_id: 51,
                           postal_code: "53593")
-ConfessionLocation.create(name: "Saint Christopher Catholic Parish",
+ConfessionLocationChange.create(name: "Saint Christopher Catholic Parish",
                           nickname: "Saint Christopher",
                           street_address: "301 N Main St",
                           city: "Verona",
-                          state: 51,
+                          state_id: 51,
                           postal_code: "53593",
                           change_comments: "created",
                           user_account_id: 1,
@@ -353,21 +353,30 @@ ConfessionLocation.create(name: "Saint Peter Cathedral",
                           nickname: "Saint Peter's",
                           street_address: "311 West Baraga Ave",
                           city: "Marquette",
-                          state: 23,
+                          state_id: 23,
                           postal_code: "49855")
-ConfessionLocation.create(name: "Saint Peter Cathedral",
+ConfessionLocationChange.create(name: "Saint Peter Cathedral",
                           nickname: "Saint Peter's",
                           street_address: "311 West Baraga Ave",
                           city: "Marquette",
-                          state: 23,
+                          state_id: 23,
                           postal_code: "49855",
                           change_comments: "created",
                           user_account_id: 1,
                           confession_location_id: 4)
 # End Confession Locations
-=end
 
 # Begin UserAccounts
+UserAccount.create(first_name: "System",
+                   last_name: "User",
+                   username: "system@myconfessor.org",
+                   password: "",
+                   account_status_id: 2,
+                   email: "system@myconfessor.org",
+                   home_phone: "",
+                   work_phone: "",
+                   mobile_phone: "")
+
 UserAccount.create(first_name: "Roland",
                    last_name: "Scott",
                    username: "roland.scott@gmail.com",

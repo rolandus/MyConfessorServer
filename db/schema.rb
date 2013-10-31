@@ -104,9 +104,6 @@ ActiveRecord::Schema.define(version: 20131030021811) do
     t.datetime "updated_at"
   end
 
-  add_index "states", ["abbreviation"], name: "index_states_abbreviation"
-  add_index "states", ["name"], name: "index_states_on_name"
-
   create_table "user_account_changes", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"

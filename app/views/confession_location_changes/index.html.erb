@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Confession location ID</th>
       <th>Name</th>
       <th>Nickname</th>
       <th>Street address</th>
@@ -10,8 +11,8 @@
       <th>State</th>
       <th>Postal code</th>
       <th>Change comments</th>
-      <th>User account</th>
-      <th>Confession location</th>
+      <th>Changed by</th>
+      <th>Changed on</th>
       <th></th>
     </tr>
   </thead>
@@ -19,15 +20,16 @@
   <tbody>
     <% @confession_location_changes.each do |confession_location_change| %>
       <tr>
+        <td><%= confession_location_change.confession_location.id %></td>
         <td><%= confession_location_change.name %></td>
         <td><%= confession_location_change.nickname %></td>
         <td><%= confession_location_change.street_address %></td>
         <td><%= confession_location_change.city %></td>
-        <td><%= confession_location_change.state %></td>
+        <td><%= confession_location_change.state.name %></td>
         <td><%= confession_location_change.postal_code %></td>
         <td><%= confession_location_change.change_comments %></td>
-        <td><%= confession_location_change.user_account %></td>
-        <td><%= confession_location_change.confession_location %></td>
+        <td><%= confession_location_change.user_account.username %></td>
+        <td><%= confession_location_change.created_at.to_s(:rfc822) %></td>
         <td><%= link_to 'Show', confession_location_change %></td>
       </tr>
     <% end %>

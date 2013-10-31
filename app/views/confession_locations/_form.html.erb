@@ -27,14 +27,24 @@
     <%= f.label :city %><br>
     <%= f.text_field :city %>
   </div>
+  
   <div class="field">
     <%= f.label :state %><br>
-    <%= f.text_field :state %>
+    <%= collection_select(:confession_location, :state_id, State.all, :id, :name)%>
   </div>
+  
   <div class="field">
     <%= f.label :postal_code %><br>
     <%= f.text_field :postal_code %>
   </div>
+  
+  <% if @is_edit %>
+  <div class="field">
+    <%= label :confession_location_change, :change_comments %><br>
+    <%= text_area :confession_location_change, :change_comments %>
+  </div>
+  <% end%>
+  
   <div class="actions">
     <%= f.submit %>
   </div>

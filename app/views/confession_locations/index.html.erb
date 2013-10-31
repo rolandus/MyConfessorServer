@@ -22,7 +22,7 @@
         <td><%= confession_location.nickname %></td>
         <td><%= confession_location.street_address %></td>
         <td><%= confession_location.city %></td>
-        <td><%= confession_location.state %></td>
+        <td><%= confession_location.state.name %></td>
         <td><%= confession_location.postal_code %></td>
         <td><%= link_to 'Show', confession_location %></td>
         <td><%= link_to 'Edit', edit_confession_location_path(confession_location) %></td>
