@@ -29,7 +29,11 @@
   </div>
   <div class="field">
     <%= f.label :account_status %><br>
-    <%= f.text_field :account_status %>
+    <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :account_roles %><br>
+    <%= collection_check_boxes(:user_account, :account_role_ids, AccountRole.all, :id, :name)%>
   </div>
   <div class="field">
     <%= f.label :email %><br>
@@ -47,6 +51,14 @@
     <%= f.label :mobile_phone %><br>
     <%= f.text_field :mobile_phone %>
   </div>
+
+  <% if @is_edit %>
+  <div class="field">
+    <%= label :user_account_change, :change_comments %><br>
+    <%= text_area :user_account_change, :change_comments %>
+  </div>
+  <% end%>
+  
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>User account:</strong>
+  <%= @user_account_change.user_account_id %>
+</p>
+
+<p>
   <strong>First name:</strong>
   <%= @user_account_change.first_name %>
 </p>
@@ -46,13 +51,13 @@
 </p>
 
 <p>
-  <strong>Change comments:</strong>
-  <%= @user_account_change.change_comments %>
+  <strong>Changed by</strong>
+  <%= @user_account_change.changed_by_user_account.username %>
 </p>
 
 <p>
-  <strong>User account:</strong>
-  <%= @user_account_change.user_account %>
+  <strong>Change comments:</strong>
+  <%= @user_account_change.change_comments %>
 </p>
 
 <%= link_to 'Back', user_account_changes_path %>

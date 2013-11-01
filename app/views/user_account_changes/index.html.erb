@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>User account</th>
       <th>First name</th>
       <th>Last name</th>
       <th>Username</th>
@@ -12,8 +13,8 @@
       <th>Home phone</th>
       <th>Work phone</th>
       <th>Mobile phone</th>
+      <th>Changed by</th>
       <th>Change comments</th>
-      <th>User account</th>
       <th></th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
   <tbody>
     <% @user_account_changes.each do |user_account_change| %>
       <tr>
+        <td><%= user_account_change.user_account_id %></td>
         <td><%= user_account_change.first_name %></td>
         <td><%= user_account_change.last_name %></td>
         <td><%= user_account_change.username %></td>
@@ -30,10 +32,9 @@
         <td><%= user_account_change.home_phone %></td>
         <td><%= user_account_change.work_phone %></td>
         <td><%= user_account_change.mobile_phone %></td>
+        <td><%= user_account_change.changed_by_user_account.username %></td>
         <td><%= user_account_change.change_comments %></td>
-        <td><%= user_account_change.user_account %></td>
         <td><%= link_to 'Show', user_account_change %></td>
-        <td><%= link_to 'Destroy', user_account_change, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

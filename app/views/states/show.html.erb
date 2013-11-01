@@ -9,3 +9,10 @@
   <strong>Abbreviation:</strong>
   <%= @state.abbreviation %>
 </p>
+
+<div>
+	<strong>Confession Locations</strong>
+	<% @state.confession_locations.each do |location|%>
+		<br /><%= location.name %>
+	<% end %>
+</div>

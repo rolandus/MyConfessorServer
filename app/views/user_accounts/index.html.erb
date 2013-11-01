@@ -8,11 +8,11 @@
       <th>Username</th>
       <th>Password</th>
       <th>Account status</th>
+      <th>Account roles</th>
       <th>Email</th>
       <th>Home phone</th>
       <th>Work phone</th>
       <th>Mobile phone</th>
-      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -26,13 +26,17 @@
         <td><%= user_account.username %></td>
         <td><%= user_account.password %></td>
         <td><%= user_account.account_status.name %></td>
+        <td>
+    	<% user_account.account_roles.each do |role| %>
+    		<%= role.name %>&nbsp;
+    	<% end %>
+        </td>
         <td><%= user_account.email %></td>
         <td><%= user_account.home_phone %></td>
         <td><%= user_account.work_phone %></td>
         <td><%= user_account.mobile_phone %></td>
         <td><%= link_to 'Show', user_account %></td>
         <td><%= link_to 'Edit', edit_user_account_path(user_account) %></td>
-        <td><%= link_to 'Destroy', user_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

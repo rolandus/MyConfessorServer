@@ -14,6 +14,7 @@ class CreateUserAccounts < ActiveRecord::Migration
       t.timestamps
     end
     
+    # Join table for linking accounts and roles.
     create_table :account_roles_user_accounts, id: false do |t|
       t.belongs_to :account_role
       t.belongs_to :user_account

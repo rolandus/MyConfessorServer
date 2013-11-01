@@ -1,6 +1,4 @@
 class StatesController < ApplicationController
-  before_action :set_state, only: [:show]
-
   # GET /states
   # GET /states.json
   def index
@@ -10,11 +8,6 @@ class StatesController < ApplicationController
   # GET /states/1
   # GET /states/1.json
   def show
+    @state = State.find(params[:id])
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_state
-      @state = State.find(params[:id])
-    end
 end

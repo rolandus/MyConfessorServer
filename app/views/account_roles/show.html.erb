@@ -4,3 +4,9 @@
   <strong>Name:</strong>
   <%= @account_role.name %>
 </p>
+<div>
+	<strong>Users With Role</strong>
+	<% @account_role.user_accounts.each do |user| %>
+	<br /><%= user.username %>
+	<% end %>
+</div>

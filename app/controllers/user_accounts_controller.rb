@@ -41,7 +41,7 @@ class UserAccountsController < ApplicationController
   # PATCH/PUT /user_accounts/1.json
   def update
     respond_to do |format|
-      if @user_account.update(user_account_params)
+      if @user_account.update(user_account_params) and save_to_history @user_account.id, params[:user_account_change][:change_comments]
         format.html { redirect_to @user_account, notice: 'User account was successfully updated.' }
         format.json { head :no_content }
       else
@@ -53,13 +53,13 @@ class UserAccountsController < ApplicationController
 
   # DELETE /user_accounts/1
   # DELETE /user_accounts/1.json
-  def destroy
-    @user_account.destroy
-    respond_to do |format|
-      format.html { redirect_to user_accounts_url }
-      format.json { head :no_content }
-    end
-  end
+  #def destroy
+  #  @user_account.destroy
+  #  respond_to do |format|
+  #    format.html { redirect_to user_accounts_url }
+  #    format.json { head :no_content }
+  #  end
+  #end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -67,8 +67,20 @@ class UserAccountsController < ApplicationController
       @user_account = UserAccount.find(params[:id])
     end
 
+    def save_to_history (id, comments)
+      @user_account_change = UserAccountChange.new(user_account_change_params)
+      @user_account_change.user_account_id = id
+      @user_account_change.change_comments = comments
+      @user_account_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
+      @user_account_change.save
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_account_params
+      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :account_role_ids => [])
+    end
+    
+    def user_account_change_params
       params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone)
     end
 end

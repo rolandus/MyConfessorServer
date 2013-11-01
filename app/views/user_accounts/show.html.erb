@@ -26,6 +26,13 @@
 </p>
 
 <p>
+  <strong>Account roles</strong>
+	<% @user_account.account_roles.each do |role| %>
+		<%= role.name %>&nbsp;
+	<% end %>
+</p>
+
+<p>
   <strong>Email:</strong>
   <%= @user_account.email %>
 </p>

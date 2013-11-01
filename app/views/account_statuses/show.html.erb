@@ -4,3 +4,9 @@
   <strong>Name:</strong>
   <%= @account_status.name %>
 </p>
+<div>
+	<strong>Active Accounts</strong>
+	<% @account_status.user_accounts.each do |user| %>
+	<br /><%= user.username %>
+	<% end %>
+</div>

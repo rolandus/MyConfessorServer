@@ -1,6 +1,4 @@
 class AccountStatusesController < ApplicationController
-  before_action :set_account_status, only: [:show]
-
   # GET /account_statuses
   # GET /account_statuses.json
   def index
@@ -10,11 +8,6 @@ class AccountStatusesController < ApplicationController
   # GET /account_statuses/1
   # GET /account_statuses/1.json
   def show
+    @account_status = AccountStatus.find(params[:id])
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_account_status
-      @account_status = AccountStatus.find(params[:id])
-    end
 end
