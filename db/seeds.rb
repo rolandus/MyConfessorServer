@@ -292,9 +292,9 @@ ConfessorOffice.create(name: "priest")
 # End ConfessorOffices
 
 # Begin ConfessorStatuses
-ConfessorStatus.create(name: "in")
-ConfessorStatus.create(name: "out")
-ConfessorStatus.create(name: "busy")
+ConfessionStatus.create(name: "available")
+ConfessionStatus.create(name: "busy")
+ConfessionStatus.create(name: "out")
 # End ConfessorStatuses
 
 #=========== End Static Data. ================================#
@@ -410,7 +410,8 @@ UserAccount.create(first_name: "Richard",
                    email: "father_rick@gmail.com",
                    home_phone: "",
                    work_phone: "6087982111",
-                   mobile_phone: "")
+                   mobile_phone: "",
+                   confessor_id: 1)
 UserAccountChange.create(first_name: "Richard",
                    last_name: "Heilman",
                    username: "father_rick@gmail.com",
@@ -420,8 +421,21 @@ UserAccountChange.create(first_name: "Richard",
                    home_phone: "",
                    work_phone: "6087982111",
                    mobile_phone: "",
+                   confessor_id: 1,
                    user_account_id: 3,
                    changed_by_user_account_id: 1,
                    change_comments: "created")
                                                          
 # End User Accounts
+
+# Begin Confessors
+
+Confessor.create(confessor_office_id: 5,
+                   salutation: "Father Rick",
+                   confession_status_id: 1,
+                   confession_location_id: 1,
+                   confession_comments: "Ring the bell at the rectory.",
+                   biography: "Father celebrated his 25th anniversary as a priest in 2013. He has a deep love for the sacrament of reconciliation.")
+
+
+# End Confessors

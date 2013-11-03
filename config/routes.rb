@@ -1,5 +1,7 @@
 MyConfessorServer::Application.routes.draw do
 
+  resources :confessors
+
   root 'main#index'
 
   # Begin Static Resources
@@ -21,8 +23,8 @@ MyConfessorServer::Application.routes.draw do
   get 'confessor_offices(.:format)', to: 'confessor_offices#index', as: :confessor_offices
   get 'confessor_offices/:id(.:format)', to: 'confessor_offices#show', as: :confessor_office
 
-  get 'confessor_statuses(.:format)', to: 'confessor_statuses#index', as: :confessor_statuses
-  get 'confessor_statuses/:id(.:format)', to: 'confessor_statuses#show', as: :confessor_status
+  get 'confession_statuses(.:format)', to: 'confession_statuses#index', as: :confession_statuses
+  get 'confession_statuses/:id(.:format)', to: 'confession_statuses#show', as: :confession_status
   # End Static Resources
 
   # User Accounts

@@ -32,6 +32,10 @@
     <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
   </div>
   <div class="field">
+    <%= f.label :confessor %><br>
+    <%= collection_select(:user_account, :confessor_id, Confessors.all, :id, :name)%>
+  </div>
+  <div class="field">
     <%= f.label :account_roles %><br>
     <%= collection_check_boxes(:user_account, :account_role_ids, AccountRole.all, :id, :name)%>
   </div>

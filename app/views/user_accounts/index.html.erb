@@ -10,6 +10,8 @@
       <th>Account status</th>
       <th>Account roles</th>
       <th>Email</th>
+      <th>Confessor ID</th>
+      <th>Salutation</th>
       <th>Home phone</th>
       <th>Work phone</th>
       <th>Mobile phone</th>
@@ -32,6 +34,8 @@
     	<% end %>
         </td>
         <td><%= user_account.email %></td>
+        <td><%= user_account.confessor.id %></td>
+        <td><%= user_account.confessor.salutation %></td>
         <td><%= user_account.home_phone %></td>
         <td><%= user_account.work_phone %></td>
         <td><%= user_account.mobile_phone %></td>

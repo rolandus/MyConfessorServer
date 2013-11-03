@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131030021811) do
+ActiveRecord::Schema.define(version: 20131103035500) do
 
   create_table "account_roles", force: true do |t|
     t.string   "name"
@@ -59,6 +59,12 @@ ActiveRecord::Schema.define(version: 20131030021811) do
 
   add_index "confession_locations", ["state_id"], name: "index_confession_locations_on_state_id"
 
+  create_table "confession_statuses", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "confessor_offices", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -71,11 +77,22 @@ ActiveRecord::Schema.define(version: 20131030021811) do
     t.datetime "updated_at"
   end
 
-  create_table "confessor_statuses", force: true do |t|
-    t.string   "name"
+  create_table "confessors", force: true do |t|
+    t.integer  "confessor_office_id"
+    t.string   "salutation"
+    t.integer  "confession_status_id"
+    t.integer  "confession_location_id"
+    t.datetime "confession_start_time"
+    t.datetime "confession_end_time"
+    t.string   "confession_comments"
+    t.text     "biography"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "confessors", ["confession_location_id"], name: "index_confessors_on_confession_location_id"
+  add_index "confessors", ["confession_status_id"], name: "index_confessors_on_confession_status_id"
+  add_index "confessors", ["confessor_office_id"], name: "index_confessors_on_confessor_office_id"
 
   create_table "dioceses", force: true do |t|
     t.string   "name"
@@ -104,6 +121,7 @@ ActiveRecord::Schema.define(version: 20131030021811) do
     t.string   "home_phone"
     t.string   "work_phone"
     t.string   "mobile_phone"
+    t.integer  "confessor_id"
     t.integer  "changed_by_user_account_id"
     t.string   "change_comments"
     t.integer  "user_account_id"
@@ -123,10 +141,12 @@ ActiveRecord::Schema.define(version: 20131030021811) do
     t.string   "home_phone"
     t.string   "work_phone"
     t.string   "mobile_phone"
+    t.integer  "confessor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "user_accounts", ["account_status_id"], name: "index_user_accounts_on_account_status_id"
+  add_index "user_accounts", ["confessor_id"], name: "index_user_accounts_on_confessor_id"
 
 end

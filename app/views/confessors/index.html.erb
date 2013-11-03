@@ -1,0 +1,39 @@
+<h1>Listing confessors</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Confessor office</th>
+      <th>Salutation</th>
+      <th>Confession status</th>
+      <th>Confession location</th>
+      <th>Confession start time</th>
+      <th>Confession end time</th>
+      <th>Confession comments</th>
+      <th>Biography</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confessors.each do |confessor| %>
+      <tr>
+        <td><%= confessor.confessor_office.name %></td>
+        <td><%= confessor.salutation %></td>
+        <td><%= confessor.confession_status.name %></td>
+        <td><%= confessor.confession_location.nickname %></td>
+        <td><%= confessor.confession_start_time %></td>
+        <td><%= confessor.confession_end_time %></td>
+        <td><%= confessor.confession_comments %></td>
+        <td><%= confessor.biography %></td>
+        <td><%= link_to 'Show', confessor %></td>
+        <td><%= link_to 'Edit', edit_confessor_path(confessor) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Confessor', new_confessor_path %>

@@ -1,0 +1,21 @@
+<h1>Listing confession_statuses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confession_statuses.each do |confession_status| %>
+      <tr>
+        <td><%= confession_status.name %></td>
+        <td><%= link_to 'Show', confession_status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
