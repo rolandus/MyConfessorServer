@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Username</th>
       <th>Confessor office</th>
       <th>Salutation</th>
       <th>Confession status</th>
@@ -19,6 +20,7 @@
   <tbody>
     <% @confessors.each do |confessor| %>
       <tr>
+        <td><%= confessor.user_account.username %></td>
         <td><%= confessor.confessor_office.name %></td>
         <td><%= confessor.salutation %></td>
         <td><%= confessor.confession_status.name %></td>

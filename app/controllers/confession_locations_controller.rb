@@ -68,11 +68,11 @@ class ConfessionLocationsController < ApplicationController
     end
     
     def save_to_history (id, comments)
-      @confession_location_change = ConfessionLocationChange.new(confession_location_params)
-      @confession_location_change.confession_location_id = id
-      @confession_location_change.change_comments = comments
-      @confession_location_change.user_account_id = 2 #TODO - This needs to be the logged-in user!
-      @confession_location_change.save
+      confession_location_change = ConfessionLocationChange.new(confession_location_params)
+      confession_location_change.confession_location_id = id
+      confession_location_change.change_comments = comments
+      confession_location_change.user_account_id = 2 #TODO - This needs to be the logged-in user!
+      confession_location_change.save
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

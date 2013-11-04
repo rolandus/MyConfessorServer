@@ -12,6 +12,10 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :user_account %><br>
+    <%= collection_select(:user_account, :user_account_id, UserAccount.all, :id, :username)%>
+  </div>
+  <div class="field">
     <%= f.label :confessor_office %><br>
     <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
   </div>

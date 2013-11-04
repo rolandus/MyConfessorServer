@@ -92,7 +92,6 @@ ActiveRecord::Schema.define(version: 20131103035500) do
 
   add_index "confessors", ["confession_location_id"], name: "index_confessors_on_confession_location_id"
   add_index "confessors", ["confession_status_id"], name: "index_confessors_on_confession_status_id"
-  add_index "confessors", ["confessor_office_id"], name: "index_confessors_on_confessor_office_id"
 
   create_table "dioceses", force: true do |t|
     t.string   "name"

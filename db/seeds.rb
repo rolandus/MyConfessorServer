@@ -426,6 +426,31 @@ UserAccountChange.create(first_name: "Richard",
                    changed_by_user_account_id: 1,
                    change_comments: "created")
                                                          
+UserAccount.create(first_name: "Alexander",
+                   last_name: "Sample",
+                   username: "bishop_sample@gmail.com",
+                   password: "asdf",
+                   account_status_id: 2,
+                   account_role_ids: [3],
+                   email: "bishop_sample@gmail.com",
+                   home_phone: "",
+                   work_phone: "9067856654",
+                   mobile_phone: "",
+                   confessor_id: 2)
+UserAccountChange.create(first_name: "Alexander",
+                   last_name: "Sample",
+                   username: "bishop_sample@gmail.com",
+                   password: "asdf",
+                   account_status_id: 2,
+                   email: "bishop_sample@gmail.com",
+                   home_phone: "",
+                   work_phone: "9067856654",
+                   mobile_phone: "",
+                   confessor_id: 2,
+                   user_account_id: 4,
+                   changed_by_user_account_id: 1,
+                   change_comments: "created")
+                                                         
 # End User Accounts
 
 # Begin Confessors
@@ -437,5 +462,11 @@ Confessor.create(confessor_office_id: 5,
                    confession_comments: "Ring the bell at the rectory.",
                    biography: "Father celebrated his 25th anniversary as a priest in 2013. He has a deep love for the sacrament of reconciliation.")
 
+Confessor.create(confessor_office_id: 4,
+                   salutation: "Bishop Sample",
+                   confession_status_id: 2,
+                   confession_location_id: 4,
+                   confession_comments: "The confessional is in the sanctuary.",
+                   biography: "Bishop Sample is the Bishop of Portland Oregon, but he still loves the UP!")
 
 # End Confessors

@@ -68,11 +68,11 @@ class UserAccountsController < ApplicationController
     end
 
     def save_to_history (id, comments)
-      @user_account_change = UserAccountChange.new(user_account_change_params)
-      @user_account_change.user_account_id = id
-      @user_account_change.change_comments = comments
-      @user_account_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
-      @user_account_change.save
+      user_account_change = UserAccountChange.new(user_account_change_params)
+      user_account_change.user_account_id = id
+      user_account_change.change_comments = comments
+      user_account_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
+      user_account_change.save
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

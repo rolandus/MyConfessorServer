@@ -57,6 +57,16 @@ class ConfessorsController < ApplicationController
       @confessor = Confessor.find(params[:id])
     end
 
+=begin
+    def update_user_account (id)
+      @user_account_change = UserAccountChange.new(user_account_change_params)
+      @user_account_change.user_account_id = id
+      @user_account_change.change_comments = comments
+      @user_account_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
+      @user_account_change.save
+    end
+=end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def confessor_params
       params.require(:confessor).permit(:confessor_office_id, :salutation, :confession_status_id, :confession_location_id, :confession_start_time, :confession_end_time, :confession_comments, :biography)

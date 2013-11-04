@@ -34,8 +34,13 @@
     	<% end %>
         </td>
         <td><%= user_account.email %></td>
+        <% if user_account.confessor %>
         <td><%= user_account.confessor.id %></td>
         <td><%= user_account.confessor.salutation %></td>
+        <% else %>
+        <td></td>
+        <td></td>
+        <% end %>
         <td><%= user_account.home_phone %></td>
         <td><%= user_account.work_phone %></td>
         <td><%= user_account.mobile_phone %></td>

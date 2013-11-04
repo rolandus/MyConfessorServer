@@ -37,6 +37,7 @@
   <%= @user_account.email %>
 </p>
 
+<% if @user_account.confessor %>
 <p>
   <strong>Confessor ID:</strong>
   <%= @user_account.confessor.id %>
@@ -46,6 +47,7 @@
   <strong>Salutation:</strong>
   <%= @user_account.confessor.salutation %>
 </p>
+<% end %>
 
 <p>
   <strong>Home phone:</strong>
