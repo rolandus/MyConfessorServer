@@ -3,6 +3,7 @@ class CreateConfessors < ActiveRecord::Migration
     create_table :confessors do |t|
       t.references :confessor_office
       t.string :salutation
+      t.references :user_account, index: true, unique: true
       t.references :confession_status, index: true
       t.references :confession_location, index: true
       t.datetime :confession_start_time

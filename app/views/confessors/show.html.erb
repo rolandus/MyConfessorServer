@@ -2,7 +2,9 @@
 
 <p>
   <strong>Username:</strong>
+  <% if @confessor.user_account %>
   <%= @confessor.user_account.username %>
+  <% end %>
 </p>
 
 <p>

@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20131103035500) do
   create_table "confessors", force: true do |t|
     t.integer  "confessor_office_id"
     t.string   "salutation"
+    t.integer  "user_account_id"
     t.integer  "confession_status_id"
     t.integer  "confession_location_id"
     t.datetime "confession_start_time"
@@ -92,6 +93,7 @@ ActiveRecord::Schema.define(version: 20131103035500) do
 
   add_index "confessors", ["confession_location_id"], name: "index_confessors_on_confession_location_id"
   add_index "confessors", ["confession_status_id"], name: "index_confessors_on_confession_status_id"
+  add_index "confessors", ["user_account_id"], name: "index_confessors_on_user_account_id"
 
   create_table "dioceses", force: true do |t|
     t.string   "name"
@@ -120,7 +122,6 @@ ActiveRecord::Schema.define(version: 20131103035500) do
     t.string   "home_phone"
     t.string   "work_phone"
     t.string   "mobile_phone"
-    t.integer  "confessor_id"
     t.integer  "changed_by_user_account_id"
     t.string   "change_comments"
     t.integer  "user_account_id"
@@ -140,12 +141,10 @@ ActiveRecord::Schema.define(version: 20131103035500) do
     t.string   "home_phone"
     t.string   "work_phone"
     t.string   "mobile_phone"
-    t.integer  "confessor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "user_accounts", ["account_status_id"], name: "index_user_accounts_on_account_status_id"
-  add_index "user_accounts", ["confessor_id"], name: "index_user_accounts_on_confessor_id"
 
 end

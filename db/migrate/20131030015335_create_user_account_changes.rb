@@ -10,7 +10,6 @@ class CreateUserAccountChanges < ActiveRecord::Migration
       t.string :home_phone
       t.string :work_phone
       t.string :mobile_phone
-      t.references :confessor
       t.integer :changed_by_user_account_id
       t.string :change_comments
       t.references :user_account, index: true

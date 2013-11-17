@@ -25,10 +25,10 @@ class ConfessorsController < ApplicationController
   # POST /confessors.json
   def create
     @confessor = Confessor.new(confessor_params)
-
+    @confessor.user_account_id = params[:user_account][:user_account_id]
     respond_to do |format|
       if @confessor.save
-        format.html { redirect_to @confessor, notice: 'Confessor was successfully created.' }
+        format.html { redirect_to @confessor, notice: 'Confessor was successfully created: ' + params[:user_account][:user_account_id] }
         format.json { render action: 'show', status: :created, location: @confessor }
       else
         format.html { render action: 'new' }
@@ -41,8 +41,9 @@ class ConfessorsController < ApplicationController
   # PATCH/PUT /confessors/1.json
   def update
     respond_to do |format|
+      @confessor.user_account_id = params[:user_account][:user_account_id]
       if @confessor.update(confessor_params)
-        format.html { redirect_to @confessor, notice: 'Confessor was successfully updated.' }
+        format.html { redirect_to @confessor, notice: 'Confessor was successfully updated: ' + params[:user_account][:user_account_id] }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

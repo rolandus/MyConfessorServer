@@ -10,7 +10,6 @@ class CreateUserAccounts < ActiveRecord::Migration
       t.string :home_phone
       t.string :work_phone
       t.string :mobile_phone
-      t.references :confessor, index: true, unique: true
 
       t.timestamps
     end

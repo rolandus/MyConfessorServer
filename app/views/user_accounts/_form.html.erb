@@ -31,17 +31,6 @@
     <%= f.label :account_status %><br>
     <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
   </div>
-	<% if @user_account.confessor %>
-	<p>
-	  <strong>Confessor ID:</strong>
-	  <%= @user_account.confessor.id %>
-	</p>
-	
-	<p>
-	  <strong>Salutation:</strong>
-	  <%= @user_account.confessor.salutation %>
-	</p>
-	<% end %>
   <div class="field">
     <%= f.label :account_roles %><br>
     <%= collection_check_boxes(:user_account, :account_role_ids, AccountRole.all, :id, :name)%>

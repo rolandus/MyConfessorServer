@@ -77,10 +77,10 @@ class UserAccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_account_params
-      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :confessor_id, :account_role_ids => [])
+      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :account_role_ids => [])
     end
     
     def user_account_change_params
-      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :confessor_id)
+      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone)
     end
 end
