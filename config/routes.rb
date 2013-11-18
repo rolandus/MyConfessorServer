@@ -1,7 +1,5 @@
 MyConfessorServer::Application.routes.draw do
 
-  resources :confessors
-
   root 'main#index'
 
   # Begin Static Resources
@@ -38,6 +36,14 @@ MyConfessorServer::Application.routes.draw do
   # User Account Histories
   get 'confession_location_changes(.:format)', to: 'confession_location_changes#index', as: :confession_location_changes
   get 'confession_location_changes/:id(.:format)', to: 'confession_location_changes#show', as: :confession_location_change
+
+  # Confessors
+  resources :confessors
+  # Confessor Histories
+  get 'confessor_changes(.:format)', to: 'confessor_changes#index', as: :confessor_changes
+  get 'confessor_changes/:id(.:format)', to: 'confessor_changes#show', as: :confessor_change
+  
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

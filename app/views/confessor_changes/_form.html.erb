@@ -1,0 +1,41 @@
+<%= form_for(@confessor_change) do |f| %>
+  <% if @confessor_change.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@confessor_change.errors.count, "error") %> prohibited this confessor_change from being saved:</h2>
+
+      <ul>
+      <% @confessor_change.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :confessor_office %><br>
+    <%= f.text_field :confessor_office %>
+  </div>
+  <div class="field">
+    <%= f.label :salutation %><br>
+    <%= f.text_field :salutation %>
+  </div>
+  <div class="field">
+    <%= f.label :user_account %><br>
+    <%= f.text_field :user_account %>
+  </div>
+  <div class="field">
+    <%= f.label :biography %><br>
+    <%= f.text_area :biography %>
+  </div>
+  <div class="field">
+    <%= f.label :change_comments %><br>
+    <%= f.text_field :change_comments %>
+  </div>
+  <div class="field">
+    <%= f.label :changed_by_user_account_id %><br>
+    <%= f.number_field :changed_by_user_account_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
