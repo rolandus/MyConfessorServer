@@ -23,6 +23,7 @@
     <%= f.label :salutation %><br>
     <%= f.text_field :salutation %>
   </div>
+  <% if not @is_edit then %>
   <div class="field">
     <%= f.label :confession_status %><br>
     <%= collection_select(:confessor, :confession_status_id, ConfessionStatus.all, :id, :name)%>
@@ -43,10 +44,17 @@
     <%= f.label :confession_comments %><br>
     <%= f.text_field :confession_comments %>
   </div>
+  <% end %>
   <div class="field">
     <%= f.label :biography %><br>
     <%= f.text_area :biography %>
   </div>
+  <% if @is_edit then %>
+  <div class="field">
+    <%= label :confessor_change, :change_comments %><br>
+    <%= text_area :confessor_change, :change_comments %>
+  </div>
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>

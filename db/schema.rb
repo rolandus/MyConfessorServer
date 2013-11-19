@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131103035500) do
+ActiveRecord::Schema.define(version: 20131118044333) do
 
   create_table "account_roles", force: true do |t|
     t.string   "name"
@@ -64,6 +64,20 @@ ActiveRecord::Schema.define(version: 20131103035500) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "confessor_changes", force: true do |t|
+    t.integer  "confessor_id"
+    t.integer  "confessor_office_id"
+    t.string   "salutation"
+    t.integer  "user_account_id"
+    t.text     "biography"
+    t.string   "change_comments"
+    t.integer  "changed_by_user_account_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "confessor_changes", ["confessor_id"], name: "index_confessor_changes_on_confessor_id"
 
   create_table "confessor_offices", force: true do |t|
     t.string   "name"

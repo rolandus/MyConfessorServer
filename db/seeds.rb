@@ -458,6 +458,13 @@ Confessor.create(confessor_office_id: 5,
                    confession_location_id: 1,
                    confession_comments: "Ring the bell at the rectory.",
                    biography: "Father celebrated his 25th anniversary as a priest in 2013. He has a deep love for the sacrament of reconciliation.")
+ConfessorChange.create(confessor_id: 1,
+                   confessor_office_id: 5,
+                   salutation: "Father Rick",
+                   user_account_id: 3,
+                   biography: "Father celebrated his 25th anniversary as a priest in 2013. He has a deep love for the sacrament of reconciliation.",
+                   change_comments: "Created",
+                   changed_by_user_account_id: 1)
 
 Confessor.create(confessor_office_id: 4,
                    salutation: "Bishop Sample",
@@ -466,5 +473,12 @@ Confessor.create(confessor_office_id: 4,
                    confession_location_id: 4,
                    confession_comments: "The confessional is in the sanctuary.",
                    biography: "Bishop Sample is the Bishop of Portland Oregon, but he still loves the UP!")
+ConfessorChange.create(confessor_id: 2,
+                   confessor_office_id: 4,
+                   salutation: "Bishop Sample",
+                   user_account_id: 4,
+                   biography: "Bishop Sample is the Bishop of Portland Oregon, but he still loves the UP!",
+                   change_comments: "Created",
+                   changed_by_user_account_id: 1)
 
 # End Confessors

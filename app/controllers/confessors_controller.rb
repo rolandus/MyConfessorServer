@@ -27,7 +27,7 @@ class ConfessorsController < ApplicationController
     @confessor = Confessor.new(confessor_params)
     @confessor.user_account_id = params[:user_account][:user_account_id]
     respond_to do |format|
-      if @confessor.save
+      if @confessor.save and save_to_history @confessor.id, params[:user_account][:user_account_id], "Created"
         format.html { redirect_to @confessor, notice: 'Confessor was successfully created: ' + params[:user_account][:user_account_id] }
         format.json { render action: 'show', status: :created, location: @confessor }
       else
@@ -42,7 +42,7 @@ class ConfessorsController < ApplicationController
   def update
     respond_to do |format|
       @confessor.user_account_id = params[:user_account][:user_account_id]
-      if @confessor.update(confessor_params) and save_to_history @confessor.id, params[:user_account][:user_account_id], params[:user_account_change][:change_comments]
+      if @confessor.update(confessor_params) and save_to_history @confessor.id, params[:user_account][:user_account_id], params[:confessor_change][:change_comments]
         format.html { redirect_to @confessor, notice: 'Confessor was successfully updated: ' + params[:user_account][:user_account_id] }
         format.json { head :no_content }
       else
@@ -57,16 +57,6 @@ class ConfessorsController < ApplicationController
     def set_confessor
       @confessor = Confessor.find(params[:id])
     end
-
-=begin
-    def update_user_account (id)
-      @user_account_change = UserAccountChange.new(user_account_change_params)
-      @user_account_change.user_account_id = id
-      @user_account_change.change_comments = comments
-      @user_account_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
-      @user_account_change.save
-    end
-=end
 
     def save_to_history (confessor_id, user_account_id, comments)
       confessor_change = ConfessorChange.new(confessor_change_params)

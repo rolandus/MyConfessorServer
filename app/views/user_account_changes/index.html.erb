@@ -9,8 +9,6 @@
       <th>Username</th>
       <th>Password</th>
       <th>Account status</th>
-      <th>Confessor ID</th>
-      <th>Salutation</th>
       <th>Email</th>
       <th>Home phone</th>
       <th>Work phone</th>
@@ -30,13 +28,6 @@
         <td><%= user_account_change.username %></td>
         <td><%= user_account_change.password %></td>
         <td><%= user_account_change.account_status.name%></td>
-        <% if user_account_change.confessor %>
-        <td><%= user_account_change.confessor.id %></td>
-        <td><%= user_account_change.confessor.salutation %></td>
-        <% else %>
-        <td></td>
-        <td></td>
-        <% end %>
         <td><%= user_account_change.email %></td>
         <td><%= user_account_change.home_phone %></td>
         <td><%= user_account_change.work_phone %></td>

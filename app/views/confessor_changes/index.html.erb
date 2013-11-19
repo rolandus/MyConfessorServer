@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Confessor</th>
       <th>Confessor office</th>
       <th>Salutation</th>
       <th>User account</th>
@@ -10,23 +11,20 @@
       <th>Change comments</th>
       <th>Changed by user account</th>
       <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @confessor_changes.each do |confessor_change| %>
       <tr>
-        <td><%= confessor_change.confessor_office %></td>
+        <td><%= confessor_change.confessor_id %></td>
+        <td><%= confessor_change.confessor_office.name %></td>
         <td><%= confessor_change.salutation %></td>
-        <td><%= confessor_change.user_account %></td>
+        <td><%= confessor_change.user_account.username %></td>
         <td><%= confessor_change.biography %></td>
         <td><%= confessor_change.change_comments %></td>
-        <td><%= confessor_change.changed_by_user_account_id %></td>
+        <td><%= confessor_change.changed_by_user_account.username %></td>
         <td><%= link_to 'Show', confessor_change %></td>
-        <td><%= link_to 'Edit', edit_confessor_change_path(confessor_change) %></td>
-        <td><%= link_to 'Destroy', confessor_change, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -34,4 +32,3 @@
 
 <br>
 
-<%= link_to 'New Confessor change', new_confessor_change_path %>
