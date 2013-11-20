@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @confessor_request.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @confessor_request.last_name %>
+</p>
+
+<% if @confessor_request.diocese then %>
+<p>
+  <strong>Diocese:</strong>
+  <%= @confessor_request.diocese.name %>
+</p>
+<% end %>
+<% if @confessor_request.state then %>
+<p>
+  <strong>State:</strong>
+  <%= @confessor_request.state.name %>
+</p>
+<% end %>
+
+<p>
+  <strong>Confessor request status:</strong>
+  <%= @confessor_request.confessor_request_status.name %>
+</p>
+
+<%= link_to 'Edit', edit_confessor_request_path(@confessor_request) %> |
+<%= link_to 'Back', confessor_requests_path %>

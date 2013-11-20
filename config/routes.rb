@@ -43,6 +43,13 @@ MyConfessorServer::Application.routes.draw do
   get 'confessor_changes(.:format)', to: 'confessor_changes#index', as: :confessor_changes
   get 'confessor_changes/:id(.:format)', to: 'confessor_changes#show', as: :confessor_change
   
+  # Confessor Requests
+  resources :confessor_requests
+  # Confessor Request Histories
+  get 'confessor_request_changes(.:format)', to: 'confessor_request_changes#index', as: :confessor_request_changes
+  get 'confessor_request_changes/:id(.:format)', to: 'confessor_request_changes#show', as: :confessor_request_change
+
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

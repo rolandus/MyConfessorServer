@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  diocese_id: 
+  state_id: 
+  confessor_request_status_id: 
+  change_comments: MyText
+  changed_by_user_id: 1
+  ConfessorRequest_id: 
+
+two:
+  first_name: MyString
+  last_name: MyString
+  diocese_id: 
+  state_id: 
+  confessor_request_status_id: 
+  change_comments: MyText
+  changed_by_user_id: 1
+  ConfessorRequest_id: 

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  diocese_id: 
+  state_id: 
+  confessor_request_status_id: 
+  reviewer_comments: MyText
+  reviewer_id: 1
+
+two:
+  first_name: MyString
+  last_name: MyString
+  diocese_id: 
+  state_id: 
+  confessor_request_status_id: 
+  reviewer_comments: MyText
+  reviewer_id: 1

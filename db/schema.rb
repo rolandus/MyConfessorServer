@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131118044333) do
+ActiveRecord::Schema.define(version: 20131120035348) do
 
   create_table "account_roles", force: true do |t|
     t.string   "name"
@@ -85,11 +85,40 @@ ActiveRecord::Schema.define(version: 20131118044333) do
     t.datetime "updated_at"
   end
 
+  create_table "confessor_request_changes", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "diocese_id"
+    t.integer  "state_id"
+    t.integer  "confessor_request_status_id"
+    t.text     "change_comments"
+    t.integer  "changed_by_user_id"
+    t.integer  "ConfessorRequest_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "confessor_request_changes", ["ConfessorRequest_id"], name: "index_confessor_request_changes_on_ConfessorRequest_id"
+
   create_table "confessor_request_statuses", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "confessor_requests", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "diocese_id"
+    t.integer  "state_id"
+    t.integer  "confessor_request_status_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "confessor_requests", ["confessor_request_status_id"], name: "index_confessor_requests_on_confessor_request_status_id"
+  add_index "confessor_requests", ["diocese_id"], name: "index_confessor_requests_on_diocese_id"
+  add_index "confessor_requests", ["state_id"], name: "index_confessor_requests_on_state_id"
 
   create_table "confessors", force: true do |t|
     t.integer  "confessor_office_id"

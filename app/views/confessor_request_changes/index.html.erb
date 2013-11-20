@@ -1,0 +1,43 @@
+<h1>Listing confessor_request_changes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Confessor request</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Diocese</th>
+      <th>State</th>
+      <th>Confessor request status</th>
+      <th>Change comments</th>
+      <th>Changed by user</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @confessor_request_changes.each do |confessor_request_change| %>
+      <tr>
+        <td><%= confessor_request_change.confessor_request_id %></td>
+        <td><%= confessor_request_change.first_name %></td>
+        <td><%= confessor_request_change.last_name %></td>
+        <% if confessor_request_change.diocese then %>
+        <td><%= confessor_request_change.diocese.name %></td>
+        <% else %>
+        <td></td>
+        <% end %>
+        <% if confessor_request_change.state then %>
+        <td><%= confessor_request_change.state.name %></td>
+        <% else %>
+        <td></td>
+        <% end %>
+        <td><%= confessor_request_change.confessor_request_status.name %></td>
+        <td><%= confessor_request_change.change_comments %></td>
+        <td><%= confessor_request_change.changed_by_user.username %></td>
+        <td><%= link_to 'Show', confessor_request_change %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

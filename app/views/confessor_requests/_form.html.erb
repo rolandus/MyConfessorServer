@@ -1,0 +1,43 @@
+<%= form_for(@confessor_request) do |f| %>
+  <% if @confessor_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@confessor_request.errors.count, "error") %> prohibited this confessor_request from being saved:</h2>
+
+      <ul>
+      <% @confessor_request.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :diocese %><br>
+    <%= collection_select(:confessor_request, :diocese_id, Diocese.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :state %><br>
+    <%= collection_select(:confessor_request, :state_id, State.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :confessor_request_status %><br>
+    <%= collection_select(:confessor_request, :confessor_request_status_id, ConfessorRequestStatus.all, :id, :name)%>
+  </div>
+  <% if @is_edit then %>
+  <div class="field">
+    <%= f.label :confessor_request_change, :change_comments %><br>
+    <%= f.text_area :confessor_request_change, :change_comments %>
+  </div>
+  <% end %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
