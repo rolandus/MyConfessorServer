@@ -490,12 +490,13 @@ ConfessorRequest.create(first_name: "Larry",
                         diocese_id: 88,
                         state_id: 23,
                         confessor_request_status_id: 1)
-ConfessorRequestChange.create(first_name: "Larry",
+ConfessorRequestChange.create(confessor_request_id: 1,
+                        first_name: "Larry",
                         last_name: "VanDamme",
                         diocese_id: 88,
                         state_id: 23,
                         confessor_request_status_id: 1,
                         change_comments: "Created",
-                        changed_by_user_id: 1)
+                        changed_by_user_account_id: 1)
                    
 # End ConfessorRequests

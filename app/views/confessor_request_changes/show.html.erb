@@ -1,8 +1,9 @@
 <p id="notice"><%= notice %></p>
 
+
 <p>
   <strong>Confessor request:</strong>
-  <%= @confessor_request_change.confessor_request_id %>
+  <%= @confessor_request_change.confessor_request.id %>
 </p>
 
 <p>
@@ -37,9 +38,8 @@
 
 <p>
   <strong>Changed by user:</strong>
-  <%= @confessor_request_change.changed_by_user.username %>
+  <%= @confessor_request_change.changed_by_user_account.username %>
 </p>
 
 
-<%= link_to 'Edit', edit_confessor_request_change_path(@confessor_request_change) %> |
 <%= link_to 'Back', confessor_request_changes_path %>

@@ -1,1 +1,1 @@
-json.extract! @confessor_request_change, :first_name, :last_name, :diocese_id, :state_id, :confessor_request_status_id, :change_comments, :changed_by_user_id, :ConfessorRequest_id, :created_at, :updated_at
+json.extract! @confessor_request_change, :first_name, :last_name, :diocese_id, :state_id, :confessor_request_status_id, :change_comments, :changed_by_user_account_id, :confessor_request_id, :created_at, :updated_at

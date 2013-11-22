@@ -18,7 +18,7 @@
   <tbody>
     <% @confessor_request_changes.each do |confessor_request_change| %>
       <tr>
-        <td><%= confessor_request_change.confessor_request_id %></td>
+        <td><%= confessor_request_change.confessor_request.id %></td>
         <td><%= confessor_request_change.first_name %></td>
         <td><%= confessor_request_change.last_name %></td>
         <% if confessor_request_change.diocese then %>
@@ -33,7 +33,7 @@
         <% end %>
         <td><%= confessor_request_change.confessor_request_status.name %></td>
         <td><%= confessor_request_change.change_comments %></td>
-        <td><%= confessor_request_change.changed_by_user.username %></td>
+        <td><%= confessor_request_change.changed_by_user_account.username %></td>
         <td><%= link_to 'Show', confessor_request_change %></td>
       </tr>
     <% end %>

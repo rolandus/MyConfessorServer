@@ -8,6 +8,6 @@ class ConfessorRequestChangesController < ApplicationController
   # GET /confessor_request_changes/1
   # GET /confessor_request_changes/1.json
   def show
-    @confessor_request_changes = ConfessorRequestChange.find(params[:id])
+    @confessor_request_change = ConfessorRequestChange.find(params[:id])
   end
 end

@@ -27,7 +27,7 @@ class ConfessorRequestsController < ApplicationController
     @confessor_request = ConfessorRequest.new(confessor_request_params)
 
     respond_to do |format|
-      if @confessor_request.save
+      if @confessor_request.save and save_to_history @confessor_request.id, "Created"
         format.html { redirect_to @confessor_request, notice: 'Confessor request was successfully created.' }
         format.json { render action: 'show', status: :created, location: @confessor_request }
       else
@@ -41,7 +41,7 @@ class ConfessorRequestsController < ApplicationController
   # PATCH/PUT /confessor_requests/1.json
   def update
     respond_to do |format|
-      if @confessor_request.update(confessor_request_params)
+      if @confessor_request.update(confessor_request_params) and save_to_history @confessor_request.id, params[:confessor_request_change][:change_comments]
         format.html { redirect_to @confessor_request, notice: 'Confessor request was successfully updated.' }
         format.json { head :no_content }
       else
@@ -51,24 +51,22 @@ class ConfessorRequestsController < ApplicationController
     end
   end
 
-  # DELETE /confessor_requests/1
-  # DELETE /confessor_requests/1.json
-  def destroy
-    @confessor_request.destroy
-    respond_to do |format|
-      format.html { redirect_to confessor_requests_url }
-      format.json { head :no_content }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_confessor_request
       @confessor_request = ConfessorRequest.find(params[:id])
     end
 
+    def save_to_history (confessor_request_id, comments)
+      confessor_request_change = ConfessorRequestChange.new(confessor_request_params)
+      confessor_request_change.confessor_request_id = confessor_request_id
+      confessor_request_change.change_comments = comments
+      confessor_request_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
+      confessor_request_change.save
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def confessor_request_params
-      params.require(:confessor_request).permit(:first_name, :last_name, :diocese_id, :state_id, :confessor_request_status_id, :reviewer_comments, :reviewer_id)
+      params.require(:confessor_request).permit(:first_name, :last_name, :diocese_id, :state_id, :confessor_request_status_id)
     end
 end

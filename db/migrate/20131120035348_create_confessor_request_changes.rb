@@ -7,8 +7,8 @@ class CreateConfessorRequestChanges < ActiveRecord::Migration
       t.references :state
       t.references :confessor_request_status
       t.text :change_comments
-      t.integer :changed_by_user_id
-      t.references :ConfessorRequest, index: true
+      t.integer :changed_by_user_account_id
+      t.references :confessor_request, index: true
 
       t.timestamps
     end

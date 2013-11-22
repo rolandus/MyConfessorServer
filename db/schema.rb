@@ -92,13 +92,13 @@ ActiveRecord::Schema.define(version: 20131120035348) do
     t.integer  "state_id"
     t.integer  "confessor_request_status_id"
     t.text     "change_comments"
-    t.integer  "changed_by_user_id"
-    t.integer  "ConfessorRequest_id"
+    t.integer  "changed_by_user_account_id"
+    t.integer  "confessor_request_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "confessor_request_changes", ["ConfessorRequest_id"], name: "index_confessor_request_changes_on_ConfessorRequest_id"
+  add_index "confessor_request_changes", ["confessor_request_id"], name: "index_confessor_request_changes_on_confessor_request_id"
 
   create_table "confessor_request_statuses", force: true do |t|
     t.string   "name"
