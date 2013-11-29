@@ -1,5 +1,6 @@
 MyConfessorServer::Application.routes.draw do
 
+  devise_for :user_accounts
   root 'main#index'
 
   # Begin Static Resources
