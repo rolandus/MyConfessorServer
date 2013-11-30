@@ -6,7 +6,7 @@ class CreateUserAccounts < ActiveRecord::Migration
       t.string :username, index: true, unique: true
       t.string :password
       t.references :account_status, index: true
-      t.string :email
+      t.string :email,              :null => false, :default => ""
       t.string :home_phone
       t.string :work_phone
       t.string :mobile_phone
