@@ -1,6 +1,7 @@
 class ConfessorRequestsController < ApplicationController
   before_action :set_confessor_request, only: [:show, :edit, :update, :destroy]
-
+  skip_before_filter :verify_authenticity_token
+  
   # GET /confessor_requests
   # GET /confessor_requests.json
   def index
@@ -25,6 +26,7 @@ class ConfessorRequestsController < ApplicationController
   # POST /confessor_requests.json
   def create
     @confessor_request = ConfessorRequest.new(confessor_request_params)
+    @confessor_request.confessor_request_status_id = 1 #Set the status to 1-Created.
 
     respond_to do |format|
       if @confessor_request.save and save_to_history @confessor_request.id, "Created"
@@ -67,6 +69,6 @@ class ConfessorRequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def confessor_request_params
-      params.require(:confessor_request).permit(:first_name, :last_name, :diocese_id, :state_id, :confessor_request_status_id)
+      params.require(:confessor_request).permit(:first_name, :last_name, :email, :diocese_id, :state_id, :confessor_request_status_id)
     end
 end

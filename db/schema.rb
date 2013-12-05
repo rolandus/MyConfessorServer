@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
   create_table "confessor_request_changes", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "email"
     t.integer  "diocese_id"
     t.integer  "state_id"
     t.integer  "confessor_request_status_id"
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
   create_table "confessor_requests", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "email"
     t.integer  "diocese_id"
     t.integer  "state_id"
     t.integer  "confessor_request_status_id"

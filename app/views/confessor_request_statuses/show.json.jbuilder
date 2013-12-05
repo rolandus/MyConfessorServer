@@ -1,1 +1,1 @@
-json.extract! @confessor_request_status, :name, :created_at, :updated_at
+json.extract! @confessor_request_status, :id, :name, :created_at, :updated_at

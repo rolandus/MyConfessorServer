@@ -20,6 +20,10 @@
     <%= f.text_field :last_name %>
   </div>
   <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
     <%= f.label :diocese %><br>
     <%= collection_select(:confessor_request, :diocese_id, Diocese.all, :id, :name)%>
   </div>

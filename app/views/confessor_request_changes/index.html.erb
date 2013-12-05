@@ -6,6 +6,7 @@
       <th>Confessor request</th>
       <th>First name</th>
       <th>Last name</th>
+      <th>Email</th>
       <th>Diocese</th>
       <th>State</th>
       <th>Confessor request status</th>
@@ -21,6 +22,7 @@
         <td><%= confessor_request_change.confessor_request.id %></td>
         <td><%= confessor_request_change.first_name %></td>
         <td><%= confessor_request_change.last_name %></td>
+        <td><%= confessor_request_change.email %></td>
         <% if confessor_request_change.diocese then %>
         <td><%= confessor_request_change.diocese.name %></td>
         <% else %>

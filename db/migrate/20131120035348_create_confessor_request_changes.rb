@@ -3,6 +3,7 @@ class CreateConfessorRequestChanges < ActiveRecord::Migration
     create_table :confessor_request_changes do |t|
       t.string :first_name
       t.string :last_name
+      t.string :email
       t.references :diocese
       t.references :state
       t.references :confessor_request_status
