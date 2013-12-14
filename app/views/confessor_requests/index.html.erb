@@ -1,6 +1,8 @@
 <h1>Listing confessor_requests</h1>
 
 <table>
+<% 
+=begin %>
   <thead>
     <tr>
       <th>First name</th>
@@ -36,7 +38,22 @@
       </tr>
     <% end %>
   </tbody>
-</table>
+<% 
+=end %>
+<ul>
+    <% @confessor_requests.each do |confessor_request| %>
+    <li>
+    	<h2><%= confessor_request.first_name %> <%= confessor_request.last_name %> - Diocese of <%= confessor_request.diocese.name %>, <%= confessor_request.state.abbreviation %></h2>
+    	<p><%= confessor_request.email %></p>
+    	<form>
+    		<p><input id="verified_checkbox" type="checkbox" /><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
+    		<input type="button" value="Approve" />
+    		<input type="button" value="Deny" />
+    		<input type="button" value="Google Him" />
+    	</form>
+    </li>
+	<% end %>	
+</ul>
 
 <br>
 

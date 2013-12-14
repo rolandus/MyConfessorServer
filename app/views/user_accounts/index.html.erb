@@ -1,5 +1,8 @@
 <h1>Listing user_accounts</h1>
 
+<% 
+=begin %>
+
 <table>
   <thead>
     <tr>
@@ -50,6 +53,23 @@
     <% end %>
   </tbody>
 </table>
+<% 
+=end %>
+
+<ul>
+	<% @user_accounts.each do |user_account| %>
+		<h3><%= user_account.first_name %> <%= user_account.last_name %></h3>
+		<% if user_account.confessor %>
+			<p>
+				Bishop - Diocese of Portland, OR
+	    	</p>
+	    <% else %>
+	    	<p>
+	    		Administrator
+	    	</p>
+	    <% end %>
+	<% end %>
+</ul>
 
 <br>
 

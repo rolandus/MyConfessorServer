@@ -10,6 +10,8 @@
       </ul>
     </div>
   <% end %>
+  
+  <p>Fill out the fields below. We'll verify your identity and then send you an email with a link to complete the signup process. This usually takes about three days.</p>
 
   <div class="field">
     <%= f.label :first_name %><br>
@@ -31,6 +33,9 @@
     <%= f.label :state %><br>
     <%= collection_select(:confessor_request, :state_id, State.all, :id, :name)%>
   </div>
+<%
+=begin 
+%>
   <div class="field">
     <%= f.label :confessor_request_status %><br>
     <%= collection_select(:confessor_request, :confessor_request_status_id, ConfessorRequestStatus.all, :id, :name)%>
@@ -41,7 +46,10 @@
     <%= text_area :confessor_request_change, :change_comments %>
   </div>
   <% end %>
+<%
+=end
+%>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit Request" %>
   </div>
 <% end %>

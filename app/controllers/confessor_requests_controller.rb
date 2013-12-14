@@ -30,13 +30,18 @@ class ConfessorRequestsController < ApplicationController
 
     respond_to do |format|
       if @confessor_request.save and save_to_history @confessor_request.id, "Created"
-        format.html { redirect_to @confessor_request, notice: 'Confessor request was successfully created.' }
+        #format.html { redirect_to @confessor_request, notice: 'Confessor request was successfully created.' }
+        format.html { redirect_to action: 'confirm_request' }
         format.json { render action: 'show', status: :created, location: @confessor_request }
       else
         format.html { render action: 'new' }
         format.json { render json: @confessor_request.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  
+  def confirm_request  
   end
 
   # PATCH/PUT /confessor_requests/1

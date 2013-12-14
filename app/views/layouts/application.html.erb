@@ -1,31 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MyConfessorServer</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+	<title>My Confessor</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  	<%#javascript_include_tag "application", "data-turbolinks-track" => true %>
+  	<%= javascript_include_tag "jquery.js?body=1" %>
+  	<%= csrf_meta_tags %>
+	<body>
+		<!-- Latest compiled and minified JavaScript -->
+		<!-- script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script></head -->
+		<!-- script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script></head -->
+		<!-- script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script></head -->
+		
+		<div id="banner"><%= image_tag "banner.png" %></div>
+		<div id="header">
+		</div>
+		<div id="content">
+<% 
+=begin %>
+			<p class="navbar-text pull-right">
+			<% if user_account_signed_in? %>
+			  Logged in as <strong><%= current_user_account.email %></strong>.
+			  <%= link_to 'Edit profile', edit_user_account_registration_path, :class => 'navbar-link' %> |
+			  <%= link_to "Logout", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
+			<% else %>
+			  <%= link_to "Request Account", user_account_registration_path, :class => 'navbar-link'  %> |
+			  <%= link_to "Login", new_user_account_session_path, :class => 'navbar-link'  %>
+			<% end %>
+			</p>
+			<p>Password: <%= State.find_by_name("zzPassword").abbreviation %></p>
+			
+			<% if notice %>
+				<p class="alert alert-notice"><%= notice %></p>
+			<% end %>
+			<% if alert %>
+				<p class="alert alert-error"><%= alert %></p>
+			<% end %>
+<% 
+=end %>
+			
+			<%= yield %>
 
-<% if notice %>
-	<p class="alert alert-notice"><%= notice %></p>
-<% end %>
-<% if alert %>
-	<p class="alert alert-error"><%= alert %></p>
-<% end %>
+		</div>
+		<div id="footer">
+			<a href="account_request" class="icon_container" data-page="account_request">
+				<%= image_tag "icon_chat.png", {class: "icon"} %>
+				<span class="icon_label">Request an Account</span>
+			</a>
+			<a href="pending_requests" class="icon_container" data-page="pending_requests">
+				<%= image_tag "icon_chat.png", {class: "icon"} %>
+				<span class="icon_label">Pending Requests</span>
+			</a>
+			<a href="existing_accounts" class="icon_container" data-page="existing_accounts">
+				<%= image_tag "icon_people.png", {class: "icon"} %>
+				<span class="icon_label">Manage Accounts</span>
+			</a>
+			<a href="login" class="icon_container" data-page="login">
+				<%= image_tag "icon_lock.png", {class: "icon"} %>
+				<span class="icon_label">Log In</span>
+			</a>
+			<a href="login" class="icon_container" data-page="login">
+				<%= image_tag "icon_unlock.png", {class: "icon"} %>
+				<span class="icon_label">Log Out</span>
+			</a>
+		</div>
+<script>
+/*
+var Workspace = Backbone.Router.extend({
+	routes: {
+		"login":                 "login",            // #login
+		"account_request":       "account_request",  // #account_request
+	},
+	
+	login: function() {
+		hide_all_pages();
+		show_page('login');
+	},
+	
+	account_request: function() {
+		hide_all_pages();
+		show_page('account_request');
+	},
+	
+	hide_all_pages: function() {
+		$('div[data-role="page"]').hide();
+	},
+	
+	show_page: function(page) {
+		$('#' + page + '').show();
+	}
+});
 
-<p class="navbar-text pull-right">
-<% if user_account_signed_in? %>
-  Logged in as <strong><%= current_user_account.email %></strong>.
-  <%= link_to 'Edit profile', edit_user_account_registration_path, :class => 'navbar-link' %> |
-  <%= link_to "Logout", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
-<% else %>
-  <%= link_to "Sign up", new_user_account_registration_path, :class => 'navbar-link'  %> |
-  <%= link_to "Login", new_user_account_session_path, :class => 'navbar-link'  %>
-<% end %>
+$.ready(function() {Backbone.history.start();}); //Start document routing
+*/
 
-<%= yield %>
+function activateLinks() {
+	$("a").bind("click", function(event) {
+		var page;
+		event.preventDefault();
+		page = event.currentTarget.getAttribute('data-page'); //The event target is only being the link when you click in a very specific spot
+		console.debug('changing to page: ' + page);
+		event.stopPropagation();
+		hide_all_pages();
+		show_page(page);
+	});
+}
 
-</body>
+function activateForms() {
+	$("input[type='submit']").bind("click", function(event){ 
+		event.preventDefault();
+		hide_all_pages();
+		show_page("");
+	});
+}
+
+function hide_all_pages() {
+	$('div[data-role="page"]').hide();
+}
+	
+function show_page(page) {
+	$('#' + page + '_page').show();
+}
+
+function initialize_page() {
+	activateLinks();
+	hide_all_pages();
+	show_page("login");
+}
+
+$.ready(initialize_page());
+
+
+</script>
+	</body>
 </html>
