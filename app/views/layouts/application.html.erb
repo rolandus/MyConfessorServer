@@ -11,7 +11,8 @@
   	<%= javascript_include_tag "jquery.js?body=1" %>
     <script src="http://underscorejs.org/underscore.js"></script>
     <script src="http://backbonejs.org/backbone.js"></script>
-  	<%= csrf_meta_tags %>
+    <script src="assets/handlebars.js"></script>
+    <%= csrf_meta_tags %>
 	<body>
 		<!-- Latest compiled and minified JavaScript -->
 		<!-- script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script></head -->
@@ -70,11 +71,30 @@
 				<span class="icon_label">Log Out</span>
 			</a>
 		</div>
-<script>
+		
+<script id="account-request-item-template" type="text/x-handlebars-template">
+<h2>Account Requests</h2>
+<ul>
+	{{#each items}}
+    <li>
+    	<h3>{{first_name}} {{last_name}} - {{diocese_id}}, {{state_id}}</h3>
+    	<p>{{email}}</p>
+    	<form></form>
+    		<p><input id="verified_checkbox" type="checkbox"><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
+    		<input type="button" value="Approve">
+    		<input type="button" value="Deny">
+    		<input type="button" value="Google Him">
+    	
+    </li>
+    {{/each}}
+</ul>
+</script>
 
-(function() { 
+<script type="text/javascript">
 
-var $MC = {};
+(function() { //By surrounding with an anonymous function, we avoid polluting the global scope with anything.
+
+var $MC = {}; //Var one local variable, and then attach everything to that one variable for cleanliness.
 
 /**
  * URLs used throughout the app
@@ -135,27 +155,42 @@ $MC.account_requests = new $MC.AccountRequestCollection;
  */
 $MC.RequestManagementController = Backbone.View.extend({
     
+    template: null,
+    
     initialize: function() {
-    	console.debug("Initializing request manageemet controller...");
+    	console.debug("Initializing request management controller...");
+    	
+    	//Set the template for this view
+    	this.template = Handlebars.compile($("#account-request-item-template").html());
+	
+		//Set the parent element for this view    	
+		this.el = $($MC.pages.pending_requests.selector);	    
+
+    	//Upon instantiation, request the list of accounts from the server.
     	_.bindAll(this, "handle_fetch");
     	if (!$MC.account_requests.is_ready) {
     		console.debug("Fetching account requests...");
     		$MC.account_requests.fetch({ success: this.handle_fetch });
     	};
-    	      
-       	$($.proxy(function() {
-			this.el = $($MC.pages.pending_requests.selector);
-       	},this));
 	},
 	
 	handle_fetch: function(collection) {
 		console.debug("Handling account requests...");
+		console.debug(collection);
 		collection.is_ready = true;
 		this.render();
 	},
 	
 	render: function() {
 		console.debug("rendering account requests...");
+		var 
+			json = $MC.account_requests.toJSON(),
+			context = { items: json },
+			html = this.template(context),
+			element = this.$el
+		;
+		
+		$($MC.pages.pending_requests.selector).html(html);
 	}
 });
 
