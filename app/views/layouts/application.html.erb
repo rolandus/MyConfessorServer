@@ -72,12 +72,12 @@
 			</a>
 		</div>
 		
-<script id="account-request-item-template" type="text/x-handlebars-template">
+<script id="account-request-list-template" type="text/x-handlebars-template">
 <h2>Account Requests</h2>
 <ul>
 	{{#each items}}
     <li>
-    	<h3>{{first_name}} {{last_name}} - {{diocese_id}}, {{state_id}}</h3>
+    	<h3>{{first_name}} {{last_name}} - {{deref diocese_id "dioceses" "name"}}, {{deref state_id "states" "abbreviation"}}</h3>
     	<p>{{email}}</p>
     	<form></form>
     		<p><input id="verified_checkbox" type="checkbox"><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
@@ -97,10 +97,18 @@
 var $MC = {}; //Var one local variable, and then attach everything to that one variable for cleanliness.
 
 /**
+ * App-level settings live here.
+ */
+$MC.settings = {
+	server_url: "http://localhost:3000",
+	are_templates_precompiled: false
+};
+
+/**
  * URLs used throughout the app
  */
 $MC.Url = function(name) {
-	this.root = "http://localhost:3000/";
+	this.root = $MC.settings.server_url + "/";
 	this.url = this.root + name + ".json";
 };
 $MC.urls = {
@@ -122,6 +130,50 @@ $MC.pages = {
 	edit_account: new $MC.Page("edit_account"),
 	account_request: new $MC.Page("account_request")
 }
+
+/**
+ * Handlebars helper used to convert a record ID into something useful (like a name or abbreviation)
+ * 
+ * Parameters
+ *  id         - The id of the record to dereferenced
+ *  collection - The collection to select the record from
+ *  property   - The property whose value will be returned
+ */
+Handlebars.registerHelper("deref", function(id, collection, property) {
+	return $MC[collection].get(id).attributes[property];
+});
+
+/**
+ * Template helper - abstracts the fact that the templates may
+ * or may not be precompiled. If the scripts are not precompiled,
+ * it assumes that each template lives in its own script tag
+ * with an ID of the format "<template name>-template".
+ * 
+ * Parameters
+ *  name - The name of the template. Convention is for the name to NOT end with "-template"
+ */
+$MC.Template = function(name, collection) {
+	this.name = name;
+	this.collection = collection;
+	if ($MC.settings.are_templates_precompiled) {
+		this.template = Handlebars.templates[name];
+	} else {
+		this.template = Handlebars.compile($("#" + this.name + "-template").html())
+	}
+};
+$MC.Template.prototype = {
+	getHtml: function() {
+		var 
+			json = this.collection.toJSON(),
+			context = { items: json }
+		;
+		return this.template(context);
+	},
+	
+	getHtmlFor: function(context) {
+		return this.template(context);
+	}
+};
 
 /**
  * Collection of States
@@ -161,9 +213,10 @@ $MC.RequestManagementController = Backbone.View.extend({
     	console.debug("Initializing request management controller...");
     	
     	//Set the template for this view
-    	this.template = Handlebars.compile($("#account-request-item-template").html());
+    	this.template = new $MC.Template("account-request-list", $MC.account_requests);
 	
-		//Set the parent element for this view    	
+		//Set the parent element for this view
+		//TODO This is not working (el doesn't seem to get set. There appears to be a function to do this.)
 		this.el = $($MC.pages.pending_requests.selector);	    
 
     	//Upon instantiation, request the list of accounts from the server.
@@ -184,13 +237,12 @@ $MC.RequestManagementController = Backbone.View.extend({
 	render: function() {
 		console.debug("rendering account requests...");
 		var 
-			json = $MC.account_requests.toJSON(),
-			context = { items: json },
-			html = this.template(context),
-			element = this.$el
+			html = this.template.getHtml()
 		;
 		
 		$($MC.pages.pending_requests.selector).html(html);
+		
+		console.debug($MC.states.get(23).attributes.name);
 	}
 });
 
