@@ -175,6 +175,13 @@ $MC.Template.prototype = {
 	}
 };
 
+var Form = Backbone.Model.extend();
+Form.prototype.serialize = function($form) {
+	this.$form = $form;
+	this.urlRoot = $form.attr("action");
+	this.set($form.serializeToJSON());
+};
+
 /**
  * Collection of States
  */
@@ -201,6 +208,44 @@ $MC.AccountRequestCollection = Backbone.Collection.extend({
 	is_ready: false
 });
 $MC.account_requests = new $MC.AccountRequestCollection;
+
+//Attach a serialize function to the jQuery object to handle serializing the form elements.
+$.fn.serializeToJSON = function() {
+    var retVal = {};
+    $.each(this.serializeArray(), function() {  //Use jquery to get all the name/value pairs
+    	var name = this.name,
+    		pos  = name.indexOf("["),
+    		model, 
+    		property,
+    		obj,
+    		valueType;
+
+		//Ensure existence of the object to which the property belongs
+    	if (pos > -1) {  //Deal with rails-style form element names, like model[property].
+    		model = name.substring(0, pos);
+    		property = name.substring(pos+1, name.length-1);
+    		if (typeof retVal[model] === "undefined") {
+    			retVal[model] = { };
+    		}
+    		obj = retVal[model];
+    	} else {
+    		obj = retVal;
+    		property = name;
+    	}
+    	
+    	//Add the value to the property
+    	valueType = typeof obj[property];
+    	if (valueType === "undefined") {  //Value didn't exist
+    		obj[property] = this.value;
+    	} else if (valueType === "array") {  //Value exists and is already an array
+			obj[property].push(this.value);
+		} else {  //Value exists and needs to be converted into an array
+			obj[property] = [ obj[property] ];
+			obj[property].push(this.value);	
+		}
+    });
+    return retVal;
+};
 
 /**
  * Account request management (admin activity) controller
@@ -272,6 +317,7 @@ $MC.MainController = Backbone.View.extend({
        	$($.proxy(function() {
        		console.debug('document ready...');
 	       	this.activateLinks();
+	       	this.activateForms();
 			this.hide_all_pages();
 			this.show_page("login");
 			this.el = $("#content");
@@ -322,11 +368,12 @@ $MC.MainController = Backbone.View.extend({
 	},
 	
 	activateForms: function() {
-		$("input[type='submit']").bind("click", $.proxy(function(event){ 
+		$("input[type='submit']").bind("click", function(event){ 
 			event.preventDefault();
-			this.hide_all_pages();
-			this.show_page("");
-		}, this));
+			var form = new Form();
+			form.serialize($(this).closest("form"));
+			form.save();
+		});
 	},
 	
 	hide_all_pages: function() {
