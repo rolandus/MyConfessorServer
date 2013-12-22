@@ -50,29 +50,29 @@
 
 		</div>
 		<div id="footer">
-			<a href="account_request" class="icon_container" data-page="account_request">
+			<a href="/confessor_requests/new" class="icon_container" data-page="new_confessor_request">
 				<%= image_tag "icon_chat.png", {class: "icon"} %>
 				<span class="icon_label">Request an Account</span>
 			</a>
-			<a href="pending_requests" class="icon_container" data-page="pending_requests">
+			<a href="/confessor_requests" class="icon_container" data-page="confessor_requests">
 				<%= image_tag "icon_chat.png", {class: "icon"} %>
 				<span class="icon_label">Pending Requests</span>
 			</a>
-			<a href="existing_accounts" class="icon_container" data-page="existing_accounts">
+			<a href="/user_accounts" class="icon_container" data-page="user_accounts">
 				<%= image_tag "icon_people.png", {class: "icon"} %>
 				<span class="icon_label">Manage Accounts</span>
 			</a>
-			<a href="login" class="icon_container" data-page="login">
+			<a href="/user_accounts/sign_in" class="icon_container" data-page="sign_in">
 				<%= image_tag "icon_lock.png", {class: "icon"} %>
 				<span class="icon_label">Log In</span>
 			</a>
-			<a href="login" class="icon_container" data-page="login">
+			<a href="/user_accounts/sign_out" class="icon_container">
 				<%= image_tag "icon_unlock.png", {class: "icon"} %>
 				<span class="icon_label">Log Out</span>
 			</a>
 		</div>
 		
-<script id="account-request-list-template" type="text/x-handlebars-template">
+<script id="confessor_requests-template" type="text/x-handlebars-template">
 <h2>Account Requests</h2>
 <ul>
 	{{#each items}}
@@ -114,21 +114,22 @@ $MC.Url = function(name) {
 $MC.urls = {
 	states: new $MC.Url("states").url,
 	dioceses: new $MC.Url("dioceses").url,
-	account_requests: new $MC.Url("confessor_requests").url
+	confessor_requests: new $MC.Url("confessor_requests").url
 };
 
 /**
  * Names of pages"Pages" used throughout the app
  */
 $MC.Page = function(name) {
-	this.selector = "#" + name + "_page";
+	this.selector = "#" + name + "-page";
 }
 $MC.pages = {
-	login: new $MC.Page("login"),
-	pending_requests: new $MC.Page("pending_requests"),
-	existing_accounts: new $MC.Page("exisiting_accounts"),
-	edit_account: new $MC.Page("edit_account"),
-	account_request: new $MC.Page("account_request")
+	sign_in: new $MC.Page("sign_in"),
+	confessor_requests: new $MC.Page("confessor_requests"),
+	new_confessor_request: new $MC.Page("new_confessor_request"),
+	user_accounts: new $MC.Page("user_accounts"),
+	new_user_account: new $MC.Page("new_user_account"),
+	edit_user_account: new $MC.Page("edit_user_account"),
 }
 
 /**
@@ -175,8 +176,11 @@ $MC.Template.prototype = {
 	}
 };
 
-var Form = Backbone.Model.extend();
-Form.prototype.serialize = function($form) {
+/**
+ * Generic Model to serialize and submit a form as JSON.
+ */
+$MC.Form = Backbone.Model.extend();
+$MC.Form.prototype.serialize = function($form) {
 	this.$form = $form;
 	this.urlRoot = $form.attr("action");
 	this.set($form.serializeToJSON());
@@ -184,7 +188,7 @@ Form.prototype.serialize = function($form) {
 
 /**
  * Collection of States
- */
+ *
 $MC.StateCollection = Backbone.Collection.extend({
     url: $MC.urls.states,
     is_ready: false
@@ -193,7 +197,7 @@ $MC.states = new $MC.StateCollection;
 
 /**
  * Collection of Dioceses
- */
+ *
 $MC.DioceseCollection = Backbone.Collection.extend({
     url: $MC.urls.dioceses,
     is_ready: false
@@ -202,12 +206,13 @@ $MC.dioceses = new $MC.DioceseCollection;
 
 /**
  * Collection of Account Requests
- */
+ *
 $MC.AccountRequestCollection = Backbone.Collection.extend({
 	url: $MC.urls.account_requests,
 	is_ready: false
 });
 $MC.account_requests = new $MC.AccountRequestCollection;
+*/
 
 //Attach a serialize function to the jQuery object to handle serializing the form elements.
 $.fn.serializeToJSON = function() {
@@ -248,9 +253,53 @@ $.fn.serializeToJSON = function() {
 };
 
 /**
- * Account request management (admin activity) controller
+ * Base class for a page view. Encapsulates shared properties common to all pages.
  */
-$MC.RequestManagementController = Backbone.View.extend({
+$MC.PageView = Backbone.View.extend({
+	
+	initialize: function(options) {
+		console.debug("Initializing page view for " + options.name + ".");
+		this.name = options.name;
+		this.template = new $MC.Template(this.name, options.collection || {});
+		this.$container = $("#" + this.name + "-page");  //This is the real DOM element containing the HTML.
+		
+    	//Upon instantiation, request the list of accounts from the server.
+    	if (options.collection) {
+    		_.bindAll(this, "handleFetch");
+	    	if (!collection.is_ready) {
+	    		console.debug("Fetching data for page " + this.name + ".");
+	    		collection.fetch({ success: this.handleFetch });
+	    	};
+    	}
+	},
+	
+	handleFetch: function(collection) {
+		console.debug("Data returned for page " + this.name + ".");
+		console.debug(collection);
+		collection.is_ready = true; //TODO - shouldn't have to mark is_ready here. The collection should do that.
+		this.render();
+	},
+	
+	render: function() {
+		console.debug("Rendering page " + this.name + ".");
+		var html = this.template.getHtml();
+		this.$container.html(html);
+	},
+
+	show: function() {
+		this.$container.show();
+	},
+	
+	hide: function() {
+		this.$container.hide();
+	}
+});
+
+
+/**
+ * Account request management (admin activity) controller
+ *
+$MC.RequestManagementController = $MC.PageView.extend({
     
     template: null,
     
@@ -265,14 +314,14 @@ $MC.RequestManagementController = Backbone.View.extend({
 		this.el = $($MC.pages.pending_requests.selector);	    
 
     	//Upon instantiation, request the list of accounts from the server.
-    	_.bindAll(this, "handle_fetch");
+    	_.bindAll(this, "handleFetch");
     	if (!$MC.account_requests.is_ready) {
     		console.debug("Fetching account requests...");
-    		$MC.account_requests.fetch({ success: this.handle_fetch });
+    		$MC.account_requests.fetch({ success: this.handleFetch });
     	};
 	},
 	
-	handle_fetch: function(collection) {
+	handleFetch: function(collection) {
 		console.debug("Handling account requests...");
 		console.debug(collection);
 		collection.is_ready = true;
@@ -290,115 +339,108 @@ $MC.RequestManagementController = Backbone.View.extend({
 		console.debug($MC.states.get(23).attributes.name);
 	}
 });
+*/
 
 /**
- * Overall page controller. Individual page controller are instatiated by this master one.
+ * Overall page controller. Individual page controller are instantiated by this master one.
  */
-$MC.MainController = Backbone.View.extend({
+$MC.MainView = Backbone.View.extend({
     timer_id: null,
     
-    resources: [
-        $MC.states,
-        $MC.dioceses
-    ],
-    
-    page_controllers: {
-    	request_management_controller: null
+    static_data: {
+        states: new Backbone.Collection([], { url: "/states" }),
+        dioceses: new Backbone.Collection([], { url: "/dioceses" })
     },
+    
+    collections: {},
+    
+    page_views: {},
     
     initialize: function() {
         
         console.debug("initializing...");
         
         //Start fetching static resources
-        this.fetch_resources();
+        this.fetchStaticData();
         
         //Setup DOM Links and "pages"
        	$($.proxy(function() {
        		console.debug('document ready...');
 	       	this.activateLinks();
 	       	this.activateForms();
-			this.hide_all_pages();
-			this.show_page("login");
+			this.hideAllPages();
+			this.showPage("sign_in");
 			this.el = $("#content");
        	},this));
         
         //Start the polling to listen for when the resources are ready.        
         this.timer_id = window.setInterval($.proxy(function() {
-	        if (this.resources_are_ready()) {
+	        if (this.staticDataIsReady()) {
 	            window.clearInterval(this.timer_id);
-	            console.debug('ready to go');
-	            console.debug($MC.states);
-	            console.debug($MC.dioceses);
+	            console.debug('Static data is loaded.');
+	            console.debug(this.static_data.states);
+	            console.debug(this.static_data.dioceses);
 	        } 
     	}, this), 300);
     },
     
-    fetch_resources: function() {
-        var i, resource;
-        for (i = 0; i < this.resources.length; i++) {
-            resource = this.resources[i];
-            resource.fetch({success: $.proxy(this.mark_as_ready, resource)});
-        }
+    fetchStaticData: function() {
+        $.each(this.static_data, function() {
+        	this.fetch();
+        });
     },
 
-    resources_are_ready: function() {
-        var i, ready = true;
-        for (i = 0; i < this.resources.length && ready; i++) {
-            ready = ready && this.resources[i].is_ready;
-        }
+    staticDataIsReady: function() {
+        var ready = true;
+        $.each(this.static_data, function() {
+        	ready = ready && this.length > 0;
+        });
         return ready;
     },
     
-    //Executes in the context of the Collection (this == Collection)
-    mark_as_ready: function() {
-        this.is_ready = true;
-    },
-
 	activateLinks: function() {
-		$("a").bind("click", $.proxy(function(event) {
+		$("a[data-page]").bind("click", $.proxy(function(event) {
 			var page;
 			event.preventDefault();
+			event.stopPropagation();
 			page = event.currentTarget.getAttribute('data-page'); //The event target is only being the link when you click in a very specific spot
 			console.debug('changing to page: ' + page);
-			event.stopPropagation();
-			this.hide_all_pages();
-			this.show_page(page);
+			this.hideAllPages();
+			this.showPage(page);
 		}, this));
 	},
 	
 	activateForms: function() {
 		$("input[type='submit']").bind("click", function(event){ 
 			event.preventDefault();
-			var form = new Form();
+			var form = new $MC.Form();
 			form.serialize($(this).closest("form"));
 			form.save();
 		});
 	},
 	
-	hide_all_pages: function() {
-		$('div[data-role="page"]').hide();
+	hideAllPages: function() {
+		$("div[data-role='page']").hide();  //TODO - needs to call hide() on views, not directly on DOM.
 	},
 		
-	show_page: function(page) {
-		if (page === "pending_requests") {
-			if (this.page_controllers.request_management_controller === null) {
-				this.page_controllers.request_management_controller = new $MC.RequestManagementController;
-			}
+	showPage: function(page) {
+		if (page === "confessor_requests") {  //TODO -remove conditional. Do for all.
+			this.page_views[page] = this.page_views[page] || new $MC.PageView({
+				name: page
+			});
+			this.page_views[page].show();
+		} 
+		else {
+			$($MC.pages[page].selector).show();
 		}
-		$($MC.pages[page].selector).show();
 	}
 });
 
 //Instantiate the main controller, which starts the app.
-$MC.main = new $MC.MainController;
+$MC.main = new $MC.MainView;
 
 })();
-
-
-
-
-
 </script>
+
 	</body>
 </html>

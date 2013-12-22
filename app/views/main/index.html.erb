@@ -1,4 +1,4 @@
-<div id="login_page" data-role="page">
+<div id="sign_in_page" data-role="page">
 	<h1>Log In</h1>
 
 <form accept-charset="UTF-8" action="/user_accounts/sign_in" class="new_user_account" id="new_user_account" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg="></div>
@@ -18,7 +18,10 @@
   <a href="/user_accounts/password/new">Forgot your password?</a><br>
 </div>
 
-<div id="account_request_page" data-role="page">
+<div id="confessor_requests_page" data-role="page">
+</div>
+
+<div id="new_confessor_request_page" data-role="page">
 	<h1>Request an Account</h1>
 <form accept-charset="UTF-8" action="/confessor_requests" class="new_confessor_request" id="new_confessor_request" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg="></div>
   
@@ -299,49 +302,17 @@
 
 </div>
 
-<div id="existing_accounts_page" data-role="page">
-<ul>
-	<h2>Accounts</h2>
-	<a href="#"><h3>Richard Heilman</h3></a>
-		<p>
-			Priest - Diocese of Madison, WI
-    	</p>
-	<a href="#"><h3>Alexander Sample</h3></a>
-		<p>
-			Bishop - Diocese of Portland, OR
-    	</p>
-	<a href="#"><h3>Roland Scott</h3></a>
-    	<p>
-    		Administrator
-    	</p>
-</ul></div>
-
-<div id="edit_account_page" data-role="page">
-	
+<div id="confessor_request_submitted_page" data-role="page">
+	<h2>Request Submitted</h2>
+	<p>We'll be in touch with you soon to verify your identity.</p>
 </div>
 
-<div id="pending_requests_page" data-role="page">
-	<!-- h2>Account Requests</h2>
-	<ul>
-    <li>
-    	<h3>Larry VanDamme - Diocese of Lansing, MI</h3>
-    	<p>lvandamme@mtu.edu</p>
-    	<form></form>
-    		<p><input id="verified_checkbox" type="checkbox"><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
-    		<input type="button" value="Approve">
-    		<input type="button" value="Deny">
-    		<input type="button" value="Google Him">
-    	
-    </li>
-    <li>
-    	<h3>Roland Scott - Diocese of Birmingham, AL</h3>
-    	<p>asdfasdf@asdf.com</p>
-    	<form></form>
-    		<p><input id="verified_checkbox" type="checkbox"><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
-    		<input type="button" value="Approve">
-    		<input type="button" value="Deny">
-    		<input type="button" value="Google Him">
-    	
-    </li>
-</ul -->
+<div id="user_accounts_page" data-role="page">
 </div>
+
+<div id="new_user_account_page" data-role="page">
+</div>
+
+<div id="edit_user_account_page" data-role="page">
+</div>
+
