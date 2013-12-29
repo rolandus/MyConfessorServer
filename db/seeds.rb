@@ -457,6 +457,8 @@ Confessor.create(confessor_office_id: 5,
                    salutation: "Father Rick",
                    user_account_id: 3,
                    confession_status_id: 1,
+                   confession_start_time: DateTime.now,
+                   confession_end_time: DateTime.now,
                    confession_location_id: 1,
                    confession_comments: "Ring the bell at the rectory.",
                    biography: "Father celebrated his 25th anniversary as a priest in 2013. He has a deep love for the sacrament of reconciliation.")

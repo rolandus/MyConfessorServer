@@ -26,7 +26,7 @@ $MC.ModelView = Backbone.View.extend({
   	},
 
 	render: function() {
-    	var $element = $(this.template.getHtmlFor(this.model.attributes));
+    	var $element = $(this.template.getHtmlFor(this.model.toJSON()));
     	console.debug("rendering model...");
     	this.$el.append($element);
 		this.setElement($element.first());  //After the element has been created and inserted, make sure the view's $el property is updated appropriately. 	
@@ -218,8 +218,10 @@ $MC.ModelPageView = $MC.PageView.extend({
  	 *  @param {Object} info
 	 */
 	show: function(info) {
-		this.setRecordId(info.record_id);
-		this.render();
+		if (this.collection.get(this.record_id)) {
+			this.setRecordId(info.record_id);
+			this.render();
+		}
 		$MC.PageView.prototype.show.apply(this, arguments);
 	}
 });

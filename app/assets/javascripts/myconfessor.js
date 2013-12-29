@@ -50,7 +50,7 @@ $MC.layout_footer = $("#footer");
  */
 Handlebars.registerHelper("enum", function(value, enumName, property) {
 	if (typeof property !== "string") { property = "name"; }
-	return $MC.enums[enumName].get(value).attributes[property];
+	return $MC.enums[enumName].get(value).get(property);
 });
 
 /**
@@ -63,7 +63,7 @@ Handlebars.registerHelper("enum", function(value, enumName, property) {
  */
 Handlebars.registerHelper("record", function(id, collection, property) {
 	if (typeof property !== "string") { throw "You must provide a property for the 'record' helper."; }
-	return $MC.data[collection].get(id).attributes[property];
+	return $MC.data[collection].get(id).get(property);
 });
 
 /**
@@ -76,6 +76,14 @@ Handlebars.registerHelper("iterateEnum", function(enumName, options) {
 		retVal = retVal + options.fn(item.attributes);
 	});
 	return retVal;
+});
+
+Handlebars.registerHelper("capitalize", function(style, options) {
+	var str = options.fn(this);
+	if (style == "all_upper") {
+		str = str.toUpperCase();
+	}
+	return str;
 });
 
 /**
@@ -115,7 +123,7 @@ $MC.Template.prototype = {
 		var context;
 		if (this.collection) {
 			if (this.record_id) {
-				context = this.collection.get(this.record_id).attributes;
+				context = this.collection.get(this.record_id).toJSON();
 			} else {
 				context = { items: this.collection.toJSON() };
 			}

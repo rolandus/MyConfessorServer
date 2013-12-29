@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MyConfessor</title>
+    <title>MyConfessor - Administrator</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
@@ -28,10 +28,10 @@
                 <%= image_tag "icon_people.png" %>
                 <span class="icon_label">Manage Accounts</span>
             </a>
-            <a href="/user_accounts/sign_in" class="icon_container" data-page="sign_in">
+            <!-- a href="/user_accounts/sign_in" class="icon_container" data-page="sign_in">
                 <%= image_tag "icon_lock.png" %>
                 <span class="icon_label">Log In</span>
-            </a>
+            </a -->
             <a href="/user_accounts/sign_out" class="icon_container">
                 <%= image_tag "icon_unlock.png" %>
                 <span class="icon_label">Log Out</span>
@@ -51,8 +51,7 @@
         <!-- Confessor Requests List Page -->
         <script id="confessor_requests_tpl" type="text/x-handlebars-template">
             <h2>Account Requests</h2>
-            <ul class="list_container">
-            </ul>
+            <ul class="list_container"></ul>
         </script>
         
         <script id="confessor_request_item_tpl" type="text/x-handlebars-template">

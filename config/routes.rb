@@ -2,7 +2,8 @@ MyConfessorServer::Application.routes.draw do
 
   root 'main#index'
   get 'test', to: 'main#test'
-  get 'admin', to: 'main#admin'
+  get 'site/admin', to: 'main#admin'
+  get 'site/confessor', to: 'main#confessor'
 
   devise_for :user_accounts
 

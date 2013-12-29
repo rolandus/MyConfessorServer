@@ -105,24 +105,30 @@ $MC.data.confessor_requests = new $MC.ConfessorRequestCollection();
 /**
  * The collection of confessors
  */
+$MC.Confessor = Backbone.Model.extend();
 $MC.ConfessorCollection = $MC.JSONCollection.extend({
-    data_url: "confessors"
+    data_url: "confessors",
+    model: $MC.Confessor
 });
 $MC.data.confessors = new $MC.ConfessorCollection();
 
 /**
  * The collection of confession locations
  */
+$MC.ConfessionLocation = Backbone.Model.extend();
 $MC.ConfessionLocationCollection = $MC.JSONCollection.extend({
-    data_url: "confession_locations"
+    data_url: "confession_locations",
+    model: $MC.ConfessionLocation
 });
 $MC.data.confession_locations = new $MC.ConfessionLocationCollection();
 
 /**
  * The collection of user accounts
  */
+$MC.UserAccount = Backbone.Model.extend();
 $MC.UserAccountCollection = $MC.JSONCollection.extend({
-    data_url: "user_accounts"
+    data_url: "user_accounts",
+    model: $MC.UserAccount
 });
 $MC.data.user_accounts = new $MC.UserAccountCollection();
 

@@ -11,4 +11,9 @@ class MainController < ApplicationController
   def admin
     render layout: "admin"
   end
+
+  #GET /confessor
+  def confessor
+    render layout: "confessor"
+  end
 end
