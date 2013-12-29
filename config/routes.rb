@@ -1,8 +1,10 @@
 MyConfessorServer::Application.routes.draw do
 
-  devise_for :user_accounts
   root 'main#index'
   get 'test', to: 'main#test'
+  get 'admin', to: 'main#admin'
+
+  devise_for :user_accounts
 
   # Begin Static Resources
   get 'states(.:format)', to: 'states#index', as: :states
@@ -49,9 +51,8 @@ MyConfessorServer::Application.routes.draw do
   get 'confessor_changes/:id(.:format)', to: 'confessor_changes#show', as: :confessor_change
   
   # Confessor Requests
-  get 'confessor_requests/confirm_request', to: 'confessor_requests#confirm_request'
   resources :confessor_requests
-  
+
   # Confessor Request Histories
   get 'confessor_request_changes(.:format)', to: 'confessor_request_changes#index', as: :confessor_request_changes
   get 'confessor_request_changes/:id(.:format)', to: 'confessor_request_changes#show', as: :confessor_request_change

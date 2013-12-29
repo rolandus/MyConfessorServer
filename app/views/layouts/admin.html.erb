@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyConfessor</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+
+    <%= javascript_include_tag "jquery-1.10.2.js" %>
+    <%= javascript_include_tag "underscore.js" %>
+    <%= javascript_include_tag "backbone.js" %>
+    <%= javascript_include_tag "handlebars.js" %>
+</head>
+    <body>        
+        <div id="banner"><%= image_tag "banner.png" %></div>
+        <div id="header"></div>
+        <div id="content"></div>
+        <div id="footer">
+            <a href="/confessor_requests/new" class="icon_container" data-page="new_confessor_request">
+                <%= image_tag "icon_chat.png" %>
+                <span class="icon_label">Request an Account</span>
+            </a>
+            <a href="/confessor_requests" class="icon_container" data-page="confessor_requests">
+                <%= image_tag "icon_chat.png" %>
+                <span class="icon_label">Pending Requests</span>
+            </a>
+            <a href="/user_accounts" class="icon_container" data-page="user_accounts">
+                <%= image_tag "icon_people.png" %>
+                <span class="icon_label">Manage Accounts</span>
+            </a>
+            <a href="/user_accounts/sign_in" class="icon_container" data-page="sign_in">
+                <%= image_tag "icon_lock.png" %>
+                <span class="icon_label">Log In</span>
+            </a>
+            <a href="/user_accounts/sign_out" class="icon_container">
+                <%= image_tag "icon_unlock.png" %>
+                <span class="icon_label">Log Out</span>
+            </a>
+        </div>
+
+
+        <!----------------------------------------------------------->
+        <!-- Templates (temporary until they can be pre-compiled) --->
+        <!----------------------------------------------------------->
+        
+        <!-- Page container for the base PageView class -->
+        <script id="page_container_tpl" type="text/x-handlebars-template">
+            <div id="{{name}}_page" data-role="page" class="page_container"></div>
+        </script>
+
+        <!-- Confessor Requests List Page -->
+        <script id="confessor_requests_tpl" type="text/x-handlebars-template">
+            <h2>Account Requests</h2>
+            <ul class="list_container">
+            </ul>
+        </script>
+        
+        <script id="confessor_request_item_tpl" type="text/x-handlebars-template">
+        	<li>
+	            <h3>{{first_name}} {{last_name}} - {{enum diocese_id "dioceses"}}, {{enum state_id "states" "abbreviation"}}</h3>
+	            <p>{{email}}</p>
+	            <form id="update_confessor_request_{{id}}_form">
+	                <p><input type="checkbox"><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
+	                <input class="approve" type="button" value="Approve">
+	                <input class="deny" type="button" value="Deny">
+	                <input class="research" type="button" value="Google Him">
+	            </form>
+            </li>
+        </script>
+        
+        <!-- User Account List ------->
+        <script id="user_accounts_tpl" type="text/x-handlebars-template">
+            <h2>Existing Accounts</h2>
+            <ul>
+                {{#each items}}
+                <li>
+                    <a href="/user_account/{{id}}" data-page="user_account" data-record-id="{{id}}"><h3>{{first_name}} {{last_name}}</h3></a>
+                </li>
+                {{/each}}
+            </ul>
+        </script>
+
+        <!-- A single user account ------->
+        <script id="user_account_tpl" type="text/x-handlebars-template">
+            <h2>{{first_name}} {{last_name}}</h2>
+            <p>{{username}}</p>
+            <p>Status: {{enum account_status_id "account_statuses"}}</p>
+            <p>Mobile phone: {{mobile_phone}}</p>
+            <p>Home phone: {{home_phone}}</p>
+            <p>Work phone: {{work_phone}}</p>
+            <a href="user_account/{{id}}/edit" data-page="edit_user_account" data-record-id="{{id}}">Edit</a>
+        </script>
+        
+        <!-- Confessor Request Form ------>
+        <script id="new_confessor_request_tpl" type="text/x-handlebars-template">
+            <h2>Request an Account</h2>
+           	<p>Fill out all the fields below. We'll verify your identity and then send you an email with a link to complete the signup process. This usually takes about three days.</p>
+            <form accept-charset="UTF-8" action="/confessor_requests" id="new_confessor_request_form" method="post">
+                <!-- div style="margin:0;padding:0;display:inline">
+                    <input name="utf8" type="hidden" value="✓">
+                    <input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg=">
+                </div -->
+
+                <div class="field">
+                    <label for="confessor_request_first_name">First name</label><br>
+                    <input id="confessor_request_first_name" name="confessor_request[first_name]" type="text">
+                </div>
+                <div class="field">
+                    <label for="confessor_request_last_name">Last name</label><br>
+                    <input id="confessor_request_last_name" name="confessor_request[last_name]" type="text">
+                </div>
+                <div class="field">
+                    <label for="confessor_request_email">Email</label><br>
+                    <input id="confessor_request_email" name="confessor_request[email]" type="text">
+                </div>
+                <div class="field">
+                    <label for="confessor_request_diocese">Diocese</label><br>
+                    <select id="confessor_request_diocese_id" name="confessor_request[diocese_id]">
+                        {{#iterateEnum "dioceses"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="confessor_request_state">State</label><br>
+                    <select id="confessor_request_state_id" name="confessor_request[state_id]">
+                        {{#iterateEnum "states"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
+                    </select>
+                </div>
+                <div class="actions">
+                    <input id="new_confessor_request_commit" name="commit" type="submit" value="Submit Request">
+                </div>
+            </form>
+            <p class="submit_ok" style="display:none;">Thanks! We'll be in touch shortly to verify your request.</p>
+        </script>
+        
+        <script id="edit_user_account_tpl" type="text/x-handlebars-template">
+            <h2>Editing {{first_name}} {{last_name}}</h2>
+            <form accept-charset="UTF-8" action="/user_accounts" id="edit_user_account" method="post">
+                <!-- div style="margin:0;padding:0;display:inline">
+                    <input name="utf8" type="hidden" value="✓">
+                    <input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg=">
+                </div -->
+                <div class="field">
+                    <label for="confessor_request_first_name">First name</label><br>
+                    <input id="confessor_request_first_name" name="confessor_request[first_name]" type="text">
+                </div>
+                <div class="field">
+                    <label for="confessor_request_last_name">Last name</label><br>
+                    <input id="confessor_request_last_name" name="confessor_request[last_name]" type="text">
+                </div>
+                <div class="field">
+                    <label for="confessor_request_email">Email</label><br>
+                    <input id="confessor_request_email" name="confessor_request[email]" type="text">
+                </div>
+                <div class="field">
+                    <label for="confessor_request_diocese">Diocese</label><br>
+                    <select id="confessor_request_diocese_id" name="confessor_request[diocese_id]">
+                        {{#iterateEnum "dioceses"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="confessor_request_state">State</label><br>
+                    <select id="confessor_request_state_id" name="confessor_request[state_id]">
+                        {{#iterateEnum "states"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
+                    </select>
+                </div>
+                <div class="actions">
+                    <input name="commit" type="submit" value="Submit Request">
+                </div>
+            </form>
+        </script>        
+
+        <!----------------------------------------------------------->
+        <!-- Application Scripts ------------------------------------>
+        <!----------------------------------------------------------->
+        <%= javascript_include_tag "myconfessor.js" %>
+        <%= javascript_include_tag "myconfessor_models.js" %>
+        <%= javascript_include_tag "myconfessor_controllers.js" %>
+        <%= javascript_include_tag "myconfessor_admin.js" %>
+        <script>
+            //Start the app!
+            $MC.mainView = new $MC.MainView();
+        </script>
+    </body>
+</html>
