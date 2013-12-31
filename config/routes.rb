@@ -2,9 +2,10 @@ MyConfessorServer::Application.routes.draw do
 
   root 'main#index'
   get 'test', to: 'main#test'
+  get 'ping', to: 'main#ping'
   get 'site/admin', to: 'main#admin'
   get 'site/confessor', to: 'main#confessor'
-
+  
   devise_for :user_accounts
 
   # Begin Static Resources

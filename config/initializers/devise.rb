@@ -219,7 +219,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html]
+  config.navigational_formats = ['*/*', :html]  #rscott - uncommented in an attempt to stop the login from redirecting. Leaving uncommented, since Google indicates that this will prevent login errors from redirecting. Doesn't seem to be a problem right now, but...
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete

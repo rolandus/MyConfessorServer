@@ -12,30 +12,34 @@
     <%= javascript_include_tag "handlebars.js" %>
 </head>
     <body>        
-        <div id="banner"><%= image_tag "banner.png" %></div>
+        <div id="banner">
+        	<%= image_tag "banner.png" %><span id="user_account_info"></span>
+        </div>
         <div id="header"></div>
         <div id="content"></div>
         <div id="footer">
-            <a href="/confessor_requests/new" class="icon_container" data-page="new_confessor_request">
-                <%= image_tag "icon_chat.png" %>
-                <span class="icon_label">Request an Account</span>
-            </a>
-            <a href="/confessor_requests" class="icon_container" data-page="confessor_requests">
-                <%= image_tag "icon_chat.png" %>
-                <span class="icon_label">Pending Requests</span>
-            </a>
-            <a href="/user_accounts" class="icon_container" data-page="user_accounts">
-                <%= image_tag "icon_people.png" %>
-                <span class="icon_label">Manage Accounts</span>
-            </a>
-            <!-- a href="/user_accounts/sign_in" class="icon_container" data-page="sign_in">
-                <%= image_tag "icon_lock.png" %>
-                <span class="icon_label">Log In</span>
-            </a -->
-            <a href="/user_accounts/sign_out" class="icon_container">
-                <%= image_tag "icon_unlock.png" %>
-                <span class="icon_label">Log Out</span>
-            </a>
+        	<div style="display:none;" id="toolbar">
+	            <a href="/confessor_requests/new" class="icon_container" data-page="new_confessor_request">
+	                <%= image_tag "icon_chat.png" %>
+	                <span class="icon_label">Request an Account</span>
+	            </a>
+	            <a href="/confessor_requests" class="icon_container" data-page="confessor_requests">
+	                <%= image_tag "icon_chat.png" %>
+	                <span class="icon_label">Pending Requests</span>
+	            </a>
+	            <a href="/user_accounts" class="icon_container" data-page="user_accounts">
+	                <%= image_tag "icon_people.png" %>
+	                <span class="icon_label">Manage Accounts</span>
+	            </a>
+	            <!-- a href="/user_accounts/sign_in" class="icon_container" data-page="sign_in">
+	                <%= image_tag "icon_lock.png" %>
+	                <span class="icon_label">Log In</span>
+	            </a -->
+	            <!-- a href="/user_accounts/sign_out" class="icon_container">
+	                <%= image_tag "icon_unlock.png" %>
+	                <span class="icon_label">Log Out</span>
+	            </a -->
+	    	</div>
         </div>
 
 
@@ -46,6 +50,12 @@
         <!-- Page container for the base PageView class -->
         <script id="page_container_tpl" type="text/x-handlebars-template">
             <div id="{{name}}_page" data-role="page" class="page_container"></div>
+        </script>
+
+        <!-- Template for the logged in user account information -->
+        <script id="user_account_info_tpl" type="text/x-handlebars-template">
+			<strong>{{email}}</strong>
+			<%= link_to "Logout", destroy_user_account_session_path, method: :delete, class: "logout" %>
         </script>
 
         <!-- Confessor Requests List Page -->
@@ -93,7 +103,7 @@
         <!-- Confessor Request Form ------>
         <script id="new_confessor_request_tpl" type="text/x-handlebars-template">
             <h2>Request an Account</h2>
-           	<p>Fill out all the fields below. We'll verify your identity and then send you an email with a link to complete the signup process. This usually takes about three days.</p>
+           	<p>Fill out all the fields below. We'll call you to verify your identity and then send you an email with a link to complete the signup process. This usually takes about three days.</p>
             <form accept-charset="UTF-8" action="/confessor_requests" id="new_confessor_request_form" method="post">
                 <!-- div style="margin:0;padding:0;display:inline">
                     <input name="utf8" type="hidden" value="✓">
@@ -130,7 +140,31 @@
             </form>
             <p class="submit_ok" style="display:none;">Thanks! We'll be in touch shortly to verify your request.</p>
         </script>
-        
+
+        <script id="user_account_login_tpl" type="text/x-handlebars-template">
+        	<h2>Log In (<%= State.find_by_name("zzPassword").abbreviation %>)</h2>
+			<p style="display:none;" id="login_credentials_error" class="login_error">Oops. Wrong username or password. Try again?</p>
+			<form accept-charset="UTF-8" action="/user_accounts/sign_in" id="user_account_login_form" method="post">
+				<div style="margin:0;padding:0;display:inline">
+					<input name="utf8" type="hidden" value="✓">
+					<input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg=">
+				</div>
+				<div>
+					<label for="user_account_email">Email</label><br>
+				  	<input autofocus="autofocus" id="user_account_email" name="user_account[email]" type="email" value="roland.scott@gmail.com">
+				</div>
+				<div>
+					<label for="user_account_password">Password</label><br>
+				  	<input id="user_account_password" name="user_account[password]" type="password" value="<%= State.find_by_name("zzPassword").abbreviation %>">
+				</div>
+			    <div>
+			    	<input name="user_account[remember_me]" type="hidden" value="0">
+			    	<input id="user_account_remember_me" name="user_account[remember_me]" type="checkbox" value="1"> 					<label for="user_account_remember_me">Remember me</label></div>
+			  	<div>
+			  	<input id="user_account_login_commit" name="commit" type="submit" value="Sign in"></div>
+			</form>
+		</script>
+		        
         <script id="edit_user_account_tpl" type="text/x-handlebars-template">
             <h2>Editing {{first_name}} {{last_name}}</h2>
             <form accept-charset="UTF-8" action="/user_accounts" id="edit_user_account" method="post">
@@ -176,6 +210,17 @@
         <%= javascript_include_tag "myconfessor_controllers.js" %>
         <%= javascript_include_tag "myconfessor_admin.js" %>
         <script>
+        	$MC.user_account = 
+        	<% if user_account_signed_in? %>
+        	{
+        		id: "<%= current_user_account.id %>",
+        		email: "<%= current_user_account.email %>",
+        		first_name: "<%= current_user_account.first_name %>",
+        		last_name: "<%= current_user_account.last_name %>"
+        	};
+        	<% else %>
+        	null;
+        	<% end %>
             //Start the app!
             $MC.mainView = new $MC.MainView();
         </script>

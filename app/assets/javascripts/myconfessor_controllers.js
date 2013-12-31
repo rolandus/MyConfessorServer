@@ -3,18 +3,27 @@
  * ==================================================================
  */
 (function(){
+
+/**
+ * Base view for anything rendered using a template.
+ */
+$MC.TemplatedView = Backbone.View.extend({
 	
-$MC.ModelView = Backbone.View.extend({
-	
+	//Required override. You must provide a name.
 	name: null,
+	
+	//Optional override. Default is to look up the template using the name (above)
 	template: null,
 	
+	/**
+	 * Constructor
+	 */
 	initialize: function() {
 		//Call superconstructor
 		Backbone.View.prototype.initialize.apply(this, arguments);
 
     	//Sanity checks
-    	if (!this.name) { throw "A name is required to create a ModelView."; }
+    	if (!this.name) { throw "A name is required to create a TemplatedView."; }
 
     	//Make sure these functions are always called in the context of this object
     	_.bindAll(this, "render");
@@ -25,51 +34,56 @@ $MC.ModelView = Backbone.View.extend({
         }
   	},
 
+	/**
+	 * Render the view using the template.
+	 */
 	render: function() {
-    	var $element = $(this.template.getHtmlFor(this.model.toJSON()));
-    	console.debug("rendering model...");
+    	console.debug("rendering TemplatedView: " + this.name);
+        this.$el.html(this.template.getHtml());
+		this._is_rendered = true;
+    }
+});
+
+/**
+ * View for a single model. The model object is passed into the constructor.
+ */
+$MC.ModelView = $MC.TemplatedView.extend({
+	
+	/**
+	 * Render this model using the given template.
+	 */
+	render: function() {
+    	var modelObj, $element;
+    	console.debug("rendering ModelView: " + this.name);
+    	//"Serialize" the model
+    	modelObj = this.model.toJSON(); 
+    	//Create a DOM fragment from the template and add it to the parent element.
+    	$element = $(this.template.getHtmlFor(modelObj));  
     	this.$el.append($element);
-		this.setElement($element.first());  //After the element has been created and inserted, make sure the view's $el property is updated appropriately. 	
+    	//After the element has been created and inserted, update $el to point to this element, instead of parent. 
+		this.setElement($element.first());   	
     }
 });
 	
 /**
  * Base controller for a page.
  */
-$MC.PageView = Backbone.View.extend({
+$MC.PageView = $MC.TemplatedView.extend({
 
-	//Mandatory overrides. These must be overriden by the subclass.
-	name: null,        //Name of this page. For example: "confessor_requests"
-	
-	//Optional overrides. This can overridden if desired. Default is to look up the template using 'name' above.
-	template: null,    //Template to use for this page
-
-	//"Private" properties
-	_selector: null,   //jQuery selector used to find this page's rendering element.
-	
 	/**
 	 * Constructor.
 	 */
 	initialize: function() {
-		var $element, template, id;
+		var $element, template;
 		
 		//Call superconstructor
-		Backbone.View.prototype.initialize.apply(this, arguments);
-    	
-    	//Sanity checks
-    	if (!this.name) { throw "A name is required to create a PageView."; }
-    	
+		$MC.TemplatedView.prototype.initialize.apply(this, arguments);
+
     	//Make sure these functions are always called in the context of this object
     	_.bindAll(this, "render", "hide", "show");
         
-        if (!this.template) {
-        	this.template = new $MC.Template(this.name);
-        }
-        
         //Set up the rendering container
-        id = this.name + "_page";
-        this._selector = "#" + id;
-        $element = $(this._selector);
+        $element = $("#" + this.name + "_page");
         if ($element.length == 0) {
         	template = new $MC.Template("page_container");
         	$element = $(template.getHtmlFor({ name: this.name }));
@@ -79,19 +93,11 @@ $MC.PageView = Backbone.View.extend({
         this.setElement($element.first());
 	},
 	
-	/**
-	 * Render the page in the rendering container.
-	 */
-    render: function() {
-    	console.debug("rendering page...");
-        this.$el.html(this.template.getHtml());
-    },
-    
     /**
      * Hide the rendering container
      */
     hide: function() {
-    	console.debug('hiding page...');
+    	console.debug('hiding PageView: ' + this.name);
     	this.$el.hide();
     },
     
@@ -99,8 +105,11 @@ $MC.PageView = Backbone.View.extend({
      * Show the rendering container
      */
     show: function() {
-    	console.debug('showing page...');
-    	this.$el.show();
+    	console.debug('showing PageView: ' + this.name);
+ 		if (!this._is_rendered) {
+			this.render();
+		}
+   		this.$el.show();
     }
 });
 
