@@ -1,5 +1,6 @@
 class ConfessionLocationsController < ApplicationController
   before_action :set_confession_location, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user_account!, except: [:index, :show]
 
   # GET /confession_locations
   # GET /confession_locations.json

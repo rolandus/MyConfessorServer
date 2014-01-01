@@ -4,22 +4,59 @@
  * Setup code. TODO: This might belong in a different file, but it
  * won't all be shared between all three apps. So it's app-specific
  * setup.
+ * ==================================================================
  */
-
-/**
- * Utility event dispatcher and even enums. Add events and listeners to this thing.
- */
-$MC.dispatcher = _.clone(Backbone.Events);
-$MC.events = {};
-$MC.events.login = "login";
 
 /**
  * Page names. They have to match the page names in the templates.
  */
-$MC.pages = {};
-$MC.pages.confessor_requests = "confessor_requests";
-$MC.pages.new_confessor_request = "new_confessor_request";
-$MC.pages.user_account_login = "user_account_login";
+$MC.pages = {
+	confessor_requests: { name: "confessor_requests" },
+	new_confessor_request: { name: "new_confessor_request" },
+	login: { name: "login" },
+	user_accounts: { name: "user_accounts" },
+	user_account: { name: "user_account" },
+	edit_user_account: { name: "edit_user_account" },
+};
+
+/**
+ * Custom events handled by the dispatcher
+ */
+$MC.events = {
+	notify: {
+		login: "notify:login",  //Login request returned successfully.
+	},
+	route: {
+		login: "route:" + $MC.pages.login.name,
+		confessor_requests: "route:" + $MC.pages.confessor_requests.name,
+		new_confessor_request: "route:" + $MC.pages.new_confessor_request.name,
+		user_accounts: "route:" + $MC.pages.user_accounts.name,
+		user_account: "route:" + $MC.pages.user_account.name,
+		edit_user_account: "route:" + $MC.pages.edit_user_account.name,
+	},
+};
+/**
+ * Application router and event dispatcher
+ */
+$MC.Router = Backbone.Router.extend({
+	routes: {
+		"yup": "yup",
+		"": $MC.pages.login.name,
+		"login": $MC.pages.login.name,
+		"confessor_requests": $MC.pages.confessor_requests.name,
+		"confessor_requests/new": $MC.pages.new_confessor_request.name,
+		"user_accounts": $MC.pages.user_accounts.name,
+		"user_accounts/:id": $MC.pages.user_account.name,
+		"user_accounts/:id/edit": $MC.pages.edit_user_account.name,
+	},
+});
+//Backbone.Router already includes Backbone.Events, so this is our router and our dispatcher
+$MC.dispatcher = new $MC.Router();
+//Start routing once the DOM is ready.
+$(function() {
+	Backbone.history.start();
+});
+
 
 
 /* ==================================================================
@@ -42,7 +79,7 @@ $MC.ConfessorRequestItemView = $MC.ModelView.extend({
  * Confessor request list view controller
  */
 $MC.ConfessorRequestsView = $MC.ListPageView.extend({
-    name: $MC.pages.confessor_requests,
+    name: $MC.pages.confessor_requests.name,
     collection: $MC.data.confessor_requests,
     item_view: $MC.ConfessorRequestItemView
 });
@@ -52,7 +89,7 @@ $MC.ConfessorRequestsView = $MC.ListPageView.extend({
  */
 $MC.NewConfessorRequestView = $MC.PageView.extend({
 	
-	name: $MC.pages.new_confessor_request,
+	name: $MC.pages.new_confessor_request.name,
 	
 	initialize: function() {
 		$MC.PageView.prototype.initialize.apply(this, arguments);
@@ -80,7 +117,7 @@ $MC.NewConfessorRequestView = $MC.PageView.extend({
  * User account list view controller
  */
 $MC.UserAccountsView = $MC.ListPageView.extend({
-    name: "user_accounts",
+    name: $MC.pages.user_accounts.name,
     collection: $MC.data.user_accounts
 });
 
@@ -88,7 +125,7 @@ $MC.UserAccountsView = $MC.ListPageView.extend({
  * A single user account view
  */
 $MC.UserAccountView = $MC.ModelPageView.extend({
-	name: "user_account",
+	name: $MC.pages.user_account.name,
 	collection: $MC.data.user_accounts
 });
 
@@ -96,7 +133,7 @@ $MC.UserAccountView = $MC.ModelPageView.extend({
  * User account editing page
  */
 $MC.EditUserAccountView = $MC.ModelPageView.extend({
-	name: "edit_user_account",
+	name: $MC.pages.edit_user_account.name,
 	collection: $MC.data.user_accounts
 });
 
@@ -105,7 +142,7 @@ $MC.EditUserAccountView = $MC.ModelPageView.extend({
  */
 $MC.UserAccountLoginView = $MC.PageView.extend({
 	
-	name: $MC.pages.user_account_login,
+	name: $MC.pages.login.name,
 	
 	initialize: function() {
 		$MC.PageView.prototype.initialize.apply(this, arguments);
@@ -113,21 +150,21 @@ $MC.UserAccountLoginView = $MC.PageView.extend({
 	},
 	
 	events: {
-		"click #user_account_login_commit": "submitRequest"
+		"click #login_commit": "submitRequest"
 	},
 	
 	submitRequest: function(event) {
 		var form;
 		event.preventDefault();
 		form = new $MC.Form();
-		form.compile($("#user_account_login_form"));
+		form.compile($("#login_form"));
 		console.debug("logging in...");
 		form.save(null, { success: this.handleLogin, error: this.handleLoginError });
 	},
 	
 	handleLogin: function(model, response, options) {
 		console.debug("handle login");
-		$MC.dispatcher.trigger($MC.events.login, response);
+		$MC.dispatcher.trigger($MC.events.notify.login, response);
 	},
 	
 	handleLoginError: function() {
@@ -158,6 +195,7 @@ $MC.MainView = Backbone.View.extend({
     // Properties
     //======================================
 
+	//List of references to page controllers for the sub-pages.
     controllers: {
     	constructors: {
     		confessor_requests: $MC.ConfessorRequestsView,  //List of confessor requests
@@ -166,11 +204,12 @@ $MC.MainView = Backbone.View.extend({
     		user_accounts: $MC.UserAccountsView,            //List of user accounts
     		user_account: $MC.UserAccountView,              //A single user account
     		edit_user_account: $MC.EditUserAccountView,     //Edit a user account
-    		user_account_login: $MC.UserAccountLoginView,   //User login
+    		login: $MC.UserAccountLoginView,   //User login
     	},
     },
     
-    login_page: $MC.pages.user_account_login,
+    //Set up default pages, one for authentication, and one for home.
+    login_page: $MC.pages.login,
     home_page: $MC.pages.confessor_requests,
     
     
@@ -182,122 +221,19 @@ $MC.MainView = Backbone.View.extend({
     	_.bindAll(this, "finalizeLogin",  "finalizeLogout");
         this.fetchEnums();
         this.startEnumFetchListener();
-        this.activateLinks();  //Wire up the page links to be all crazy-like.
-        this.wireSharedEvents();
-        if ($MC.user_account) {
-        	this.finalizeLogin();
-        }
-        else {
-        	this.finalizeLogout();
-        }
+        this.activateLinks();     //Wire up the page links to be all crazy-like.
+        this.registerListeners(); //Set up listeners for dispatcher events
     },
     
-    wireSharedEvents: function() {
-    	//Listen for login events and take the user to the home view.
-    	$MC.dispatcher.on($MC.events.login, this.finalizeLogin);
-    },
-    
-    start: function() {
-    	//For debugging, show that all the static data has been loaded.
+    /**
+     * Fetch the data for all the collections listed as "static" data.
+     */
+    fetchEnums: function() {
         $.each($MC.enums, function() {
-            console.debug(this);
+            this.fetch();
         });
     },
-    
-    /**
-     * Attach listeners to all links with a 'data-page' attribute, which will cause
-     * them to render pages using DOM injection rather than postbacks.
-     */
-    activateLinks: function() {
-		$("body")
-			.delegate("a[data-page]", "click", $.proxy(function(event) {
-				var target    = event.currentTarget, //The event target is only being the link when you click in a very specific spot;
-					info      = {};
-				info.page = target.getAttribute("data-page"),
-				info.record_id = target.getAttribute("data-record-id");
-				event.preventDefault();
-				event.stopPropagation();
-				this.navigateToPage(info);
-			}, this))
-			.delegate("a.logout", "click", $.proxy(function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.fireLogout(event.currentTarget);
-			}, this));
-    },
-    
-    fireLogout: function(linkElement) {
-    	var url = linkElement.getAttribute("href");
-		$.ajax(url, {
-			type: "delete",
-			success: $.proxy(function() {
-				this.finalizeLogout();
-			}, this)
-		});
-    },
-    
-    finalizeLogout: function() {
-    	$MC.user_account = null;
-    	this.hideUserAccountInfo();
-    	this.hideToolbar();
-    	this.navigateToPage({ page: this.login_page });
-    },
-    
-    finalizeLogin: function(response) {
-    	if (response) {
-    		$MC.user_account = response;
-    	}
-    	this.showUserAccountInfo();
-    	this.showToolbar();
-    	this.navigateToPage({ page: this.home_page });
-    },
-    
-    hideUserAccountInfo: function() {
-    	$("#user_account_info").empty();
-    },
-    
-    showUserAccountInfo: function() {    	
-    	var template = new $MC.Template("user_account_info");    	
-    	$("#user_account_info")
-    		.empty()
-    		.html(template.getHtmlFor($MC.user_account));    	
-    },
-    
-    hideToolbar: function() {
-    	$("#toolbar").hide();    	
-    },
-    
-    showToolbar: function() {
-    	$("#toolbar").show();    	
-    },
-    
-    /**
-     * Called to change to a specific page within the app.
-     *  @param {Object} info Hash of options (page, record_id)
-     */
-    navigateToPage: function(info) {
-    	var controller = this.getControllerFor(info);
-    	if (this.current_controller) {
-    		this.current_controller.hide();
-    	}
-    	this.current_controller = controller;
-    	this.current_controller.show(info);
-    },
-    
-    /**
-     * Get the specfied controller and create it if it doesn't exist.
-     *  @param {Object} info Hash of options (page, record_id)
-     *  @return The controller for the specified page.
-     */
-    getControllerFor: function(info) {
-    	var controller = this.controllers[info.page];    	
-    	if (!controller) {
-    		console.debug("Creating controller for: " + info.page);
-    		controller = this.controllers[info.page] = new this.controllers.constructors[info.page]({ record_id: info.record_id });
-    	}
-    	return controller;
-    },
-    
+
     /**
      * Starts polling to figure out when the static data is loaded.
      */
@@ -311,6 +247,176 @@ $MC.MainView = Backbone.View.extend({
     },
     
     /**
+     * Attach listeners to all links with a 'data-page' attribute, which will cause
+     * them to render pages using DOM injection rather than postbacks.
+     */
+    activateLinks: function() {
+		$("body")
+			.delegate("a[data-page]", "click", $.proxy(function(event) {
+				var target    = event.currentTarget, //The event target is only being the link when you click in a very specific spot;
+					page,
+					params = {};
+				event.preventDefault();
+				event.stopPropagation();
+				
+				page = $MC.pages[target.getAttribute("data-page")];
+				if (page) {
+					params.record_id = target.getAttribute("data-record-id");
+					this.navigateToPage(page, params);
+				}
+			}, this))
+			.delegate("a.logout", "click", $.proxy(function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.requestLogout(event.currentTarget);
+			}, this));
+    },
+    
+    /**
+     * Add listeners to various dispatcther events.
+     */
+    registerListeners: function() {
+    	//Listen for login events and take the user to the home view.
+    	$MC.dispatcher.on($MC.events.notify.login, this.finalizeLogin);
+    	
+    	//Routing requests
+    	/*
+		$MC.dispatcher.on($MC.events.navigate, $.proxy(function(page, id) {
+			console.debug("Received event to navigate to " + page + " " + id);
+			if ($MC.pages[page]) {
+				this.navigateToPage({ page: page, record_id: id });
+			}
+		}, this));
+		*/
+		
+		//Login
+		$MC.dispatcher.on($MC.events.route.login, $.proxy(function() { 
+			this.finalizeLogout(); 
+		}, this));
+		//Confessor requests
+		$MC.dispatcher.on($MC.events.route.confessor_requests, $.proxy(function() { 
+			this.navigateToPage($MC.pages.confessor_requests);
+		}, this));
+		//Single confessor request
+		$MC.dispatcher.on($MC.events.route.new_confessor_request, $.proxy(function(id) {
+			this.navigateToPage($MC.pages.new_confessor_request, { record_id: id });
+		}, this));
+		//User accounts
+		$MC.dispatcher.on($MC.events.route.user_accounts, $.proxy(function() {
+			this.navigateToPage($MC.pages.user_accounts);
+		}, this));
+		//Single user account
+		$MC.dispatcher.on($MC.events.route.user_account, $.proxy(function(id) {
+			this.navigateToPage($MC.pages.user_account, { record_id: id });
+		}, this));
+		//Edit a user account
+		$MC.dispatcher.on($MC.events.route.edit_user_accounts, $.proxy(function(id) {
+			this.navigateToPage($MC.pages.user_account, { record_id: id });
+		}, this));
+    },
+    
+    /**
+     * The "real" startup code. Called as soon as we know that we've loaded all resources.
+     */
+    start: function() {
+    	//For debugging, show that all the static data has been loaded.
+    	//In real life, we will probably stop showing the loading spinner, or something like that.
+        $.each($MC.enums, function() {
+            console.debug(this);
+        });
+        //Decide what to do based on whether the current user is logged in or not.
+        if ($MC.user_account) {
+        	this.finalizeLogin();
+        }
+        else {
+        	this.finalizeLogout();
+        }
+    },
+    
+    /**
+     * Send a logout request to the server.
+     */
+    requestLogout: function(linkElement) {
+    	var url = linkElement.getAttribute("href");
+		$.ajax(url, {
+			type: "delete",
+			success: $.proxy(function() {
+				this.finalizeLogout();
+			}, this)
+		});
+    },
+    
+    /**
+     * Remove the currently logged in user and navgiate to the login page.
+     */
+    finalizeLogout: function() {
+    	$MC.user_account = null;
+    	this.hideUserAccountInfo();
+    	this.hideToolbar();
+    	this.navigateToPage(this.login_page);
+    },
+    
+    /**
+     * Set the currently logged in user and navigate to the home page.
+     */
+    finalizeLogin: function(response) {
+    	if (response) {
+    		$MC.user_account = response;
+    	}
+    	this.showUserAccountInfo();
+    	this.showToolbar();
+    	this.navigateToPage(this.home_page);
+    },
+    
+    /**
+     * Hide/show the username and logout button stuff.
+     */
+    hideUserAccountInfo: function() {
+    	$("#user_account_info").empty();
+    },    
+    showUserAccountInfo: function() {    	
+    	var template = new $MC.Template("user_account_info");    	
+    	$("#user_account_info")
+    		.empty()
+    		.html(template.getHtmlFor($MC.user_account));    	
+    },
+    
+    /**
+     * Hide/show the toolbar
+     */
+    hideToolbar: function() {
+    	$("#toolbar").hide();    	
+    },    
+    showToolbar: function() {
+    	$("#toolbar").show();    	
+    },
+    
+    /**
+     * Called to change to a specific page within the app.
+     */
+    navigateToPage: function(page, params) {
+    	var controller = this.getControllerFor(page, params);
+    	if (this.current_controller) {
+    		if (controller === this.current_controller) { return; }
+    		this.current_controller.hide();
+    	}
+    	this.current_controller = controller;
+    	this.current_controller.show(params);
+    },
+    
+    /**
+     * Get the specfied controller and create it if it doesn't exist.
+     */
+    getControllerFor: function(page, params) {
+    	var controller = this.controllers[page.name];    	
+    	if (!controller) {
+    		console.debug("Creating controller for: " + page.name);
+    		controller = this.controllers[page.name] = new this.controllers.constructors[page.name](params);
+    	}
+    	return controller;
+    },
+    
+    /**
      * @return True if all the static data is loaded; False otherwise.
      */
     enumsAreFetched: function() {
@@ -321,14 +427,6 @@ $MC.MainView = Backbone.View.extend({
         return ready;
     },
     
-    /**
-     * Fetch the data for all the collections listed as "static" data.
-     */
-    fetchEnums: function() {
-        $.each($MC.enums, function() {
-            this.fetch();
-        });
-    }
 });
 
 

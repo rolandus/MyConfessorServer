@@ -5,6 +5,59 @@
 (function(){
 
 /**
+ * Router used for authenticating and authorizing access to pages.
+ */
+/*
+$MC.events = {
+	access: {
+		not_authenticated: "access:not_authenticated",
+		not_authorized: "access:not_authorized",  //TODO: Role authorization is on the way...
+	},
+	navigate: "navigate"
+};
+$MC.AuthenticatingRouter = Backbone.Router.extend({
+	
+	authenticate: function(page) {
+		var requires_auth;
+		console.debug("Authenticating...");
+		
+		if ($MC.pages[page]) {
+			requires_auth = !($MC.pages[page].no_auth_required);
+		} else {
+			requires_auth = false;
+		}
+		
+		if (requires_auth) {
+			if ($MC.user_account) {  
+				//If there is a user_account set, then user is authenticated, 
+				//so trigger an event to go to the requested page.
+				this.triggerNavigate.apply(this, arguments);
+			}
+			else {
+				this.triggerNoAuth.apply(this, arguments);
+			}
+		}
+		else {
+			//This page doesn't require authorization, so just do it.
+			this.triggerNavigate.apply(this, arguments);
+		}
+	},
+	
+	triggerNavigate: function(page) {
+		var tmpArr = [$MC.events.navigate];
+		tmpArr = tmpArr.concat(Array.prototype.slice.call(arguments));
+		this.trigger.apply(this, tmpArr);
+	},
+	
+	triggerNoAuth: function() {
+		var tmpArr = [$MC.events.access.not_authenticated];
+		tmpArr = tmpArr.concat(Array.prototype.slice.call(arguments));
+		this.trigger.apply(this, tmpArr);
+	}
+});
+*/
+
+/**
  * Base view for anything rendered using a template.
  */
 $MC.TemplatedView = Backbone.View.extend({
@@ -224,11 +277,11 @@ $MC.ModelPageView = $MC.PageView.extend({
 	
 	/**
 	 * Overriden show function - handles this specific model
- 	 *  @param {Object} info
+ 	 *  @param {Object} params
 	 */
-	show: function(info) {
+	show: function(params) {
 		if (this.collection.get(this.record_id)) {
-			this.setRecordId(info.record_id);
+			this.setRecordId(params.record_id);
 			this.render();
 		}
 		$MC.PageView.prototype.show.apply(this, arguments);

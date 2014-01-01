@@ -1,4 +1,6 @@
 class ConfessorRequestChangesController < ApplicationController
+  before_filter :authenticate_user_account!
+  
   # GET /confessor_request_changes
   # GET /confessor_request_changes.json
   def index

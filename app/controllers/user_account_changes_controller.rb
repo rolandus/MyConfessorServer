@@ -1,4 +1,6 @@
 class UserAccountChangesController < ApplicationController
+  before_filter :authenticate_user_account!
+  
   # GET /user_account_changes
   # GET /user_account_changes.json
   def index

@@ -1,6 +1,7 @@
 class UserAccountsController < ApplicationController
   before_action :set_user_account, only: [:show, :edit, :update, :destroy]
-
+  before_filter :authenticate_user_account!
+  
   # GET /user_accounts
   # GET /user_accounts.json
   def index

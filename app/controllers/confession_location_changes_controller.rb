@@ -1,4 +1,6 @@
 class ConfessionLocationChangesController < ApplicationController
+  before_filter :authenticate_user_account!
+  
   # GET /confession_location_changes
   # GET /confession_location_changes.json
   def index
