@@ -9,6 +9,18 @@ class ApplicationController < ActionController::Base
     user_account_url(resource, :format => :json)
   end
 
+  def restrict_to_admin
+    if not user_account_signed_in? or not current_user_account.account_role_ids.min <= 2
+      render text: '{ error: "401 Unauthorized access" }', status: 401
+    end 
+  end
+  
+  def restrict_to_superuser
+    if not user_account_signed_in? or not current_user_account.account_role_ids.include? 1
+      render text: '{ error: "401 Unauthorized access" }', status: 401
+    end 
+  end
+
 =begin
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers

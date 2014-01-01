@@ -11,12 +11,12 @@
  * Page names. They have to match the page names in the templates.
  */
 $MC.pages = {
-	confessor_requests: { name: "confessor_requests" },
-	new_confessor_request: { name: "new_confessor_request" },
-	login: { name: "login" },
-	user_accounts: { name: "user_accounts" },
-	user_account: { name: "user_account" },
-	edit_user_account: { name: "edit_user_account" },
+	login: { name: "login", route: "login" },
+	confessor_requests: { name: "confessor_requests", route: "confessor_requests" },
+	new_confessor_request: { name: "new_confessor_request", route: "confessor_requests/new" },
+	user_accounts: { name: "user_accounts", route: "user_accounts" },
+	user_account: { name: "user_account", route: "user_accounts/:id" },
+	edit_user_account: { name: "edit_user_account", route: "user_accounts/:id/edit" },
 };
 
 /**
@@ -27,6 +27,8 @@ $MC.events = {
 		login: "notify:login",  //Login request returned successfully.
 	},
 	route: {
+		//Remeber that 'route:' is prepended to routing events when they are fired!
+		home: "route:home",
 		login: "route:" + $MC.pages.login.name,
 		confessor_requests: "route:" + $MC.pages.confessor_requests.name,
 		new_confessor_request: "route:" + $MC.pages.new_confessor_request.name,
@@ -39,24 +41,21 @@ $MC.events = {
  * Application router and event dispatcher
  */
 $MC.Router = Backbone.Router.extend({
+	//Remeber that 'route:' is prepended to these routing events when they are fired!
 	routes: {
-		"yup": "yup",
-		"": $MC.pages.login.name,
+		"": "home",
 		"login": $MC.pages.login.name,
+		"logout": $MC.pages.login.name,
 		"confessor_requests": $MC.pages.confessor_requests.name,
 		"confessor_requests/new": $MC.pages.new_confessor_request.name,
 		"user_accounts": $MC.pages.user_accounts.name,
 		"user_accounts/:id": $MC.pages.user_account.name,
 		"user_accounts/:id/edit": $MC.pages.edit_user_account.name,
+		":anything(/*)": "home"
 	},
 });
 //Backbone.Router already includes Backbone.Events, so this is our router and our dispatcher
 $MC.dispatcher = new $MC.Router();
-//Start routing once the DOM is ready.
-$(function() {
-	Backbone.history.start();
-});
-
 
 
 /* ==================================================================
@@ -90,6 +89,7 @@ $MC.ConfessorRequestsView = $MC.ListPageView.extend({
 $MC.NewConfessorRequestView = $MC.PageView.extend({
 	
 	name: $MC.pages.new_confessor_request.name,
+	requires_authentication: false,
 	
 	initialize: function() {
 		$MC.PageView.prototype.initialize.apply(this, arguments);
@@ -113,12 +113,18 @@ $MC.NewConfessorRequestView = $MC.PageView.extend({
 	}
 });
 
+
+$MC.UserAccountItemView = $MC.ModelView.extend({
+	name: "user_account_item",
+});
+
 /**
  * User account list view controller
  */
 $MC.UserAccountsView = $MC.ListPageView.extend({
     name: $MC.pages.user_accounts.name,
-    collection: $MC.data.user_accounts
+    collection: $MC.data.user_accounts,
+    item_view: $MC.UserAccountItemView,
 });
 
 /**
@@ -143,6 +149,7 @@ $MC.EditUserAccountView = $MC.ModelPageView.extend({
 $MC.UserAccountLoginView = $MC.PageView.extend({
 	
 	name: $MC.pages.login.name,
+	requires_authentication: false,
 	
 	initialize: function() {
 		$MC.PageView.prototype.initialize.apply(this, arguments);
@@ -258,60 +265,58 @@ $MC.MainView = Backbone.View.extend({
 					params = {};
 				event.preventDefault();
 				event.stopPropagation();
-				
-				page = $MC.pages[target.getAttribute("data-page")];
-				if (page) {
-					params.record_id = target.getAttribute("data-record-id");
-					this.navigateToPage(page, params);
-				}
-			}, this))
-			.delegate("a.logout", "click", $.proxy(function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.requestLogout(event.currentTarget);
+				$MC.dispatcher.navigate(target.getAttribute("href"), { trigger: true });
 			}, this));
     },
     
     /**
-     * Add listeners to various dispatcther events.
+     * Add listeners to various dispatcher events.
      */
     registerListeners: function() {
     	//Listen for login events and take the user to the home view.
     	$MC.dispatcher.on($MC.events.notify.login, this.finalizeLogin);
     	
-    	//Routing requests
-    	/*
-		$MC.dispatcher.on($MC.events.navigate, $.proxy(function(page, id) {
-			console.debug("Received event to navigate to " + page + " " + id);
-			if ($MC.pages[page]) {
-				this.navigateToPage({ page: page, record_id: id });
-			}
-		}, this));
-		*/
-		
+    	//"Home"
+		$MC.dispatcher.on($MC.events.route.home, $.proxy(function() { 
+			console.debug("Routed to Home");
+	        if ($MC.user_account) {
+	        	//Redirect to home
+	        	$MC.dispatcher.navigate(this.home_page.route, { trigger: true, replace: true });
+	        }
+	        else {
+				//Redirect to login
+				$MC.dispatcher.navigate(this.login_page.route, { trigger: true, replace: true });
+	        }
+     	}, this));
 		//Login
-		$MC.dispatcher.on($MC.events.route.login, $.proxy(function() { 
-			this.finalizeLogout(); 
+		$MC.dispatcher.on($MC.events.route.login, $.proxy(function() { 			
+			console.debug("Routed to Login");
+	        this.requestLogout();
 		}, this));
 		//Confessor requests
 		$MC.dispatcher.on($MC.events.route.confessor_requests, $.proxy(function() { 
+			console.debug("Routed to ConfessorRequests");
 			this.navigateToPage($MC.pages.confessor_requests);
 		}, this));
 		//Single confessor request
 		$MC.dispatcher.on($MC.events.route.new_confessor_request, $.proxy(function(id) {
+			console.debug("Routed to NewConfessorRequest");
 			this.navigateToPage($MC.pages.new_confessor_request, { record_id: id });
 		}, this));
 		//User accounts
 		$MC.dispatcher.on($MC.events.route.user_accounts, $.proxy(function() {
+			console.debug("Routed to UserAccounts");
 			this.navigateToPage($MC.pages.user_accounts);
 		}, this));
 		//Single user account
 		$MC.dispatcher.on($MC.events.route.user_account, $.proxy(function(id) {
+			console.debug("Routed to UserAccount");
 			this.navigateToPage($MC.pages.user_account, { record_id: id });
 		}, this));
 		//Edit a user account
 		$MC.dispatcher.on($MC.events.route.edit_user_accounts, $.proxy(function(id) {
-			this.navigateToPage($MC.pages.user_account, { record_id: id });
+			console.debug("Routed to EditUserAccount");
+			this.navigateToPage($MC.pages.edit_user_account, { record_id: id });
 		}, this));
     },
     
@@ -324,21 +329,19 @@ $MC.MainView = Backbone.View.extend({
         $.each($MC.enums, function() {
             console.debug(this);
         });
-        //Decide what to do based on whether the current user is logged in or not.
+        
+        //Make sure we show naviationg
         if ($MC.user_account) {
-        	this.finalizeLogin();
+        	this.showUserSkin();
         }
-        else {
-        	this.finalizeLogout();
-        }
+   		Backbone.history.start(); //Begin routing, which will fire the first navigation event and kick things off.
     },
     
     /**
      * Send a logout request to the server.
      */
-    requestLogout: function(linkElement) {
-    	var url = linkElement.getAttribute("href");
-		$.ajax(url, {
+    requestLogout: function() {
+		$.ajax($MC.settings.log_out_url, {
 			type: "delete",
 			success: $.proxy(function() {
 				this.finalizeLogout();
@@ -351,8 +354,9 @@ $MC.MainView = Backbone.View.extend({
      */
     finalizeLogout: function() {
     	$MC.user_account = null;
-    	this.hideUserAccountInfo();
-    	this.hideToolbar();
+    	this.hideUserSkin();	
+    	//DON'T trigger the event, since that will cause a cycle.
+        $MC.dispatcher.navigate(this.login_page.route);
     	this.navigateToPage(this.login_page);
     },
     
@@ -363,9 +367,9 @@ $MC.MainView = Backbone.View.extend({
     	if (response) {
     		$MC.user_account = response;
     	}
-    	this.showUserAccountInfo();
-    	this.showToolbar();
-    	this.navigateToPage(this.home_page);
+    	this.showUserSkin();
+    	console.debug('finalize login');
+        $MC.dispatcher.navigate(this.home_page.route, { trigger: true, replace: true });
     },
     
     /**
@@ -389,6 +393,18 @@ $MC.MainView = Backbone.View.extend({
     },    
     showToolbar: function() {
     	$("#toolbar").show();    	
+    },
+    
+    /**
+     * Collectively hide/show all logged-in user navigation
+     */
+    showUserSkin: function() {
+    	this.showUserAccountInfo();
+    	this.showToolbar();
+    },
+    hideUserSkin: function() {
+    	this.hideUserAccountInfo();
+    	this.hideToolbar();
     },
     
     /**

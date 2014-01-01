@@ -1,6 +1,7 @@
 class ConfessionLocationChangesController < ApplicationController
   before_filter :authenticate_user_account!
-  
+  before_filter :restrict_to_superuser
+    
   # GET /confession_location_changes
   # GET /confession_location_changes.json
   def index

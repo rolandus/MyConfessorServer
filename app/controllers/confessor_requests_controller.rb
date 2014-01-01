@@ -1,7 +1,8 @@
 class ConfessorRequestsController < ApplicationController
   before_action :set_confessor_request, only: [:show, :edit, :update, :destroy]
   skip_before_filter :verify_authenticity_token
-  before_filter :authenticate_user_account!
+  before_filter :authenticate_user_account!, except: [:new, :create]
+  before_filter :restrict_to_admin, except: [:new, :create]
     
   # GET /confessor_requests
   # GET /confessor_requests.json

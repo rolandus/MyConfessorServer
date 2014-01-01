@@ -10,7 +10,8 @@ var $MC = {};
 $MC.settings = {
     server_url: "http://localhost:3000",
     are_templates_precompiled: false,
-    data_polling_interval: 300
+    data_polling_interval: 300,
+    log_out_url: "/user_accounts/sign_out",
 };
 	
 /* ==================================================================

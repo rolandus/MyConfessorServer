@@ -1,6 +1,7 @@
 class ConfessorChangesController < ApplicationController
   before_filter :authenticate_user_account!
-  
+  before_filter :restrict_to_superuser
+    
   # GET /confessor_changes
   # GET /confessor_changes.json
   def index

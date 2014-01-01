@@ -19,15 +19,15 @@
         <div id="content"></div>
         <div id="footer">
         	<div style="display:none;" id="toolbar">
-	            <a href="/confessor_requests/new" class="icon_container" data-page="new_confessor_request">
+	            <a href="confessor_requests/new" class="icon_container" data-page="new_confessor_request">
 	                <%= image_tag "icon_chat.png" %>
 	                <span class="icon_label">Request an Account</span>
 	            </a>
-	            <a href="/confessor_requests" class="icon_container" data-page="confessor_requests">
+	            <a href="confessor_requests" class="icon_container" data-page="confessor_requests">
 	                <%= image_tag "icon_chat.png" %>
 	                <span class="icon_label">Pending Requests</span>
 	            </a>
-	            <a href="/user_accounts" class="icon_container" data-page="user_accounts">
+	            <a href="user_accounts" class="icon_container" data-page="user_accounts">
 	                <%= image_tag "icon_people.png" %>
 	                <span class="icon_label">Manage Accounts</span>
 	            </a>
@@ -55,7 +55,8 @@
         <!-- Template for the logged in user account information -->
         <script id="user_account_info_tpl" type="text/x-handlebars-template">
 			<strong>{{email}}</strong>
-			<%= link_to "Logout", destroy_user_account_session_path, method: :delete, class: "logout" %>
+			<a href="logout" data-method="delete" class="logout" data-page="login">Log Out</a>
+			<!-- link_to "Log Out", destroy_user_account_session_path, method: :delete, class: "logout" -->
         </script>
 
         <!-- Confessor Requests List Page -->
@@ -80,13 +81,13 @@
         <!-- User Account List ------->
         <script id="user_accounts_tpl" type="text/x-handlebars-template">
             <h2>Existing Accounts</h2>
-            <ul>
-                {{#each items}}
-                <li>
-                    <a href="/user_accounts/{{id}}" data-page="user_account" data-record-id="{{id}}"><h3>{{first_name}} {{last_name}}</h3></a>
-                </li>
-                {{/each}}
-            </ul>
+            <ul class="list_container"></ul>
+        </script>
+        
+        <script id="user_account_item_tpl" type="text/x-handlebars-template">
+            <li>
+                <a href="user_accounts/{{id}}" data-page="user_account" data-record-id="{{id}}"><h3>{{first_name}} {{last_name}}</h3></a>
+            </li>
         </script>
 
         <!-- A single user account ------->
@@ -97,7 +98,7 @@
             <p>Mobile phone: {{mobile_phone}}</p>
             <p>Home phone: {{home_phone}}</p>
             <p>Work phone: {{work_phone}}</p>
-            <a href="/user_accounts/{{id}}/edit" data-page="edit_user_account" data-record-id="{{id}}">Edit</a>
+            <a href="user_accounts/{{id}}/edit" data-page="edit_user_account" data-record-id="{{id}}">Edit</a>
         </script>
         
         <!-- Confessor Request Form ------>

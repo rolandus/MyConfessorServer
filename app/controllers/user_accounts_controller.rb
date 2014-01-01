@@ -1,6 +1,9 @@
 class UserAccountsController < ApplicationController
-  before_action :set_user_account, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user_account!
+  before_filter :restrict_to_superuser, except: [:show, :edit, :update]
+
+  before_action :set_user_account, only: [:show, :edit, :update, :destroy]
+  before_action :restrict_to_self, only: [:show, :edit, :update]
   
   # GET /user_accounts
   # GET /user_accounts.json
@@ -66,6 +69,13 @@ class UserAccountsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user_account
       @user_account = UserAccount.find(params[:id])
+    end
+    
+    #Only allow this action on self, unless you are a superuser
+    def restrict_to_self
+      if not current_user_account.account_role_ids.include? 1 and @user_account.id != current_user_account.id
+        render text: '{ error: "401 Unauthorized access" }', status: 401
+       end
     end
 
     def save_to_history (id, comments)

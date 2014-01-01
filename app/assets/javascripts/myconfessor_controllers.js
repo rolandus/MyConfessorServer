@@ -5,59 +5,6 @@
 (function(){
 
 /**
- * Router used for authenticating and authorizing access to pages.
- */
-/*
-$MC.events = {
-	access: {
-		not_authenticated: "access:not_authenticated",
-		not_authorized: "access:not_authorized",  //TODO: Role authorization is on the way...
-	},
-	navigate: "navigate"
-};
-$MC.AuthenticatingRouter = Backbone.Router.extend({
-	
-	authenticate: function(page) {
-		var requires_auth;
-		console.debug("Authenticating...");
-		
-		if ($MC.pages[page]) {
-			requires_auth = !($MC.pages[page].no_auth_required);
-		} else {
-			requires_auth = false;
-		}
-		
-		if (requires_auth) {
-			if ($MC.user_account) {  
-				//If there is a user_account set, then user is authenticated, 
-				//so trigger an event to go to the requested page.
-				this.triggerNavigate.apply(this, arguments);
-			}
-			else {
-				this.triggerNoAuth.apply(this, arguments);
-			}
-		}
-		else {
-			//This page doesn't require authorization, so just do it.
-			this.triggerNavigate.apply(this, arguments);
-		}
-	},
-	
-	triggerNavigate: function(page) {
-		var tmpArr = [$MC.events.navigate];
-		tmpArr = tmpArr.concat(Array.prototype.slice.call(arguments));
-		this.trigger.apply(this, tmpArr);
-	},
-	
-	triggerNoAuth: function() {
-		var tmpArr = [$MC.events.access.not_authenticated];
-		tmpArr = tmpArr.concat(Array.prototype.slice.call(arguments));
-		this.trigger.apply(this, tmpArr);
-	}
-});
-*/
-
-/**
  * Base view for anything rendered using a template.
  */
 $MC.TemplatedView = Backbone.View.extend({
@@ -65,8 +12,8 @@ $MC.TemplatedView = Backbone.View.extend({
 	//Required override. You must provide a name.
 	name: null,
 	
-	//Optional override. Default is to look up the template using the name (above)
-	template: null,
+	//Optional overrides. 
+	template: null,  //Default is to look up the template using the name (above)
 	
 	/**
 	 * Constructor
@@ -123,6 +70,9 @@ $MC.ModelView = $MC.TemplatedView.extend({
  */
 $MC.PageView = $MC.TemplatedView.extend({
 
+	//Optional overrides. 
+	requires_authentication: true,  //Set to false if this page doesn't require the user to be authenticated.
+	
 	/**
 	 * Constructor.
 	 */
@@ -146,6 +96,33 @@ $MC.PageView = $MC.TemplatedView.extend({
         this.setElement($element.first());
 	},
 	
+	/**
+	 * Return whether we have a logged in user and trigger a redirect to Home if not.
+	 */
+	checkAccess: function() {
+		if (this.requires_authentication) {
+			if (!$MC.user_account) {
+				console.debug("unauthorized access to " + this.name);
+				$MC.dispatcher.navigate("home", { trigger: true, replace: true });
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
+	},
+	
+	render: function() {
+		if (this.checkAccess()) {
+			$MC.TemplatedView.prototype.render.apply(this, arguments);
+			return true;
+		}
+		return false;
+	},
+	
     /**
      * Hide the rendering container
      */
@@ -158,11 +135,15 @@ $MC.PageView = $MC.TemplatedView.extend({
      * Show the rendering container
      */
     show: function() {
-    	console.debug('showing PageView: ' + this.name);
- 		if (!this._is_rendered) {
-			this.render();
-		}
-   		this.$el.show();
+    	if (this.checkAccess()) {
+	    	console.debug('showing PageView: ' + this.name);
+	 		if (!this._is_rendered) {
+				this.render();
+			}
+	   		this.$el.show();
+	   		return true;
+   		}
+   		return false;
     }
 });
 
@@ -172,15 +153,23 @@ $MC.PageView = $MC.TemplatedView.extend({
 $MC.BasicPageView = $MC.PageView.extend({
 	
 	render: function() {
-		$MC.PageView.prototype.render.apply(this, arguments);
-		this._is_rendered = true;
+    	if (this.checkAccess()) {
+			$MC.PageView.prototype.render.apply(this, arguments);
+			this._is_rendered = true;
+			return true;
+		}
+		return false;
 	},
 	
 	show: function() {
-		if (!this._is_rendered) {
-			this.render();
+		if (this.checkAccess()) {
+			if (!this._is_rendered) {
+				this.render();
+			}
+			$MC.PageView.prototype.show.apply(this, arguments);
+			return true;
 		}
-		$MC.PageView.prototype.show.apply(this, arguments);
+		return false;
 	}
 });
 
@@ -218,22 +207,26 @@ $MC.ListPageView = $MC.PageView.extend({
 	},
 	
 	render: function() {
-		var $list_container = null,
-		    str = "",
-		    item_view = null;
-		
-		//Call the superclass's render.
-		$MC.PageView.prototype.render.apply(this, arguments);
-		
-		$list_container = this.$(".list_container");
-		this.collection.forEach($.proxy(function(item) {
-			item_view = new this.item_view({ 
-				model: item,
-				el: $list_container
-			});  //Should NOT be creating new views every time...
-			this.item_views.push(item_view);
-			item_view.render();
-		}, this));
+		if (this.checkAccess()) {
+			var $list_container = null,
+			    str = "",
+			    item_view = null;
+			
+			//Call the superclass's render.
+			$MC.PageView.prototype.render.apply(this, arguments);
+			
+			$list_container = this.$(".list_container");
+			this.collection.forEach($.proxy(function(item) {
+				item_view = new this.item_view({ 
+					model: item,
+					el: $list_container
+				});  //Should NOT be creating new views every time...
+				this.item_views.push(item_view);
+				item_view.render();
+			}, this));
+			return true;
+		}
+		return false;
 	}
 });
 
@@ -263,7 +256,7 @@ $MC.ModelPageView = $MC.PageView.extend({
 
         //Fetch the collection data, if needed.
         if (this.collection.length == 0) {
-        	this.collection.fetch({ success: this.render });  //TODO: I bet there's a better way to bind rendering to when the collection is updated...
+        	this.collection.fetch({ success: this.show });  //TODO: I bet there's a better way to bind rendering to when the collection is updated...
         }
 	},
 	
@@ -280,11 +273,17 @@ $MC.ModelPageView = $MC.PageView.extend({
  	 *  @param {Object} params
 	 */
 	show: function(params) {
-		if (this.collection.get(this.record_id)) {
-			this.setRecordId(params.record_id);
-			this.render();
+		var record_id;
+		if (this.checkAccess()) {
+			record_id = params.record_id || this.record_id;
+			if (this.collection.get(record_id)) {
+				this.setRecordId(record_id);
+				this.render();
+				$MC.PageView.prototype.show.apply(this, arguments);
+			}
+			return true;
 		}
-		$MC.PageView.prototype.show.apply(this, arguments);
+		return false;
 	}
 });
 

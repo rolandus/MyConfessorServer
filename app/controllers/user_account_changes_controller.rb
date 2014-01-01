@@ -1,5 +1,6 @@
 class UserAccountChangesController < ApplicationController
   before_filter :authenticate_user_account!
+  before_filter :restrict_to_superuser
   
   # GET /user_account_changes
   # GET /user_account_changes.json

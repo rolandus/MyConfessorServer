@@ -1,6 +1,7 @@
 class ConfessorsController < ApplicationController
   before_action :set_confessor, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user_account!, except: [:index, :show]
+  before_filter :restrict_to_admin, except: [:index, :show]
 
   # GET /confessors
   # GET /confessors.json
