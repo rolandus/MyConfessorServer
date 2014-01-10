@@ -454,6 +454,7 @@ UserAccountChange.create(first_name: "Alexander",
 # Begin Confessors
 
 Confessor.create(confessor_office_id: 5,
+                   diocese_id: 88,
                    salutation: "Father Rick",
                    user_account_id: 3,
                    confession_status_id: 1,
@@ -463,6 +464,7 @@ Confessor.create(confessor_office_id: 5,
                    confession_comments: "Ring the bell at the rectory.",
                    biography: "Father celebrated his 25th anniversary as a priest in 2013. He has a deep love for the sacrament of reconciliation.")
 ConfessorChange.create(confessor_id: 1,
+                   diocese_id: 88,
                    confessor_office_id: 5,
                    salutation: "Father Rick",
                    user_account_id: 3,
@@ -471,6 +473,7 @@ ConfessorChange.create(confessor_id: 1,
                    changed_by_user_account_id: 1)
 
 Confessor.create(confessor_office_id: 4,
+                   diocese_id: 87,
                    salutation: "Bishop Sample",
                    user_account_id: 4,
                    confession_status_id: 2,
@@ -478,6 +481,7 @@ Confessor.create(confessor_office_id: 4,
                    confession_comments: "The confessional is in the sanctuary.",
                    biography: "Bishop Sample is the Bishop of Portland Oregon, but he still loves the UP!")
 ConfessorChange.create(confessor_id: 2,
+                   diocese_id: 87,
                    confessor_office_id: 4,
                    salutation: "Bishop Sample",
                    user_account_id: 4,

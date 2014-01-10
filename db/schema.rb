@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
   create_table "confessor_changes", force: true do |t|
     t.integer  "confessor_id"
     t.integer  "confessor_office_id"
+    t.integer  "diocese_id"
     t.string   "salutation"
     t.integer  "user_account_id"
     t.text     "biography"
@@ -78,6 +79,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
   end
 
   add_index "confessor_changes", ["confessor_id"], name: "index_confessor_changes_on_confessor_id"
+  add_index "confessor_changes", ["diocese_id"], name: "index_confessor_changes_on_diocese_id"
 
   create_table "confessor_offices", force: true do |t|
     t.string   "name"
@@ -124,6 +126,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
 
   create_table "confessors", force: true do |t|
     t.integer  "confessor_office_id"
+    t.integer  "diocese_id"
     t.string   "salutation"
     t.integer  "user_account_id"
     t.integer  "confession_status_id"
@@ -138,6 +141,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
 
   add_index "confessors", ["confession_location_id"], name: "index_confessors_on_confession_location_id"
   add_index "confessors", ["confession_status_id"], name: "index_confessors_on_confession_status_id"
+  add_index "confessors", ["diocese_id"], name: "index_confessors_on_diocese_id"
   add_index "confessors", ["user_account_id"], name: "index_confessors_on_user_account_id"
 
   create_table "dioceses", force: true do |t|

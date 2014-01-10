@@ -20,6 +20,10 @@
     <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
   </div>
   <div class="field">
+    <%= f.label :diocese %><br>
+    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
+  </div>
+  <div class="field">
     <%= f.label :salutation %><br>
     <%= f.text_field :salutation %>
   </div>

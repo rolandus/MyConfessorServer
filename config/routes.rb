@@ -6,7 +6,9 @@ MyConfessorServer::Application.routes.draw do
   get 'site/admin', to: 'main#admin'
   get 'site/confessor', to: 'main#confessor'
   
-  devise_for :user_accounts
+  #devise_for :user_accounts
+  devise_for :user_accounts, :only => :sessions
+  #:controllers => { :registrations => "user_accounts" } #Other controller optiopns are :sessions and :passwords. TODO: need to circle back and clean up all routes to the bare minimum needed.
 
   # Begin Static Resources
   get 'states(.:format)', to: 'states#index', as: :states

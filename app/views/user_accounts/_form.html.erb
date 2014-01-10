@@ -51,6 +51,26 @@
     <%= f.label :mobile_phone %><br>
     <%= f.text_field :mobile_phone %>
   </div>
+  
+  <h3>Confessor Info</h3>
+  <div class="field">
+    <%= f.label :confessor_office %><br>
+    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :diocese %><br>
+    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :salutation %><br>
+    <%#= f.text_field object: :confessor, method: :salutation %>
+    <input id="confessor_salutation" name="confessor[salutation]" type="text">
+  </div>
+  <div class="field">
+    <%= f.label :biography %><br>
+    <%#= f.text_area :biography %>
+    <textarea id="confessor_biography" name="confessor[biography]"></textarea>
+  </div>
 
   <% if @is_edit %>
   <div class="field">

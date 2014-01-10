@@ -2,7 +2,12 @@
 
 <p>
   <strong>Confessor office:</strong>
-  <%= @confessor_change.confessor_office %>
+  <%= @confessor_change.confessor_office.name %>
+</p>
+
+<p>
+  <strong>Diocese:</strong>
+  <%= @confessor_change.diocese.name %>
 </p>
 
 <p>
@@ -12,7 +17,9 @@
 
 <p>
   <strong>User account:</strong>
-  <%= @confessor_change.user_account %>
+  <% if @confessor_change.user_account %>
+  <%= @confessor_change.user_account.username %>
+  <% end %>
 </p>
 
 <p>

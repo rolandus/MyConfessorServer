@@ -20,10 +20,10 @@
 		<!-- script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script></head -->
 		<% if user_account_signed_in? %>
 		  Logged in as <strong><%= current_user_account.email %></strong>.
-		  <%= link_to 'Edit profile', edit_user_account_registration_path, :class => 'navbar-link' %> |
+		  <%#= link_to 'Edit profile', edit_user_account_registration_path, :class => 'navbar-link' %> |
 		  <%= link_to "Logout", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
 		<% else %>
-		  <%= link_to "Request Account", user_account_registration_path, :class => 'navbar-link'  %> |
+		  <%#= link_to "Request Account", user_account_registration_path, :class => 'navbar-link'  %> |
 		  <%= link_to "Login", new_user_account_session_path, :class => 'navbar-link'  %>
 		<% end %>
 		</p>
@@ -37,6 +37,9 @@
 		<% end %>
 	
 		<%= yield %>
+		
+		<br />
+		<a href="/test">Home</a>
 	</div>
 <!--
 		</div>

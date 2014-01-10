@@ -3,6 +3,7 @@ class CreateConfessorChanges < ActiveRecord::Migration
     create_table :confessor_changes do |t|
       t.references :confessor, index: true
       t.references :confessor_office
+      t.references :diocese, index: true
       t.string :salutation
       t.references :user_account
       t.text :biography

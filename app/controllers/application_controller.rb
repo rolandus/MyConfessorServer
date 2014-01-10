@@ -20,6 +20,17 @@ class ApplicationController < ActionController::Base
       render text: '{ error: "401 Unauthorized access" }', status: 401
     end 
   end
+  
+  #Save off an audit of what changed.
+  def save_confessor_history (confessor_id, user_account_id, comments)
+    confessor_change = ConfessorChange.new(confessor_change_params)
+    confessor_change.confessor_id = confessor_id
+    confessor_change.user_account_id = user_account_id
+    confessor_change.change_comments = comments
+    confessor_change.changed_by_user_account_id = current_user_account.id
+    confessor_change.save
+  end
+
 
 =begin
   before_filter :cors_preflight_check

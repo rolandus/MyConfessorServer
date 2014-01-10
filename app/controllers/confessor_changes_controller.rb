@@ -11,6 +11,6 @@ class ConfessorChangesController < ApplicationController
   # GET /confessor_changes/1
   # GET /confessor_changes/1.json
   def show
-    @confessor_changes = ConfessorChange.find(params[:id])
+    @confessor_change = ConfessorChange.find(params[:id])
   end
 end

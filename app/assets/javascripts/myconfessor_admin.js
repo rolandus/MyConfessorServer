@@ -17,6 +17,7 @@ $MC.pages = {
 	user_accounts: { name: "user_accounts", route: "user_accounts" },
 	user_account: { name: "user_account", route: "user_accounts/:id" },
 	edit_user_account: { name: "edit_user_account", route: "user_accounts/:id/edit" },
+	new_user_account: { name: "new_user_account", route: "user_accounts/new" },
 };
 
 /**
@@ -35,6 +36,7 @@ $MC.events = {
 		user_accounts: "route:" + $MC.pages.user_accounts.name,
 		user_account: "route:" + $MC.pages.user_account.name,
 		edit_user_account: "route:" + $MC.pages.edit_user_account.name,
+		new_user_account: "route:" + $MC.pages.new_user_account.name,
 	},
 };
 /**
@@ -49,6 +51,7 @@ $MC.Router = Backbone.Router.extend({
 		"confessor_requests": $MC.pages.confessor_requests.name,
 		"confessor_requests/new": $MC.pages.new_confessor_request.name,
 		"user_accounts": $MC.pages.user_accounts.name,
+		"user_accounts/new": $MC.pages.new_user_account.name,
 		"user_accounts/:id": $MC.pages.user_account.name,
 		"user_accounts/:id/edit": $MC.pages.edit_user_account.name,
 		":anything(/*)": "home"
@@ -144,6 +147,14 @@ $MC.EditUserAccountView = $MC.ModelPageView.extend({
 });
 
 /**
+ * New account editing page
+ */
+$MC.NewUserAccountView = $MC.BasicPageView.extend({
+	name: $MC.pages.new_user_account.name,
+	template: new $MC.Template($MC.pages.edit_user_account.name),
+});
+
+/**
  * Login page.
  */
 $MC.UserAccountLoginView = $MC.PageView.extend({
@@ -211,6 +222,7 @@ $MC.MainView = Backbone.View.extend({
     		user_accounts: $MC.UserAccountsView,            //List of user accounts
     		user_account: $MC.UserAccountView,              //A single user account
     		edit_user_account: $MC.EditUserAccountView,     //Edit a user account
+    		new_user_account: $MC.NewUserAccountView,       //Create a new user account
     		login: $MC.UserAccountLoginView,   //User login
     	},
     },
@@ -314,9 +326,14 @@ $MC.MainView = Backbone.View.extend({
 			this.navigateToPage($MC.pages.user_account, { record_id: id });
 		}, this));
 		//Edit a user account
-		$MC.dispatcher.on($MC.events.route.edit_user_accounts, $.proxy(function(id) {
+		$MC.dispatcher.on($MC.events.route.edit_user_account, $.proxy(function(id) {
 			console.debug("Routed to EditUserAccount");
 			this.navigateToPage($MC.pages.edit_user_account, { record_id: id });
+		}, this));
+		//Create a user account
+		$MC.dispatcher.on($MC.events.route.new_user_account, $.proxy(function(id) {
+			console.debug("Routed to NewUserAccount");
+			this.navigateToPage($MC.pages.new_user_account);
 		}, this));
     },
     

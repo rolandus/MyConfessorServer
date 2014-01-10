@@ -5,6 +5,7 @@
     <tr>
       <th>Username</th>
       <th>Confessor office</th>
+      <th>Diocese</th>
       <th>Salutation</th>
       <th>Confession status</th>
       <th>Confession location</th>
@@ -26,6 +27,7 @@
         <td></td>
         <% end %>
         <td><%= confessor.confessor_office.name %></td>
+        <td><%= confessor.diocese.name %></td>
         <td><%= confessor.salutation %></td>
         <td><%= confessor.confession_status.name %></td>
         <td><%= confessor.confession_location.nickname %></td>
