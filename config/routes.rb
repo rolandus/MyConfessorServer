@@ -3,8 +3,11 @@ MyConfessorServer::Application.routes.draw do
   root 'main#index'
   get 'test', to: 'main#test'
   get 'ping', to: 'main#ping'
+  
+  #JS site stuff
+  get 'site/priest', to: 'main#priest'
   get 'site/admin', to: 'main#admin'
-  get 'site/confessor', to: 'main#confessor'
+  get 'site', to: 'main#penitent'
   
   #devise_for :user_accounts
   devise_for :user_accounts, :only => :sessions

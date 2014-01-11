@@ -29,11 +29,13 @@ class ConfessorRequestsController < ApplicationController
   def create
     @confessor_request = ConfessorRequest.new(confessor_request_params)
     @confessor_request.confessor_request_status_id = 1 #Set the status to 1-Created.
+    @confessor_request.state_id = @confessor_request.diocese.state_id
 
     respond_to do |format|
-      if @confessor_request.save and save_to_history @confessor_request.id, "Created"
-        #format.html { redirect_to @confessor_request, notice: 'Confessor request was successfully created.' }
-        format.html { redirect_to action: 'confirm_request' }
+      if @confessor_request.save
+        save_to_history @confessor_request.id, "Created"
+        format.html { redirect_to @confessor_request, notice: "Your request has been submitted. We'll send you an email once we've verified your identity." }
+        #format.html { redirect_to action: 'confirm_request' }
         format.json { render action: 'show', status: :created, location: @confessor_request }
       else
         format.html { render action: 'new' }

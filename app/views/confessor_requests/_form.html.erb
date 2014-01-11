@@ -29,13 +29,13 @@
     <%= f.label :diocese %><br>
     <%= collection_select(:confessor_request, :diocese_id, Diocese.all, :id, :name)%>
   </div>
+<%
+=begin 
+%>
   <div class="field">
     <%= f.label :state %><br>
     <%= collection_select(:confessor_request, :state_id, State.all, :id, :name)%>
   </div>
-<%
-=begin 
-%>
   <div class="field">
     <%= f.label :confessor_request_status %><br>
     <%= collection_select(:confessor_request, :confessor_request_status_id, ConfessorRequestStatus.all, :id, :name)%>

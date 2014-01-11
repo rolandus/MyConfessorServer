@@ -1,5 +1,6 @@
 class MainController < ApplicationController
-  # GET /main
+  
+  # GET /
   def index
   end
   
@@ -7,19 +8,18 @@ class MainController < ApplicationController
   def test
   end
   
+  
+  
+  ### Nifty JS site stuff below here.
+  
   #GET /admin
   def admin
-    cookies['roland'] = {
-      :value => 'scott',
-      :expires => Time.now + 10*60,
-      :path => '/'
-    }
     render layout: "admin"
   end
 
-  #GET /confessor
-  def confessor
-    render layout: "confessor"
+  #GET /priest
+  def priest
+    render layout: "priest"
   end
   
   #GET /ping
