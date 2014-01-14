@@ -78,7 +78,7 @@
         <script id="user_accounts_tpl" type="text/x-handlebars-template">
             <h2>Existing Accounts</h2>
             <ul class="list_container"></ul>
-             <a href="user_accounts/new" data-page="new_user_account">New Account</a>
+             <a href="user_accounts/0/new" data-page="new_user_account">New Account</a>
         </script>
         
         <script id="user_account_item_tpl" type="text/x-handlebars-template">
@@ -124,12 +124,18 @@
 		</script>
 		        
         <script id="edit_user_account_tpl" type="text/x-handlebars-template">
+            {{#if email}}
             <h2>Editing {{first_name}} {{last_name}}</h2>
+            {{else}}
+            <h2>New Account</h2>
+            {{/if}}
             <form accept-charset="UTF-8" action="/user_accounts" id="edit_user_account" method="post">
                 <!-- div style="margin:0;padding:0;display:inline">
                     <input name="utf8" type="hidden" value="✓">
                     <input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg=">
                 </div -->
+                <!-- User account fields -->
+                <h3>Basic Information</h3>
                 <div class="field">
                     <label for="confessor_request_first_name">First name</label><br>
                     <input id="confessor_request_first_name" name="confessor_request[first_name]" type="text">
@@ -139,23 +145,58 @@
                     <input id="confessor_request_last_name" name="confessor_request[last_name]" type="text">
                 </div>
                 <div class="field">
-                    <label for="confessor_request_email">Email</label><br>
+                    <label for="confessor_request_email">Email (username)</label><br>
                     <input id="confessor_request_email" name="confessor_request[email]" type="text">
                 </div>
-                <div class="field">
+				<div class="field">
+					<label for="user_account_home_phone">Home phone</label><br>
+					<input id="user_account_home_phone" name="user_account[home_phone]" type="text">
+				</div>
+				<div class="field">
+					<label for="user_account_work_phone">Work phone</label><br>
+					<input id="user_account_work_phone" name="user_account[work_phone]" type="text">
+				</div>
+				<div class="field">
+					<label for="user_account_mobile_phone">Mobile phone</label><br>
+					<input id="user_account_mobile_phone" name="user_account[mobile_phone]" type="text">
+				</div>              
+				<div class="field">
+					<fieldset>
+						<legend>Account status</legend>
+						{{#iterateEnum "account_statuses"}}<input id="user_account_account_status_ids_{{id}}" name="user_account[account_status_id] value="{{id}}" type="radio" /><label for="user_account_account_status_ids_{{id}}">{{name}}</label>{{/iterateEnum}}
+					</fieldset>
+				</div>
+				<div class="field">
+    				<label for="user_account_account_roles">Account roles</label><br>
+					{{#iterateEnum "account_roles"}}<input id="user_account_account_role_ids_{{id}}" name="user_account[account_role_ids][]" type="checkbox" value="{{id}}"><label for="user_account_account_role_ids_{{id}}">{{name}}</label>{{/iterateEnum}}
+					<input name="user_account[account_role_ids][]" type="hidden" value="">
+  				</div>
+                
+                <!-- confessor fields -->
+                <h3>Confessor Information</h3>
+				<div class="field">
+					<fieldset>
+						<legend>Office</legend>
+						{{#iterateEnum "confessor_offices"}}<input id="confessor_confessor_office_ids_{{id}}" name="confessor[confessor_office_id] value="{{id}}" type="radio" /><label for="confessor_confessor_office_ids_{{id}}">{{name}}</label>{{/iterateEnum}}
+					</fieldset>
+				</div>
+				<div class="field">
+					<label for="user_account_salutation">Salutation</label><br>
+					<input id="confessor_salutation" name="confessor[salutation]" type="text">
+				</div>
+				<div class="field">
+					<label for="user_account_biography">Biography</label><br>
+					<textarea id="confessor_biography" name="confessor[biography]"></textarea>
+				</div>
+   				<div class="field">
                     <label for="confessor_request_diocese">Diocese</label><br>
                     <select id="confessor_request_diocese_id" name="confessor_request[diocese_id]">
                         {{#iterateEnum "dioceses"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
                     </select>
                 </div>
-                <div class="field">
-                    <label for="confessor_request_state">State</label><br>
-                    <select id="confessor_request_state_id" name="confessor_request[state_id]">
-                        {{#iterateEnum "states"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
-                    </select>
-                </div>
+
                 <div class="actions">
-                    <input name="commit" type="submit" value="Submit Request">
+                    <input name="commit" type="submit" value="{{#if email}}Save Changes{{else}}Create Account{{/if}}">
                 </div>
             </form>
         </script>        

@@ -17,7 +17,7 @@ _.extend($MC.pages,
 	user_accounts: { name: "user_accounts", route: "user_accounts" },
 	user_account: { name: "user_account", route: "user_accounts/:id" },
 	edit_user_account: { name: "edit_user_account", route: "user_accounts/:id/edit" },
-	new_user_account: { name: "new_user_account", route: "user_accounts/new" },
+	new_user_account: { name: "new_user_account", route: "user_accounts/:id/new" },  //Id param is not used, but is needed to distinguish from the other user_accounts routes.
 });
 
 /**
@@ -43,11 +43,11 @@ _.extend($MC.events,
 /**
  * Application router and event dispatcher
  */
-$MC.dispatcher.route("confessor_requests", $MC.pages.confessor_requests.name);
-$MC.dispatcher.route("user_accounts", $MC.pages.user_accounts.name);
-$MC.dispatcher.route("user_accounts/new", $MC.pages.new_user_account.name);
-$MC.dispatcher.route("user_accounts/:id", $MC.pages.user_account.name);
-$MC.dispatcher.route("user_accounts/:id/edit", $MC.pages.edit_user_account.name);
+$MC.dispatcher.route($MC.pages.confessor_requests.route, $MC.pages.confessor_requests.name);
+$MC.dispatcher.route($MC.pages.user_accounts.route, $MC.pages.user_accounts.name);
+$MC.dispatcher.route($MC.pages.new_user_account.route, $MC.pages.new_user_account.name);
+$MC.dispatcher.route($MC.pages.user_account.route, $MC.pages.user_account.name);
+$MC.dispatcher.route($MC.pages.edit_user_account.route, $MC.pages.edit_user_account.name);
 
 
 /* ==================================================================

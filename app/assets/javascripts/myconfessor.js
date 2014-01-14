@@ -72,7 +72,7 @@ Handlebars.registerHelper("record", function(id, collection, property) {
  *  @param {String} enumName The name of the enum collection to iterate over.
  */
 Handlebars.registerHelper("iterateEnum", function(enumName, options) {
-	var retVal;
+	var retVal = "";
 	$MC.enums[enumName].forEach(function(item) {
 		retVal = retVal + options.fn(item.attributes);
 	});
