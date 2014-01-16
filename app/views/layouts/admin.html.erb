@@ -129,7 +129,7 @@
             {{else}}
             <h2>New Account</h2>
             {{/if}}
-            <form accept-charset="UTF-8" action="/user_accounts" id="edit_user_account" method="post">
+            <form accept-charset="UTF-8" action="/user_accounts" id="user_account_form" method="post">
                 <!-- div style="margin:0;padding:0;display:inline">
                     <input name="utf8" type="hidden" value="✓">
                     <input name="authenticity_token" type="hidden" value="pVW/AvMsGUYohv9SVJZPjE6OuMePYcmW97Ft0YfMBMg=">
@@ -167,9 +167,11 @@
 					</fieldset>
 				</div>
 				<div class="field">
-    				<label for="user_account_account_roles">Account roles</label><br>
-					{{#iterateEnum "account_roles"}}<input id="user_account_account_role_ids_{{id}}" name="user_account[account_role_ids][]" type="checkbox" value="{{id}}"><label for="user_account_account_role_ids_{{id}}">{{name}}</label>{{/iterateEnum}}
-					<input name="user_account[account_role_ids][]" type="hidden" value="">
+    				<fieldset>
+						<legend>Account roles</legend>
+						{{#iterateEnum "account_roles"}}<input id="user_account_account_role_ids_{{id}}" name="user_account[account_role_ids][]" type="checkbox" value="{{id}}"><label for="user_account_account_role_ids_{{id}}">{{name}}</label>{{/iterateEnum}}
+						<input name="user_account[account_role_ids][]" type="hidden" value="">
+					</fieldset>
   				</div>
                 
                 <!-- confessor fields -->
@@ -181,22 +183,22 @@
 					</fieldset>
 				</div>
 				<div class="field">
-					<label for="user_account_salutation">Salutation</label><br>
+					<label for="confessor_salutation">Salutation</label><br>
 					<input id="confessor_salutation" name="confessor[salutation]" type="text">
 				</div>
 				<div class="field">
-					<label for="user_account_biography">Biography</label><br>
+					<label for="confessor_biography">Biography</label><br>
 					<textarea id="confessor_biography" name="confessor[biography]"></textarea>
 				</div>
    				<div class="field">
-                    <label for="confessor_request_diocese">Diocese</label><br>
+                    <label for="confessor_request_diocese_id">Diocese</label><br>
                     <select id="confessor_request_diocese_id" name="confessor_request[diocese_id]">
                         {{#iterateEnum "dioceses"}}<option value="{{id}}">{{name}}</option>{{/iterateEnum}}
                     </select>
                 </div>
 
                 <div class="actions">
-                    <input name="commit" type="submit" value="{{#if email}}Save Changes{{else}}Create Account{{/if}}">
+                    <input id="user_account_commit" name="user_account_commit" type="submit" value="{{#if email}}Save Changes{{else}}Create Account{{/if}}">
                 </div>
             </form>
         </script>        

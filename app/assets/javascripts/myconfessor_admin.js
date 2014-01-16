@@ -107,9 +107,38 @@ $MC.EditUserAccountView = $MC.ModelPageView.extend({
 /**
  * New account editing page
  */
-$MC.NewUserAccountView = $MC.BasicPageView.extend({
+$MC.NewUserAccountView = $MC.PageView.extend({
 	name: $MC.pages.new_user_account.name,
 	template: new $MC.Template($MC.pages.edit_user_account.name),
+	
+	initialize: function() {
+		$MC.PageView.prototype.initialize.apply(this, arguments);
+		_.bindAll(this, "redirectToUser", "displayFormErrors");
+	},
+	
+	events: {
+		"click #user_account_commit": "submitRequest"
+	},
+	
+	submitRequest: function(event) {
+		var form;
+		event.preventDefault();
+		event.stopPropagation();
+		form = new $MC.Form();
+		form.compile($("#user_account_form"));
+		form.save(null, { 
+			success: this.redirectToUser,
+			error: this.displayFormErrors
+		});
+	},
+	
+	redirectToUser: function(model) {
+		$MC.dispatcher.navigate("user_accounts/" + model.id, { trigger: true, replace: true });
+	},
+	
+	displayFormErrors: function(model, xhr) {
+		var a = "something";
+	}
 });
 
 /**

@@ -1,4 +1,4 @@
 class State < ActiveRecord::Base
-  has_many :dioceses
-  has_many :confession_locations
+  has_many :dioceses, inverse_of: :state
+  has_many :confession_locations, inverse_of: :state
 end

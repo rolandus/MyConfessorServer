@@ -2,6 +2,7 @@ class AddDeviseToUserAccounts < ActiveRecord::Migration
   def self.up
     change_table(:user_accounts) do |t|
       ## Database authenticatable
+      #rscott - added this stuff to email migration manually. Can't remember why...
       #t.string :email,              :null => false, :default => ""
       t.string :encrypted_password, :null => false, :default => ""
 

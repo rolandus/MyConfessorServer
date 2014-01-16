@@ -3,10 +3,12 @@ class CreateUserAccounts < ActiveRecord::Migration
     create_table :user_accounts do |t|
       t.string :first_name
       t.string :last_name
-      t.string :username, index: true, unique: true
+      
+      #rscott - Devise wants to use email as the username, so we'll comment out the username
+      #t.string :username, index: true, unique: true
+      t.string :email, :null => false, :default => "" #rscott - The unique index is added by the Devise migration
       t.string :password
       t.references :account_status, index: true
-      t.string :email,              :null => false, :default => ""
       t.string :home_phone
       t.string :work_phone
       t.string :mobile_phone
