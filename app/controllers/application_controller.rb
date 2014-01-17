@@ -10,14 +10,20 @@ class ApplicationController < ActionController::Base
   end
 
   def restrict_to_admin
-    if not user_account_signed_in? or not current_user_account.account_role_ids.min <= 2
-      render text: '{ error: "401 Unauthorized access" }', status: 401
+    if not user_account_signed_in? or not current_user_account.is_admin #current_user_account.account_role_ids.min <= 2
+      respond_to do |format|
+        format.html { render text: 'Find a way to redirect to login.', status: 401 }
+        format.json { render text: '{ error: "401 Unauthorized access" }', status: 401 }
+      end
     end 
   end
   
   def restrict_to_superuser
-    if not user_account_signed_in? or not current_user_account.account_role_ids.include? 1
-      render text: '{ error: "401 Unauthorized access" }', status: 401
+    if not user_account_signed_in? or not current_user_account.is_superadmin #current_user_account.account_role_ids.include? 1
+      respond_to do |format|
+        format.html { render text: 'Find a way to redirect to login.', status: 401 }
+        format.json { render text: '{ error: "401 Unauthorized access" }', status: 401 }
+      end
     end 
   end
   

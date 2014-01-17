@@ -11,23 +11,7 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :user_account %><br>
-    <%= collection_select(:user_account, :user_account_id, UserAccount.all, :id, :username)%>
-  </div>
-  <div class="field">
-    <%= f.label :confessor_office %><br>
-    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
-  </div>
-  <div class="field">
-    <%= f.label :diocese %><br>
-    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
-  </div>
-  <div class="field">
-    <%= f.label :salutation %><br>
-    <%= f.text_field :salutation %>
-  </div>
-  <% if not @is_edit then %>
+<% if @edit_mode == :full || @edit_mode == :status then %>
   <div class="field">
     <%= f.label :confession_status %><br>
     <%= collection_select(:confessor, :confession_status_id, ConfessionStatus.all, :id, :name)%>
@@ -48,17 +32,38 @@
     <%= f.label :confession_comments %><br>
     <%= f.text_field :confession_comments %>
   </div>
-  <% end %>
+<% end %>
+
+<% if @edit_mode == :full || @edit_mode == :settings then %>
+  <div class="field">
+    <%= f.label :salutation %><br>
+    <%= f.text_field :salutation %>
+  </div>
   <div class="field">
     <%= f.label :biography %><br>
     <%= f.text_area :biography %>
   </div>
-  <% if @is_edit then %>
+<% end %>
+
+<% if @edit_mode == :full then %>
+  <div class="field">
+    <%= f.label :user_account %><br>
+    <%= collection_select(:user_account, :user_account_id, UserAccount.all, :id, :username)%>
+  </div>
+  <div class="field">
+    <%= f.label :confessor_office %><br>
+    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :diocese %><br>
+    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
+  </div>
   <div class="field">
     <%= label :confessor_change, :change_comments %><br>
     <%= text_area :confessor_change, :change_comments %>
   </div>
-  <% end %>
+<% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>

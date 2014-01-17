@@ -8,4 +8,8 @@ class Confessor < ActiveRecord::Base
   
   validates :confessor_office, :diocese, :user_account, :confession_status, presence: true
   validates :salutation, length: { maximum: 64 }
+
+  def full_name
+    user_account.first_name + ' ' + user_account.last_name
+  end
 end

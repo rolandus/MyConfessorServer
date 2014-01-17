@@ -1,9 +1,8 @@
 class ConfessorsController < ApplicationController
-  include ConfessorsHelper
-  
-  before_action :set_confessor, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user_account!, except: [:index, :show]
-  before_filter :restrict_to_admin, except: [:index, :show]
+  before_action :set_confessor, except: [:new, :create, :index]
+  before_action :set_is_accessing_self, except: [:new, :create, :index]
+  before_filter :authenticate_user_account!, except: [:index, :show, :status]
+  before_filter :restrict_to_admin, only: [:edit, :new, :create]
 
   # GET /confessors
   # GET /confessors.json
@@ -16,6 +15,11 @@ class ConfessorsController < ApplicationController
   def show
   end
 
+  # GET /confessors/1/status
+  def status
+    # Show status only
+  end
+  
   # GET /confessors/new
   def new
     @confessor = Confessor.new
@@ -23,6 +27,27 @@ class ConfessorsController < ApplicationController
 
   # GET /confessors/1/edit
   def edit
+    @edit_mode = :full
+  end
+  
+  # GET /confessors/1/status/edit
+  def edit_status
+    if @is_accessing_self then
+      @edit_mode = :status
+      render action: 'edit'
+    else
+      redirect_to action: 'edit'
+    end
+  end
+  
+  # Get /confessors/1/settings/edit
+  def edit_settings
+    if @is_accessing_self then
+      @edit_mode = :settings
+      render action: 'edit'
+    else
+      redirect_to action: 'edit'
+    end
   end
 
   # POST /confessors
@@ -62,6 +87,11 @@ class ConfessorsController < ApplicationController
       @confessor = Confessor.find(params[:id])
     end
 
+    # User is accessing himself if he's logged in, is a confessor, and has the same confessor ID as the one requested.
+    def set_is_accessing_self
+      @is_accessing_self = (current_user_account and (current_user_account.confessor and current_user_account.confessor.id == @confessor.id))
+    end
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def confessor_params
       params.require(:confessor).permit(:confessor_office_id, :diocese_id, :salutation, :confession_status_id, :confession_location_id, :confession_start_time, :confession_end_time, :confession_comments, :biography)

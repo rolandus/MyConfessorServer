@@ -13,56 +13,35 @@ MyConfessorServer::Application.routes.draw do
   devise_for :user_accounts, :only => :sessions
   #:controllers => { :registrations => "user_accounts" } #Other controller optiopns are :sessions and :passwords. TODO: need to circle back and clean up all routes to the bare minimum needed.
 
-  # Begin Static Resources
-  get 'states(.:format)', to: 'states#index', as: :states
-  get 'states/:id(.:format)', to: 'states#show', as: :state
-
-  get 'dioceses(.:format)', to: 'dioceses#index', as: :dioceses
-  get 'dioceses/:id(.:format)', to: 'dioceses#show', as: :diocese
-
-  get 'account_statuses(.:format)', to: 'account_statuses#index', as: :account_statuses
-  get 'account_statuses/:id(.:format)', to: 'account_statuses#show', as: :account_status
-
-  get 'account_roles(.:format)', to: 'account_roles#index', as: :account_roles
-  get 'account_roles/:id(.:format)', to: 'account_roles#show', as: :account_role
-
-  get 'confessor_request_statuses(.:format)', to: 'confessor_request_statuses#index', as: :confessor_request_statuses
-  get 'confessor_request_statuses/:id(.:format)', to: 'confessor_request_statuses#show', as: :confessor_request_status
-
-  get 'confessor_offices(.:format)', to: 'confessor_offices#index', as: :confessor_offices
-  get 'confessor_offices/:id(.:format)', to: 'confessor_offices#show', as: :confessor_office
-
-  get 'confession_statuses(.:format)', to: 'confession_statuses#index', as: :confession_statuses
-  get 'confession_statuses/:id(.:format)', to: 'confession_statuses#show', as: :confession_status
+  # Begin Static Resources - can comment these out later, unless we still do the JS site.
+  resources :states, only: [:index, :show]
+  resources :dioceses, only: [:index, :show]
+  resources :account_statuses, only: [:index, :show]
+  resources :account_roles, only: [:index, :show]
+  resources :confessor_request_statuses, only: [:index, :show]
+  resources :confessor_offices, only: [:index, :show]
+  resources :confession_statuses, only: [:index, :show]
   # End Static Resources
 
   # User Accounts
-  resources :user_accounts
-  #namespace :user_account do
-  #  root '//confessor_requests#index'
-  #end
-  # User Account Histories
-  get 'user_account_changes(.:format)', to: 'user_account_changes#index', as: :user_account_changes
-  get 'user_account_changes/:id(.:format)', to: 'user_account_changes#show', as: :user_account_change
+  resources :user_accounts, except: [:delete]
+  resources :user_account_changes, only: [:index, :show]
 
-  # User Accounts
-  resources :confession_locations
-  # User Account Histories
-  get 'confession_location_changes(.:format)', to: 'confession_location_changes#index', as: :confession_location_changes
-  get 'confession_location_changes/:id(.:format)', to: 'confession_location_changes#show', as: :confession_location_change
+  # Confession locations
+  resources :confession_locations, except: [:delete]
+  resources :confession_location_changes, only: [:index, :show]
 
   # Confessors
-  resources :confessors
-  # Confessor Histories
-  get 'confessor_changes(.:format)', to: 'confessor_changes#index', as: :confessor_changes
-  get 'confessor_changes/:id(.:format)', to: 'confessor_changes#show', as: :confessor_change
+  resources :confessors, except: [:delete]
+  resources :confessor_changes, only: [:index, :show]
+  get '/confessors/:id/status(.:format)', to: 'confessors#status', as: 'confessor_status'
+  get '/confessors/:id/status/edit(.:format)', to: 'confessors#edit_status', as: 'edit_confessor_status'
+  get '/confessors/:id/settings/edit(.:format)', to: 'confessors#edit_settings', as: 'edit_confessor_settings'
+  
   
   # Confessor Requests
-  resources :confessor_requests
-
-  # Confessor Request Histories
-  get 'confessor_request_changes(.:format)', to: 'confessor_request_changes#index', as: :confessor_request_changes
-  get 'confessor_request_changes/:id(.:format)', to: 'confessor_request_changes#show', as: :confessor_request_change
+  resources :confessor_requests, except: [:delete]
+  resources :confessor_request_changes, only: [:index, :show]
 
 
 

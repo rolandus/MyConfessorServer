@@ -11,4 +11,23 @@ class UserAccount < ActiveRecord::Base
   validates :first_name, :last_name, :email, :account_status, presence: true
   validates :first_name, :last_name, :email, :home_phone, :work_phone, :mobile_phone, length: { maximum: 64 }
   validates_associated :confessor  #Make sure the associated confessor is valid. (I'm assuming this only happens if it's non-null)
+  
+  # Returns true if this user is an admin or superadmin
+  def is_admin
+    account_role_ids.min <= 2
+  end
+  
+  # Returns true only if this user is a superadmin
+  def is_superadmin
+    account_role_ids.include? 1
+  end
+  
+  # Alias username to email for now 
+  def username
+    email
+  end
+  
+  def full_name
+    first_name + ' ' + last_name
+  end
 end

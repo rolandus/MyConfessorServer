@@ -21,11 +21,7 @@
   <tbody>
     <% @confessors.each do |confessor| %>
       <tr>
-      	<% if confessor.user_account %>
         <td><%= confessor.user_account.username %></td>
-        <% else %>
-        <td></td>
-        <% end %>
         <td><%= confessor.confessor_office.name %></td>
         <td><%= confessor.diocese.name %></td>
         <td><%= confessor.salutation %></td>
