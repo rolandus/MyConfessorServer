@@ -80,13 +80,13 @@ class UserAccountsController < ApplicationController
     
     #Helper to handle saving confessor info
     def handle_confessor_info
-      if @user_account.account_role_ids.include? 3 then  #Only do this if user has the confessor role
+      if @user_account.is_confessor then  #Only do this if user has the confessor role
         if @user_account.confessor then
             @user_account.confessor.update(confessor_params)
         else
           @user_account.confessor = Confessor.new(confessor_params)
           @user_account.confessor.save()
-          save_confessor_history @user_account.confessor.id, @user_account.id, "Created"
+          save_confessor_history "Created"
           @user_account.save()
         end      
       end
@@ -110,7 +110,5 @@ class UserAccountsController < ApplicationController
       params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone)
     end
     
-    def confessor_params
-      params.require(:confessor).permit(:confessor_office_id, :diocese_id, :salutation, :biography)
-    end
+    # Allowed confessor params are defined in application_controller
 end

@@ -28,16 +28,39 @@ class ApplicationController < ActionController::Base
   end
   
   #Save off an audit of what changed.
-  def save_confessor_history (confessor_id, user_account_id, comments)
-    confessor_change = ConfessorChange.new(confessor_change_params)
-    confessor_change.confessor_id = confessor_id
-    confessor_change.user_account_id = user_account_id
+  def save_confessor_history (comments)
+    confessor_change = ConfessorChange.new()
+    
+    # Make a copy of the current Confessor
+    confessor_change.confessor_id = @confessor.id
+    confessor_change.user_account_id = @confessor.user_account_id 
+    confessor_change.confessor_office_id = @confessor.confessor_office_id
+    confessor_change.diocese_id = @confessor.diocese_id
+    confessor_change.salutation = @confessor.salutation
+    confessor_change.biography = @confessor.biography
+    
+    #Add change information and save it
     confessor_change.change_comments = comments
     confessor_change.changed_by_user_account_id = current_user_account.id
     confessor_change.save
   end
 
+  # Allowed params for confessor create/update (shared by both confessor and user_account controllers)
+  def confessor_params
+    params.require(:confessor).permit(
+      :confessor_office_id, 
+      :diocese_id, 
+      :salutation, 
+      :biography, 
+      :confession_status_id, 
+      :confession_location_id, 
+      :confession_start_time, 
+      :confession_end_time, 
+      :confession_comments
+    )
+  end
 
+private
 =begin
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers

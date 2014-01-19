@@ -36,8 +36,16 @@
 
 <% if @edit_mode == :full || @edit_mode == :settings then %>
   <div class="field">
+    <%= f.label :confessor_office %><br>
+    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
+  </div>
+  <div class="field">
     <%= f.label :salutation %><br>
     <%= f.text_field :salutation %>
+  </div>
+  <div class="field">
+    <%= f.label :diocese %><br>
+    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
   </div>
   <div class="field">
     <%= f.label :biography %><br>
@@ -49,14 +57,6 @@
   <div class="field">
     <%= f.label :user_account %><br>
     <%= collection_select(:user_account, :user_account_id, UserAccount.all, :id, :username)%>
-  </div>
-  <div class="field">
-    <%= f.label :confessor_office %><br>
-    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
-  </div>
-  <div class="field">
-    <%= f.label :diocese %><br>
-    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
   </div>
   <div class="field">
     <%= label :confessor_change, :change_comments %><br>

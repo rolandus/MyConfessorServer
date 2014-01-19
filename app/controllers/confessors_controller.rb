@@ -32,7 +32,7 @@ class ConfessorsController < ApplicationController
   
   # GET /confessors/1/status/edit
   def edit_status
-    if @is_accessing_self then
+    if @is_accessing_self
       @edit_mode = :status
       render action: 'edit'
     else
@@ -42,7 +42,7 @@ class ConfessorsController < ApplicationController
   
   # Get /confessors/1/settings/edit
   def edit_settings
-    if @is_accessing_self then
+    if @is_accessing_self
       @edit_mode = :settings
       render action: 'edit'
     else
@@ -56,7 +56,8 @@ class ConfessorsController < ApplicationController
     @confessor = Confessor.new(confessor_params)
     @confessor.user_account_id = params[:user_account][:user_account_id]
     respond_to do |format|
-      if @confessor.save and save_confessor_history @confessor.id, params[:user_account][:user_account_id], "Created"
+      if @confessor.save 
+        save_confessor_history("Created")
         format.html { redirect_to @confessor, notice: 'Confessor was successfully created: ' + params[:user_account][:user_account_id] }
         format.json { render action: 'show', status: :created, location: @confessor }
       else
@@ -70,9 +71,20 @@ class ConfessorsController < ApplicationController
   # PATCH/PUT /confessors/1.json
   def update
     respond_to do |format|
-      @confessor.user_account_id = params[:user_account][:user_account_id]
-      if @confessor.update(confessor_params) and save_confessor_history @confessor.id, params[:user_account][:user_account_id], params[:confessor_change][:change_comments]
-        format.html { redirect_to @confessor, notice: 'Confessor was successfully updated: ' + params[:user_account][:user_account_id] }
+      #Get change comments, if relevant
+      change_comments = nil
+      if current_user_account.is_admin and params[:confessor_change]
+        change_comments = params[:confessor_change][:change_comments]
+      end
+      
+      #Perform the update
+      if @confessor.update(confessor_params)
+        # Hacky way of determining if the current update should be logged or not. 
+        #The real way to check this would be to make sure something other than confession info was updated.        
+        if (params[:confessor][:confessor_office_id])
+          save_confessor_history(change_comments)
+        end 
+        format.html { redirect_to @confessor, notice: 'Confessor was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -82,22 +94,18 @@ class ConfessorsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_confessor
       @confessor = Confessor.find(params[:id])
     end
 
-    # User is accessing himself if he's logged in, is a confessor, and has the same confessor ID as the one requested.
+    # Confessor is accessing himself if he's logged in, is a confessor, and has the same confessor ID as the one requested.
     def set_is_accessing_self
-      @is_accessing_self = (current_user_account and (current_user_account.confessor and current_user_account.confessor.id == @confessor.id))
+      @is_accessing_self = (
+        current_user_account and (
+          current_user_account.confessor and current_user_account.confessor.id == @confessor.id
+        )
+      )
     end
     
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def confessor_params
-      params.require(:confessor).permit(:confessor_office_id, :diocese_id, :salutation, :confession_status_id, :confession_location_id, :confession_start_time, :confession_end_time, :confession_comments, :biography)
-    end
-    
-    def confessor_change_params
-      params.require(:confessor).permit(:confessor_office_id, :diocese_id, :salutation, :biography)
-    end
+    # Allowed confessor params are defined in application_controller.
 end

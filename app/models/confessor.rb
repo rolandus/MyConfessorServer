@@ -6,6 +6,8 @@ class Confessor < ActiveRecord::Base
   belongs_to :user_account, inverse_of: :confessor
   belongs_to :user_account_change, inverse_of: :confessors
   
+  has_many :confessor_changes, inverse_of: :confessor
+  
   validates :confessor_office, :diocese, :user_account, :confession_status, presence: true
   validates :salutation, length: { maximum: 64 }
 
