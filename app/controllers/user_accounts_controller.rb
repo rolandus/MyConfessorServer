@@ -1,9 +1,9 @@
 class UserAccountsController < ApplicationController
-  before_filter :authenticate_user_account!
+  before_filter :authenticate_user_account! #One must be logged in to do anything with a UserAccount
   before_filter :restrict_to_superuser, except: [:show, :edit, :update]
 
   before_action :set_user_account, only: [:show, :edit, :update, :destroy]
-  before_action :restrict_to_self, only: [:show, :edit, :update]
+  before_action :restrict_to_self, only: [:show, :edit, :update] 
   
   # GET /user_accounts
   # GET /user_accounts.json
@@ -31,7 +31,7 @@ class UserAccountsController < ApplicationController
     @user_account = UserAccount.new(user_account_params)
 
     respond_to do |format|
-      if @user_account.save and save_to_history @user_account.id, "Created" and handle_confessor_info
+      if @user_account.save() and save_to_history("Created") and handle_confessor_info
         format.html { redirect_to @user_account, notice: 'User account was successfully created.' }
         format.json { render action: 'show', status: :created, location: @user_account }
       else
@@ -45,7 +45,7 @@ class UserAccountsController < ApplicationController
   # PATCH/PUT /user_accounts/1.json
   def update
     respond_to do |format|
-      if @user_account.update(user_account_params) and save_to_history @user_account.id, params[:user_account_change][:change_comments] and handle_confessor_info
+      if @user_account.update(user_account_params) and save_to_history(params[:user_account_change][:change_comments]) and handle_confessor_info
         format.html { redirect_to @user_account, notice: 'User account was successfully updated.' }
         format.json { head :no_content }
       else
@@ -71,34 +71,41 @@ class UserAccountsController < ApplicationController
       @user_account = UserAccount.find(params[:id])
     end
     
-    #Only allow this action on self, unless you are a superuser
+    # Helper to only allow this action on self, unless you are a superuser
     def restrict_to_self
-      if not current_user_account.account_role_ids.include? 1 and @user_account.id != current_user_account.id
+      if not current_user_account.is_superadmin and @user_account.id != current_user_account.id
         render text: '{ error: "401 Unauthorized access" }', status: 401
        end
     end
     
     #Helper to handle saving confessor info
     def handle_confessor_info
-      if @user_account.is_confessor then  #Only do this if user has the confessor role
-        if @user_account.confessor then
-            @user_account.confessor.update(confessor_params)
-        else
-          @user_account.confessor = Confessor.new(confessor_params)
-          @user_account.confessor.save()
-          save_confessor_history "Created"
-          @user_account.save()
-        end      
+      if @user_account.is_confessor  #Only allow this if user has the confessor role
+        if @user_account.confessor
+          # Confessor exists and we are updating it...
+          @confessor = @user_account.confessor
+          @confessor.update(confessor_params)
+          if @confessor.changed?
+            save_confessor_history(params[:user_account_change][:change_comments]) #Copy change comments into confessor change, too.
+          end
+        end
+      else
+        # We are creating a new confessor...
+        @confessor = Confessor.new(confessor_params)
+        @confessor.save()
+        save_confessor_history("Created")
+        @user_account.confessor = @confessor
+        @user_account.save()
       end
     end
 
     #Helper to save UserAccount changes to the history
-    def save_to_history (id, comments)
+    def save_to_history (comments)
       user_account_change = UserAccountChange.new(user_account_change_params)
-      user_account_change.user_account_id = id
+      user_account_change.user_account_id = @user_account.id
       user_account_change.change_comments = comments
       user_account_change.changed_by_user_account_id = current_user_account.id
-      user_account_change.save
+      user_account_change.save()
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
