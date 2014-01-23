@@ -3,17 +3,29 @@ class UserAccount < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  belongs_to :account_status, inverse_of: :user_accounts
   
+  belongs_to :account_status, inverse_of: :user_accounts  
   has_one :confessor, inverse_of: :user_account
   has_and_belongs_to_many :account_roles
-  has_many :user_account_changes, inverse_of: :user_account  #TODO - double-check that this is using the user id and not the editing user id
+  
+  # Association for changes to this UserAccount (NOT changes *made* by this UserAccount)
+  has_many :user_account_changes, inverse_of: :user_account
+  #TODO - Figure out how to make the association to the changes *made* by this UserAccount
+  
+  # Association for changes to a Confessor *made* by this user account
   has_many :confessor_changes, inverse_of: :user_account
   
-  validates :first_name, :last_name, :email, :account_status, presence: true
+  validates :first_name, :last_name, :account_status, presence: true
   validates :first_name, :last_name, :email, :home_phone, :work_phone, :mobile_phone, length: { maximum: 64 }
+  # I assume the Devise fields are validated in the Devise code (see :validatable) 
+  
   validates_associated :confessor  #Make sure the associated confessor is valid. (I'm assuming this only happens if it's non-null)
   
+  
+  #############
+  # Utilities
+  #############
+
   # Returns true if this user is an admin or superadmin
   def is_admin
     account_role_ids.min <= 2

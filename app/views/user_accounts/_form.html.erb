@@ -20,26 +20,6 @@
     <%= f.text_field :last_name %>
   </div>
   <div class="field">
-    <%= f.label :username %><br>
-    <%= f.text_field :username %>
-  </div>
-  <div class="field">
-    <%= f.label :password %><br>
-    <%= f.text_field :password %>
-  </div>
-  <div class="field">
-    <%= f.label :account_status %><br>
-    <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
-  </div>
-  <div class="field">
-    <%= f.label :account_roles %><br>
-    <%= collection_check_boxes(:user_account, :account_role_ids, AccountRole.all, :id, :name)%>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
     <%= f.label :home_phone %><br>
     <%= f.text_field :home_phone %>
   </div>
@@ -51,6 +31,24 @@
     <%= f.label :mobile_phone %><br>
     <%= f.text_field :mobile_phone %>
   </div>
+  <div class="field">
+    <%= f.label :account_status %><br>
+    <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
+  </div>
+  <div class="field">
+    <%= f.label :account_roles %><br>
+    <%= collection_check_boxes(:user_account, :account_role_ids, AccountRole.all, :id, :name)%>
+  </div>
+  <% if @is_new %>
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br>
+    <%= f.text_field :password %>
+  </div>
+  <% end %>
   
   <h3>Confessor Info</h3>
   <div class="field">

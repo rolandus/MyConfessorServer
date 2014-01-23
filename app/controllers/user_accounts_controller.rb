@@ -19,10 +19,12 @@ class UserAccountsController < ApplicationController
   # GET /user_accounts/new
   def new
     @user_account = UserAccount.new
+    @is_new = true
   end
 
   # GET /user_accounts/1/edit
   def edit
+    @is_edit = true
   end
 
   # POST /user_accounts
@@ -45,7 +47,11 @@ class UserAccountsController < ApplicationController
   # PATCH/PUT /user_accounts/1.json
   def update
     respond_to do |format|
-      if @user_account.update(user_account_params) and save_to_history(params[:user_account_change][:change_comments]) and handle_confessor_info
+      comments = nil
+      if params[:user_account_change]
+        comments = params[:user_account_change][:change_comments]
+      end
+      if @user_account.update(user_account_params) and save_to_history(comments) and handle_confessor_info
         format.html { redirect_to @user_account, notice: 'User account was successfully updated.' }
         format.json { head :no_content }
       else
@@ -88,14 +94,16 @@ class UserAccountsController < ApplicationController
           if @confessor.changed?
             save_confessor_history(params[:user_account_change][:change_comments]) #Copy change comments into confessor change, too.
           end
+        else
+          # We are creating a new confessor...
+          @confessor = Confessor.new(confessor_params)
+          @confessor.user_account = @user_account
+          @confessor.confession_status_id = 1
+          @confessor.save()
+          save_confessor_history("Created")
+          #@user_account.confessor = @confessor
+          @user_account.save()
         end
-      else
-        # We are creating a new confessor...
-        @confessor = Confessor.new(confessor_params)
-        @confessor.save()
-        save_confessor_history("Created")
-        @user_account.confessor = @confessor
-        @user_account.save()
       end
     end
 
