@@ -8,11 +8,17 @@
       <th>Diocese</th>
       <th>Salutation</th>
       <th>Confession status</th>
+<%
+=begin
+%>
       <th>Confession location</th>
       <th>Confession start time</th>
       <th>Confession end time</th>
       <th>Confession comments</th>
       <th>Biography</th>
+<%
+=end
+%>
       <th></th>
       <th></th>
     </tr>
@@ -26,11 +32,17 @@
         <td><%= confessor.diocese.name %></td>
         <td><%= confessor.salutation %></td>
         <td><%= confessor.confession_status.name %></td>
+<%
+=begin
+%>
         <td><%= confessor.confession_location.nickname %></td>
         <td><%= confessor.confession_start_time %></td>
         <td><%= confessor.confession_end_time %></td>
         <td><%= confessor.confession_comments %></td>
         <td><%= confessor.biography %></td>
+<%
+=end
+%>
         <td><%= link_to 'Show', confessor %></td>
         <td><%= link_to 'Edit', edit_confessor_path(confessor) %></td>
       </tr>

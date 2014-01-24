@@ -104,6 +104,8 @@ class UserAccountsController < ApplicationController
           #@user_account.confessor = @confessor
           @user_account.save()
         end
+      else
+        return true
       end
     end
 
@@ -111,6 +113,7 @@ class UserAccountsController < ApplicationController
     def save_to_history (comments)
       user_account_change = UserAccountChange.new(user_account_change_params)
       user_account_change.user_account_id = @user_account.id
+      user_account_change.email = @user_account.email
       user_account_change.change_comments = comments
       user_account_change.changed_by_user_account_id = current_user_account.id
       user_account_change.save()
@@ -118,11 +121,11 @@ class UserAccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_account_params
-      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :account_role_ids => [])
+      params.require(:user_account).permit(:first_name, :last_name, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :account_role_ids => [])
     end
     
     def user_account_change_params
-      params.require(:user_account).permit(:first_name, :last_name, :username, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone)
+      params.require(:user_account).permit(:first_name, :last_name, :account_status_id, :home_phone, :work_phone, :mobile_phone)
     end
     
     # Allowed confessor params are defined in application_controller

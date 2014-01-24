@@ -1,10 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Username:</strong>
-  <% if @confessor.user_account %>
-  <%= @confessor.user_account.username %>
-  <% end %>
+  <strong>Name:</strong>
+  <%= @confessor.user_account.full_name %>
 </p>
 
 <p>
@@ -13,13 +11,18 @@
 </p>
 
 <p>
+  <strong>Salutation:</strong>
+  <%= @confessor.salutation %>
+</p>
+
+<p>
   <strong>Diocese:</strong>
   <%= @confessor.diocese.name %>
 </p>
 
 <p>
-  <strong>Salutation:</strong>
-  <%= @confessor.salutation %>
+  <strong>Biography:</strong>
+  <%= @confessor.biography %>
 </p>
 
 <p>
@@ -29,7 +32,7 @@
 
 <p>
   <strong>Confession location:</strong>
-  <%= @confessor.confession_location.name %>
+  <%= if @confessor.confession_location then @confessor.confession_location.name end %>
 </p>
 
 <p>
@@ -45,11 +48,6 @@
 <p>
   <strong>Confession comments:</strong>
   <%= @confessor.confession_comments %>
-</p>
-
-<p>
-  <strong>Biography:</strong>
-  <%= @confessor.biography %>
 </p>
 
 <%= link_to 'Edit', edit_confessor_path(@confessor) %> |

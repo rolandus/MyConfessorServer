@@ -1,23 +1,15 @@
 <h1>Listing user_accounts</h1>
 
-<% 
-=begin %>
-
 <table>
   <thead>
     <tr>
       <th>First name</th>
       <th>Last name</th>
-      <th>Username</th>
-      <th>Password</th>
+      <th>Email</th>
       <th>Account status</th>
       <th>Account roles</th>
-      <th>Email</th>
       <th>Confessor ID</th>
       <th>Salutation</th>
-      <th>Home phone</th>
-      <th>Work phone</th>
-      <th>Mobile phone</th>
       <th></th>
       <th></th>
     </tr>
@@ -28,34 +20,29 @@
       <tr>
         <td><%= user_account.first_name %></td>
         <td><%= user_account.last_name %></td>
-        <td><%= user_account.username %></td>
-        <td><%= user_account.password %></td>
+        <td><%= user_account.email %></td>
         <td><%= user_account.account_status.name %></td>
         <td>
     	<% user_account.account_roles.each do |role| %>
     		<%= role.name %>&nbsp;
     	<% end %>
         </td>
-        <td><%= user_account.email %></td>
-        <% if user_account.confessor %>
+        <% if user_account.is_confessor %>
         <td><%= user_account.confessor.id %></td>
         <td><%= user_account.confessor.salutation %></td>
         <% else %>
         <td></td>
         <td></td>
         <% end %>
-        <td><%= user_account.home_phone %></td>
-        <td><%= user_account.work_phone %></td>
-        <td><%= user_account.mobile_phone %></td>
         <td><%= link_to 'Show', user_account %></td>
         <td><%= link_to 'Edit', edit_user_account_path(user_account) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<% 
-=end %>
 
+<% 
+=begin %>
 <ul>
 	<% @user_accounts.each do |user_account| %>
 		<h3><%= user_account.first_name %> <%= user_account.last_name %></h3>
@@ -70,6 +57,8 @@
 	    <% end %>
 	<% end %>
 </ul>
+<% 
+=end %>
 
 <br>
 

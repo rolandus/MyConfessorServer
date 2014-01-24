@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
     #Add change information and save it
     confessor_change.change_comments = comments
     confessor_change.changed_by_user_account_id = current_user_account.id
-    confessor_change.save
+    confessor_change.save()
   end
 
   # Allowed params for confessor create/update (shared by both confessor and user_account controllers)
