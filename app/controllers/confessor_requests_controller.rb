@@ -3,6 +3,8 @@ class ConfessorRequestsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :authenticate_user_account!, except: [:new, :create]
   before_filter :restrict_to_admin, except: [:new, :create]
+  
+  layout "admin_inside"
     
   # GET /confessor_requests
   # GET /confessor_requests.json

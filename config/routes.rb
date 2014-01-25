@@ -1,6 +1,9 @@
 MyConfessorServer::Application.routes.draw do
 
-  root 'main#index'
+  root 'main#index'                  #Main site page
+  get 'admin', to: 'main#admin'      #Admin home page
+  get 'priest', to: 'main#priest'    #Priest home page
+  
   get 'test', to: 'main#test'
   get 'ping', to: 'main#ping'
   

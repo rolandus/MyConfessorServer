@@ -1,8 +1,6 @@
 <h1>Listing confessor_requests</h1>
 
 <table>
-<% 
-=begin %>
   <thead>
     <tr>
       <th>First name</th>
@@ -22,39 +20,15 @@
         <td><%= confessor_request.first_name %></td>
         <td><%= confessor_request.last_name %></td>
         <td><%= confessor_request.email %></td>
-        <% if confessor_request.diocese then %>
         <td><%= confessor_request.diocese.name %></td>
-        <% else %>
-        <td></td>
-        <% end %>
-        <% if confessor_request.state then %>
         <td><%= confessor_request.state.name %></td>
-        <% else %>
-        <td></td>
-        <% end %>
         <td><%= confessor_request.confessor_request_status.name %></td>
         <td><%= link_to 'Show', confessor_request %></td>
         <td><%= link_to 'Edit', edit_confessor_request_path(confessor_request) %></td>
       </tr>
     <% end %>
   </tbody>
-<% 
-=end %>
-<ul>
-    <% @confessor_requests.each do |confessor_request| %>
-    <li>
-    	<h2><%= confessor_request.first_name %> <%= confessor_request.last_name %> - Diocese of <%= confessor_request.diocese.name %>, <%= confessor_request.state.abbreviation %></h2>
-    	<p><%= confessor_request.email %></p>
-    	<form>
-    		<p><input id="verified_checkbox" type="checkbox" /><label for="verified_checkbox">I have verified that this is really a priest, and that he requested this account.</label></p>
-    		<input type="button" value="Approve" />
-    		<input type="button" value="Deny" />
-    		<input type="button" value="Google Him" />
-    	</form>
-    </li>
-	<% end %>	
-</ul>
-
+</table>
 <br>
 
-<%= link_to 'New Confessor request', new_confessor_request_path %>
+<%#= link_to 'New Confessor request', new_confessor_request_path %>

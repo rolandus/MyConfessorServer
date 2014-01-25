@@ -6,7 +6,16 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     #rscott - This somehow makes Backbone think that login succeeded vs. failed. They both return a 302, though. This one just makes it redirect to the user you logged in as. I don't get it.
-    user_account_url(resource, :format => :json)
+    #user_account_url(resource, :format => :json)
+    if current_user_account.is_admin
+      return confessor_requests_url
+    else
+      return "" #Default page URL for priest
+    end
+  end
+
+  def after_sign_out_path_for(resource)
+    new_user_account_session_url
   end
 
   def restrict_to_admin

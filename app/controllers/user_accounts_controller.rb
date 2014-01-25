@@ -3,7 +3,9 @@ class UserAccountsController < ApplicationController
   before_filter :restrict_to_superuser, except: [:show, :edit, :update]
 
   before_action :set_user_account, only: [:show, :edit, :update, :destroy]
-  before_action :restrict_to_self, only: [:show, :edit, :update] 
+  before_action :restrict_to_self, only: [:show, :edit, :update]
+  
+  layout "admin_inside"
   
   # GET /user_accounts
   # GET /user_accounts.json
