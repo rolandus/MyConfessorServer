@@ -1,34 +1,46 @@
 <%= form_for(@confessor_request) do |f| %>
-  <% if @confessor_request.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@confessor_request.errors.count, "error") %> prohibited this confessor_request from being saved:</h2>
 
-      <ul>
-      <% @confessor_request.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  
-  <p>Fill out the fields below. We'll verify your identity and then send you an email with a link to complete the signup process. This usually takes about three days.</p>
-
-  <div class="field">
-    <%= f.label :first_name %><br>
-    <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br>
-    <%= f.text_field :last_name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :diocese %><br>
-    <%= collection_select(:confessor_request, :diocese_id, Diocese.all, :id, :name)%>
-  </div>
+	<% if @confessor_request.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@confessor_request.errors.count, "error") %> prohibited this confessor_request from being saved:</h2>
+			<ul>
+				<% @confessor_request.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+	  
+	<div class="field">
+		<%= f.label :first_name %><br>
+		<%= f.text_field :first_name %>
+	</div>
+	<div class="field">
+		<%= f.label :last_name %><br>
+		<%= f.text_field :last_name %>
+	</div>
+	<div class="field">
+		<%= f.label :email %><br>
+		<%= f.text_field :email %>
+	</div>
+	<div class="field">
+		<%= f.label :diocese %><br>
+		<%= collection_select(:confessor_request, :diocese_id, Diocese.all, :id, :name)%>
+	</div>
+	<% if @edit_mode == :edit %>
+	<div class="field">
+		<%= f.label :confessor_request_status %><br>
+		<%= collection_select(:confessor_request, :confessor_request_status_id, ConfessorRequestStatus.all, :id, :name)%>
+	</div>
+	<% end %>
+	
+	<% if @edit_mode == :edit then submit_label = "Update" else submit_label = "Submit Request" end %>
+	
+	<div class="actions">
+		<%= f.submit submit_label %>
+	</div>	
+<% end %>
+		
 <%
 =begin 
 %>
@@ -49,7 +61,4 @@
 <%
 =end
 %>
-  <div class="actions">
-    <%= f.submit "Submit Request" %>
-  </div>
-<% end %>
+

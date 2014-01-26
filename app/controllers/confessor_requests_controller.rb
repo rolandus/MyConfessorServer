@@ -1,8 +1,7 @@
 class ConfessorRequestsController < ApplicationController
-  before_action :set_confessor_request, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :verify_authenticity_token
-  before_filter :authenticate_user_account!, except: [:new, :create]
-  before_filter :restrict_to_admin, except: [:new, :create]
+  before_action :set_confessor_request, only: [:show, :confirm, :edit, :update, :destroy]
+  before_filter :authenticate_user_account!, except: [:new, :create, :confirm]
+  before_filter :restrict_to_admin, except: [:new, :create, :confirm]
   
   layout "admin_inside"
     
@@ -20,10 +19,17 @@ class ConfessorRequestsController < ApplicationController
   # GET /confessor_requests/new
   def new
     @confessor_request = ConfessorRequest.new
+    @edit_mode = :new
+    render layout: "application"
+  end
+  
+  # GET /confessor_requests/confirm
+  def confirm    
   end
 
   # GET /confessor_requests/1/edit
   def edit
+    @edit_mode = :edit
   end
 
   # POST /confessor_requests
@@ -37,8 +43,8 @@ class ConfessorRequestsController < ApplicationController
       if @confessor_request.save
         save_to_history @confessor_request.id, "Created"
         format.html { redirect_to @confessor_request, notice: "Your request has been submitted. We'll send you an email once we've verified your identity." }
-        #format.html { redirect_to action: 'confirm_request' }
-        format.json { render action: 'show', status: :created, location: @confessor_request }
+        format.html { redirect_to action: 'confirm' }
+        #format.json { render action: 'show', status: :created, location: @confessor_request }
       else
         format.html { render action: 'new' }
         format.json { render json: @confessor_request.errors, status: :unprocessable_entity }

@@ -17,6 +17,7 @@
         <div id="banner">
         	<%= image_tag "banner.png" %>
         </div>
+        
         <div id="header"></div>
         <div id="content">
 			<% if alert %>
@@ -28,8 +29,16 @@
         <div id="footer">
         	<div id="toolbar">
 	            <a href="/" class="icon_container" data-page="confessor_requests">
-	                <%= image_tag "icon_chat.png" %>
+	                <%= image_tag "icon_person.png" %>
 	                <span class="icon_label">Find a Confessor</span>
+	            </a>
+	            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
+	                <%= image_tag "icon_gear.png" %>
+	                <span class="icon_label">Request an Account</span>
+	            </a>
+	            <a href="<%= new_user_account_session_url %>" class="icon_container" data-page="confessor_requests">
+	                <%= image_tag "icon_lock.png" %>
+	                <span class="icon_label">Sign In</span>
 	            </a>
 	    	</div>
         </div>

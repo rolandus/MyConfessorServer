@@ -15,12 +15,21 @@ class UserAccount < ActiveRecord::Base
   # Association for changes to a Confessor *made* by this user account
   has_many :confessor_changes, inverse_of: :user_account
   
+  # Association for changes to a ConfessorRequest made by this user account
+  has_many :confessor_request_changes, inverse_of: :user_account
+  
   validates :first_name, :last_name, :account_status, presence: true
   validates :first_name, :last_name, :email, :home_phone, :work_phone, :mobile_phone, length: { maximum: 64 }
   # I assume the Devise fields are validated in the Devise code (see :validatable) 
   
   validates_associated :confessor  #Make sure the associated confessor is valid. (I'm assuming this only happens if it's non-null)
   
+  # Allows the following 4 patterns:
+  # (715)437-0956
+  # (715) 437-0956
+  # 715-437-0956
+  # 715 437-0956
+  validates :home_phone, :mobile_phone, :work_phone, format: { with: /((\(\d{3}\) ?|\d{3}(-| ))\d{3}-\d{4})|\s./ }
   
   #############
   # Utilities
@@ -50,3 +59,5 @@ class UserAccount < ActiveRecord::Base
     first_name + ' ' + last_name
   end
 end
+
+
