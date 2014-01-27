@@ -31,15 +31,17 @@
     <%= f.label :mobile_phone %><br>
     <%= f.text_field :mobile_phone %>
   </div>
+  <% if @edit_mode == :edit %>
   <div class="field">
     <%= f.label :account_status %><br>
     <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
   </div>
+  <% end %>
   <div class="field">
     <%= f.label :account_roles %><br>
     <%= collection_check_boxes(:user_account, :account_role_ids, AccountRole.all, :id, :name)%>
   </div>
-  <% if @is_new %>
+  <% if @edit_mode == :new %>
   <div class="field">
     <%= f.label :email %><br>
     <%= f.text_field :email %>
@@ -70,7 +72,7 @@
     <textarea id="confessor_biography" name="confessor[biography]"></textarea>
   </div>
 
-  <% if @is_edit %>
+  <% if @edit_mode == :edit %>
   <div class="field">
     <%= label :user_account_change, :change_comments %><br>
     <%= text_area :user_account_change, :change_comments %>

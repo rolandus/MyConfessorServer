@@ -21,24 +21,25 @@ class UserAccountsController < ApplicationController
   # GET /user_accounts/new
   def new
     @user_account = UserAccount.new
-    @is_new = true
+    @edit_mode = :new
   end
 
   # GET /user_accounts/1/edit
   def edit
-    @is_edit = true
+    @edit_mode = :edit
   end
 
   # POST /user_accounts
   # POST /user_accounts.json
   def create
     @user_account = UserAccount.new(user_account_params)
-
+    @user_account.account_status_id = 2  #2 - Active. Always make new users active.
     respond_to do |format|
       if @user_account.save() and save_to_history("Created") and handle_confessor_info
         format.html { redirect_to @user_account, notice: 'User account was successfully created.' }
         format.json { render action: 'show', status: :created, location: @user_account }
       else
+        @edit_mode = :new
         format.html { render action: 'new' }
         format.json { render json: @user_account.errors, status: :unprocessable_entity }
       end
@@ -57,6 +58,7 @@ class UserAccountsController < ApplicationController
         format.html { redirect_to @user_account, notice: 'User account was successfully updated.' }
         format.json { head :no_content }
       else
+        @edit_mode = :edit
         format.html { render action: 'edit' }
         format.json { render json: @user_account.errors, status: :unprocessable_entity }
       end
