@@ -34,7 +34,7 @@
   <% if @edit_mode == :edit %>
   <div class="field">
     <%= f.label :account_status %><br>
-    <%= collection_select(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
+    <%= collection_radio_buttons(:user_account, :account_status_id, AccountStatus.all, :id, :name)%>
   </div>
   <% end %>
   <div class="field">
@@ -48,18 +48,18 @@
   </div>
   <div class="field">
     <%= f.label :password %><br>
-    <%= f.text_field :password %>
+    <%= f.password_field :password %>
   </div>
   <% end %>
   
   <h3>Confessor Info</h3>
   <div class="field">
     <%= f.label :confessor_office %><br>
-    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
+    <%= collection_radio_buttons(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
   </div>
   <div class="field">
     <%= f.label :diocese %><br>
-    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
+    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name, :include_blank => true)%>
   </div>
   <div class="field">
     <%= f.label :salutation %><br>

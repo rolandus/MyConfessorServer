@@ -14,11 +14,11 @@
 <% if @edit_mode == :full || @edit_mode == :status then %>
   <div class="field">
     <%= f.label :confession_status %><br>
-    <%= collection_select(:confessor, :confession_status_id, ConfessionStatus.all, :id, :name)%>
+    <%= collection_radio_buttons(:confessor, :confession_status_id, ConfessionStatus.all, :id, :name)%>
   </div>
   <div class="field">
     <%= f.label :confession_location %><br>
-    <%= collection_select(:confessor, :confession_location_id, ConfessionLocation.all, :id, :name)%>
+    <%= collection_select(:confessor, :confession_location_id, ConfessionLocation.all, :id, :name, :include_blank => true)%>
   </div>
   <div class="field">
     <%= f.label :confession_start_time %><br>
@@ -37,7 +37,7 @@
 <% if @edit_mode == :full || @edit_mode == :settings then %>
   <div class="field">
     <%= f.label :confessor_office %><br>
-    <%= collection_select(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
+    <%= collection_radio_buttons(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
   </div>
   <div class="field">
     <%= f.label :salutation %><br>
@@ -45,7 +45,7 @@
   </div>
   <div class="field">
     <%= f.label :diocese %><br>
-    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name)%>
+    <%= collection_select(:confessor, :diocese_id, Diocese.all, :id, :name, :include_blank => true)%>
   </div>
   <div class="field">
     <%= f.label :biography %><br>

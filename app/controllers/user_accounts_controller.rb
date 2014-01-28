@@ -33,9 +33,12 @@ class UserAccountsController < ApplicationController
   # POST /user_accounts.json
   def create
     @user_account = UserAccount.new(user_account_params)
-    @user_account.account_status_id = 2  #2 - Active. Always make new users active.
+    @user_account.account_status_id = 2  #2 = Active. Always make new users active.
     respond_to do |format|
-      if @user_account.save() and save_to_history("Created") and handle_confessor_info
+      saved = @user_account.save()
+      audited = save_to_history("Created")
+      confessor_handled = handle_confessor_info
+      if saved && audited && confessor_handled
         format.html { redirect_to @user_account, notice: 'User account was successfully created.' }
         format.json { render action: 'show', status: :created, location: @user_account }
       else
