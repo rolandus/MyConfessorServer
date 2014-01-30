@@ -7,28 +7,35 @@
 
 <p>
   <strong>Confession status:</strong>
-  <%= @confessor.confession_status.name %>
+  <% if @confessor.available? then "IN" end %>
+  <% else if @confessor.busy? then "BUSY" end %>
+  <% else then "OUT" end %>
 </p>
 
-<p>
-  <strong>Confession location:</strong>
-  <%= @confessor.confession_location.name %>
-</p>
+<% if @confessor.available? or @confessor.busy? %>
+	<p>
+	  <strong>Confession location:</strong>
+	  <%= @confessor.confession_location.name %>
+	</p>
+	
+	<p>
+	  <strong>Confession start time:</strong>
+	  <%= @confessor.confession_start_time %>
+	</p>
+	
+	<p>
+	  <strong>Confession end time:</strong>
+	  <%= @confessor.confession_end_time %>
+	</p>
+	
+	<% if current_user_account %>
+		<%= form_for(@confessor) do |f| %>
+		<% end %>
+	<% else %>
+		<p>
+		  <strong>Confession comments:</strong>
+		  <%= @confessor.confession_comments %>
+		</p>
+	<% end %>
+<% end %>
 
-<p>
-  <strong>Confession start time:</strong>
-  <%= @confessor.confession_start_time %>
-</p>
-
-<p>
-  <strong>Confession end time:</strong>
-  <%= @confessor.confession_end_time %>
-</p>
-
-<p>
-  <strong>Confession comments:</strong>
-  <%= @confessor.confession_comments %>
-</p>
-
-<%= link_to 'Edit', edit_confessor_path(@confessor) %> |
-<%= link_to 'Back', confessors_path %>

@@ -32,7 +32,7 @@ class UserAccount < ActiveRecord::Base
   # 7154370956
   validates :home_phone, :mobile_phone, :work_phone, allow_blank: true, format: { with: /((\(\d{3}\) ?|\d{3}(\-| ))\d{3}\-\d{4})|(\d{10})/ }
   
-  before_save :normalize_phoen_numbers, :trim_strings  # Can't use after_validate here, because it affects what gets sent in the formstate.
+  before_save :normalize_phone_numbers, :trim_strings  # Can't use after_validate here, because it affects what gets sent in the formstate.
   
   #############
   # Utilities

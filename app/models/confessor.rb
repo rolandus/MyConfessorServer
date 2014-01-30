@@ -12,6 +12,18 @@ class Confessor < ActiveRecord::Base
   validates :salutation, length: { maximum: 64 }
 
   def full_name
-    user_account.first_name + ' ' + user_account.last_name
+    self.user_account.first_name + ' ' + self.user_account.last_name
+  end
+  
+  def available?
+    return self.confession_status == 1
+  end
+  
+  def busy?
+    return self.confession_status == 2
+  end
+  
+  def out?
+    return self.confession_status == 3
   end
 end

@@ -136,3 +136,33 @@ a {
 .todo:before {
 	content: "TODO"
 }
+
+
+.column {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0px 20px 0px 0px;
+	padding: 0px 0px 20px 0px;
+}
+
+.column.text-centered {
+	text-align: center;
+}
+
+.column .details,
+.column .deep-details {
+	display: none;
+}
+
+.col1 {
+	width: auto;
+}
+
+.col2 {
+	width: 50%;
+}
+
+.col3 {
+	width: auto;
+}
+

@@ -28,6 +28,10 @@ class UserAccountsController < ApplicationController
   def edit
     @edit_mode = :edit
   end
+  
+  
+  # TODO TODO TODO
+  # See "Building Complex Forms" in the Rails form_helpers guide. This is how to handle the confessor records.
 
   # POST /user_accounts
   # POST /user_accounts.json

@@ -1,1 +1,53 @@
-<p>I'm the main page. You know, for end users.</p>
+<form>
+	<label>Zip Code:</label> <input type="text" />
+</form>
+<ul>
+	<div class="item">
+		<div class="column col2">
+			<h3>Fr. Richard Heilman</h3>
+			<h4>Hearing confession from 3:10 - ?</h4>
+			<div class="details">
+				<p>
+					Confessions are being heard in the rectory. Come to the front door and buzz the intercom.
+				</p>
+				<a href="#" class="more-link">more...</a>
+				<div class="deep-details">
+					<h4>About Father Rick...</h4>
+					<p>
+						Father Rick is the pastor of St. Michael the archangel parish, which is comprised of Holy Redeemer in Perry, St. Ignatius in Mount Horeb, and St. Mary of Pine Bluff. He loves the sacrament of confession and wants to offer it as often as possible.
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="column col1 text-centered">
+			<h3>IN</h3>
+			<h4>(busy)</h4>
+		</div>
+		<div class="column col3">
+			<h3>St. Mary, Pine Bluff</h3>
+			<p>
+				3673 County Highway P<br />
+				Cross Plains, WI 53528
+			</p>
+		</div>
+	</div>
+</ul>
+
+<script>
+	$('.item')
+		.mouseenter(function(e) {
+			$(this).find('.details').show();
+		})
+		.mouseleave(function(e) {
+			var $me = $(this);
+			$me.find('.details').hide();
+			$me.find('.deep-details').hide();
+			$me.find('.more-link').show();
+		});
+	$('.more-link')
+		.click(function(e) {
+			var $me = $(this);
+			$me.closest('.details').find('.deep-details').show();
+			$me.hide();
+		});
+</script>
