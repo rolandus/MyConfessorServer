@@ -4,6 +4,7 @@ class MainController < ApplicationController
   
   # GET /
   def index
+    @confessors = Confessor.all
   end
   
   #GET /test

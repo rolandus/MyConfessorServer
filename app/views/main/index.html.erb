@@ -2,38 +2,46 @@
 	<label>Zip Code:</label> <input type="text" />
 </form>
 <ul>
-	<div class="item">
+    <% @confessors.each do |confessor| %>
+	<li class="item">
 		<div class="column col2">
-			<h3>Fr. Richard Heilman</h3>
-			<h4>Hearing confession from 3:10 - ?</h4>
+			<h3><%= confessor.full_name_address %></h3>
+			<% if confessor.in? then %><h4>Hearing confession from ? - ?</h4><% end %>
 			<div class="details">
 				<p>
-					Confessions are being heard in the rectory. Come to the front door and buzz the intercom.
+					<%= confessor.confession_comments %>
 				</p>
 				<a href="#" class="more-link">more...</a>
+				<% if confessor.biography.length > 0 %>
 				<div class="deep-details">
-					<h4>About Father Rick...</h4>
+					<h4>About <%= confessor.informal_address %>...</h4>
+					<img class="portrait thumb" />
 					<p>
-						Father Rick is the pastor of St. Michael the archangel parish, which is comprised of Holy Redeemer in Perry, St. Ignatius in Mount Horeb, and St. Mary of Pine Bluff. He loves the sacrament of confession and wants to offer it as often as possible.
+						<%= confessor.biography %>
 					</p>
 				</div>
+				<% end %>
 			</div>
 		</div>
-		<div class="column col1 text-centered">
-			<h3>IN</h3>
-			<h4>(busy)</h4>
+		<div class="column col1">
+			<h3><%= confessor.status_for_display %></h3>
+			<h4></h4>
 		</div>
+		<% if confessor.in? %>
 		<div class="column col3">
-			<h3>St. Mary, Pine Bluff</h3>
-			<p>
-				3673 County Highway P<br />
-				Cross Plains, WI 53528
+			<h3>@ <%= confessor.confession_location.nickname %></h3>
+			<p id="address" class="details">
+				<%= confessor.confession_location.address_line_1 %><br />
+				<%= confessor.confession_location.address_line_2 %>
 			</p>
 		</div>
-	</div>
+		<% end %>
+	</li>
+	<% end %>
 </ul>
 
 <script>
+/*
 	$('.item')
 		.mouseenter(function(e) {
 			$(this).find('.details').show();
@@ -50,4 +58,5 @@
 			$me.closest('.details').find('.deep-details').show();
 			$me.hide();
 		});
+		*/
 </script>

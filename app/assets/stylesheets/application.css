@@ -145,24 +145,31 @@ a {
 	padding: 0px 0px 20px 0px;
 }
 
-.column.text-centered {
-	text-align: center;
-}
-
 .column .details,
 .column .deep-details {
-	display: none;
+	/* display: none; */
 }
 
 .col1 {
-	width: auto;
+	width: 75px;
+	text-align: left;
 }
 
 .col2 {
-	width: 50%;
+	width: 33%;
 }
 
 .col3 {
 	width: auto;
 }
+
+.portrait.thumb {
+	height: 75px; 
+	width: 75px; 
+	float: left; 
+	border: solid black 1px;
+	margin: 0px 5px 5px 0px;
+	padding: 0px;
+}
+
 
