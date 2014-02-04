@@ -1,5 +1,27 @@
 <p id="notice"><%= notice %></p>
 
+<h1><%= @confessor.full_name_address %></h1>
+
+<% if @confessor.in? %>
+	<h2>You are IN the confessional</h2>
+<% else %>
+	<h2>You are OUT</h2>
+<% end %>	
+
+<% if @confessor.busy? %>
+	<h2>Your busy light is ON</h2>
+<% else %>
+	<h2>Your busy light is OFF</h2>
+<% end %>
+
+<h2>Details...</h2>
+<p><%= @confessor.confession_location.nickname %></p>
+<p>From ? until ?</p>
+<p><%= @confessor.confession_comments %></p>
+
+<%
+=begin
+%>
 <p>
   <strong>Name:</strong>
   <%= @confessor.full_name %>
@@ -38,4 +60,6 @@
 		</p>
 	<% end %>
 <% end %>
-
+<%
+=end
+%>

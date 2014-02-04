@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyConfessor - Administrator</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    
+    <%= javascript_include_tag "jquery-1.10.2.js" %>
+    <%= javascript_include_tag "underscore.js" %>
+    <%= javascript_include_tag "backbone.js" %>
+    <%= javascript_include_tag "handlebars.js" %>
+  	
+  	<%= csrf_meta_tags %>
+	<body>
+        <div id="banner">
+        	<a href="/"><%= image_tag "banner.png" %></a>
+        </div>
+    	<div id="login_container">
+			<% if user_account_signed_in? %>
+			  <strong><%= current_user_account.email %></strong><br />
+			  <%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
+			<% else %>
+			  <%= link_to "Priest", "/priest" %> |
+			  <%= link_to "Admin", "/admin" %>
+			<% end %>
+		</div>
+        <div id="header"></div>
+        <div id="content">
+			<% if alert %>
+			<p class="alert alert-error"><%= alert %></p>
+			<% end %>
+	
+			<%= yield %>
+        </div>
+        <div id="footer">
+        	<div id="toolbar">
+	            <a href="<%= confessor_requests_path %>" class="icon_container">
+	                <%= image_tag "icon_chat.png" %>
+	                <span class="icon_label">Pending Requests</span>
+	            </a>
+	            <a href="<%= user_accounts_path %>" class="icon_container">
+	                <%= image_tag "icon_people.png" %>
+	                <span class="icon_label">Manage Accounts</span>
+	            </a>
+	    	</div>
+        </div>
+	</body>
+<html>	

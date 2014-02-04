@@ -26,11 +26,20 @@ class ConfessorsController < ApplicationController
   end
 
   # GET /confessors/1/edit
+  # GET /confessors/1/edit/status
+  # GET /confessors/1/edit/settings
   def edit
-    @edit_mode = :full
+    if params[:mode] == "status"
+      render action: "status"
+    elsif params[:mode] == "settings"
+      render action: "settings"
+    else
+      @edit_mode = :full
+    end
   end
   
   # GET /confessors/1/status/edit
+=begin
   def edit_status
     if @is_accessing_self
       @edit_mode = :status
@@ -49,6 +58,7 @@ class ConfessorsController < ApplicationController
       redirect_to action: 'edit'
     end
   end
+=end
 
   # POST /confessors
   # POST /confessors.json

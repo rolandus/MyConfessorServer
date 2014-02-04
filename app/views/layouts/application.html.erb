@@ -15,10 +15,25 @@
   	<%= csrf_meta_tags %>
 	<body>
         <div id="banner">
-        	<%= image_tag "banner.png" %>
+        	<a href="/"><%= image_tag "banner.png" %></a>
         </div>
-        
-        <div id="header"></div>
+    	<div id="login_container">
+			<% if user_account_signed_in? %>
+			  <strong><%= current_user_account.email %></strong><br />
+			  <% if current_user_account.is_confessor %>
+			  	<%= link_to "Priest", controller: "main", action: "priest" %> |
+			  <% end %>
+			  <% if current_user_account.is_admin %>
+			  	<%= link_to "Admin", controller: "main", action: "admin" %> |
+			  <% end %>
+			  <%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
+			<% else %>
+			  <%= link_to "Priest", "/priest" %> |
+			  <%= link_to "Admin", "/admin" %>
+			<% end %>
+		</div>
+        <div id="header">
+        </div>
         <div id="content">
 			<% if alert %>
 			<p class="alert alert-error"><%= alert %></p>

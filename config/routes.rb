@@ -37,9 +37,11 @@ MyConfessorServer::Application.routes.draw do
   # Confessors
   resources :confessors, except: [:delete]
   resources :confessor_changes, only: [:index, :show]
-  get '/confessors/:id/status(.:format)', to: 'confessors#status', as: 'confessor_status'
-  get '/confessors/:id/status/edit(.:format)', to: 'confessors#edit_status', as: 'edit_confessor_status'
-  get '/confessors/:id/settings/edit(.:format)', to: 'confessors#edit_settings', as: 'edit_confessor_settings'
+  get '/confessors/:id/edit/:mode(.:format)', to: 'confessors#edit'
+
+  #get '/confessors/:id/status(.:format)', to: 'confessors#status', as: 'confessor_status'
+  #get '/confessors/:id/status/edit(.:format)', to: 'confessors#edit_status', as: 'edit_confessor_status'
+  #get '/confessors/:id/settings/edit(.:format)', to: 'confessors#edit_settings', as: 'edit_confessor_settings'
   
   
   # Confessor Requests

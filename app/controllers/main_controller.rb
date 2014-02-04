@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   before_filter :authenticate_user_account!, only: [:admin, :priest]
-  before_filter :restrict_to_admin, only: [:admin, :priest]
+  before_filter :restrict_to_admin, only: [:admin]
   
   # GET /
   def index
