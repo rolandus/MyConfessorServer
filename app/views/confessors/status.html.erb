@@ -2,64 +2,112 @@
 
 <h1><%= @confessor.full_name_address %></h1>
 
-<% if @confessor.in? %>
-	<h2>You are IN the confessional</h2>
-<% else %>
-	<h2>You are OUT</h2>
-<% end %>	
-
-<% if @confessor.busy? %>
-	<h2>Your busy light is ON</h2>
-<% else %>
-	<h2>Your busy light is OFF</h2>
-<% end %>
-
-<h2>Details...</h2>
-<p><%= @confessor.confession_location.nickname %></p>
-<p>From ? until ?</p>
-<p><%= @confessor.confession_comments %></p>
-
-<%
-=begin
-%>
-<p>
-  <strong>Name:</strong>
-  <%= @confessor.full_name %>
-</p>
-
-<p>
-  <strong>Confession status:</strong>
-  <% if @confessor.available? then "IN" end %>
-  <% else if @confessor.busy? then "BUSY" end %>
-  <% else then "OUT" end %>
-</p>
-
-<% if @confessor.available? or @confessor.busy? %>
-	<p>
-	  <strong>Confession location:</strong>
-	  <%= @confessor.confession_location.name %>
-	</p>
-	
-	<p>
-	  <strong>Confession start time:</strong>
-	  <%= @confessor.confession_start_time %>
-	</p>
-	
-	<p>
-	  <strong>Confession end time:</strong>
-	  <%= @confessor.confession_end_time %>
-	</p>
-	
-	<% if current_user_account %>
-		<%= form_for(@confessor) do |f| %>
+<div class="status_container">
+	<div class="status_item_container">
+		<% if @confessor.in? %>
+			<div class="status_item">
+				<h2>You are IN the confessional</h2>
+			</div>
+			<div class="status_item_icon">
+				<%= form_for(@confessor) do |f| %>
+					<%= f.hidden_field :confession_status_id, :value => "3" %>
+					<%= f.hidden_field :source, :value => @source %>
+					<%= f.submit "Leave Confessional", :id => "leave_confession_commit" %>
+				<% end %>
+			</div>
+		<% else %>
+			<div class="status_item">
+				<h2>You are OUT</h2>
+			</div>
+			<div class="status_item_icon">
+				<input type="button" value="Enter the Confessional" id="enter_confession_commit" />
+			</div>
 		<% end %>
-	<% else %>
-		<p>
-		  <strong>Confession comments:</strong>
-		  <%= @confessor.confession_comments %>
-		</p>
+	</div>
+	
+	<% if @confessor.in? %>
+		<div class="status_item_container">
+			<% if @confessor.busy? %>
+				<div class="status_item">
+					<h2>Your busy light is ON</h2>
+				</div>	
+				<div class="status_item_icon">
+					<%= form_for(@confessor) do |f| %>
+						<%= f.hidden_field :confession_status_id, :value => "1" %>
+						<%= f.hidden_field :source, :value => @source %>
+						<%= f.submit "Turn Off", :id => "leave_confession_commit" %>
+					<% end %>
+				</div>
+			<% else %>
+				<div class="status_item">
+					<h2>Your busy light is OFF</h2>
+				</div>	
+				<div class="status_item_icon">
+					<%= form_for(@confessor) do |f| %>
+						<%= f.hidden_field :confession_status_id, :value => "2" %>
+						<%= f.hidden_field :source, :value => @source %>
+						<%= f.submit "Turn On", :id => "leave_confession_commit" %>
+					<% end %>
+				</div>
+			<% end %>
+		</div>
+		
+		<div class="status_item_container">
+			<div id="status_container">
+				<div class="status_item">
+					<h2>Details...</h2>
+					<p><%= @confessor.confession_location.nickname %></p>
+					<p>From ? until ?</p>
+					<p><%= @confessor.confession_comments %></p>
+				</div>
+				<div class="status_item_icon">
+					<input type="button" value="Edit Details" id="edit_details_button" />
+				</div>
+			</div>
+		</div>
 	<% end %>
-<% end %>
-<%
-=end
-%>
+	
+	<div id="status_form_container" style="display:none;">
+		<%= form_for(@confessor) do |f| %>
+			<div class="field">
+		  		<%= f.label :confession_location, "Location:" %><br />
+		    	<%= collection_select(:confessor, :confession_location_id, ConfessionLocation.all, :id, :name, :prompt => "choose a location", :include_blank => true)%>
+		  	</div>
+		  	<div class="field">
+		    	<%= f.label :confession_end_time, "Until:" %><br />
+		    	<%= f.datetime_select :confession_end_time %>
+			</div>
+		  	<div class="field">
+		    	<%= f.label :confession_comments, "Comments/Instructions:" %><br />
+		    	<%= f.text_area :confession_comments %>
+		  	</div>
+		  	<%= f.submit %>
+		  	<% val = @confessor.out? ? 1 : @confessor.confession_status_id %>
+		  	<%= f.hidden_field :confession_status_id, :value => val %>
+		  	<%= f.hidden_field :source, :value => @source %>
+		  	<input type="button" name="cancel" value="Cancel" id="status_update_cancel" />
+	  	<% end %>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$("#enter_confession_commit").on("click", showDetailsForm);
+		$("#status_update_cancel").on("click", hideDetailsForm);
+		$("#edit_details_button").on("click", toggleDetailsForm);
+	});
+	
+	var showDetailsForm = function() {
+		$("#status_form_container").show();
+		
+	};
+	
+	var hideDetailsForm = function() {
+		$("#status_form_container").hide();
+	};
+	
+	var toggleDetailsForm = function() {
+		$("#status_form_container").toggle();
+	};
+</script>
+

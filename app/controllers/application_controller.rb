@@ -2,22 +2,30 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
-  skip_before_filter :verify_authenticity_token  #rscott - skip CSRF token check TODO: Figure out how to reenable this in tandem with Ajax.
+  #skip_before_filter :verify_authenticity_token  #rscott - skip CSRF token check TODO: Figure out how to reenable this in tandem with Ajax.
 
+  layout :set_layout 
+  
+  # After signing in, decide whether to redirect to the priest page or the admin page. 
   def after_sign_in_path_for(resource)
+    if current_user_account.is_confessor
+      return priest_url
+    else
+      return admin_url
+    end
     #rscott - This somehow makes Backbone think that login succeeded vs. failed. They both return a 302, though. This one just makes it redirect to the user you logged in as. I don't get it.
     #user_account_url(resource, :format => :json)
-    if current_user_account.is_admin
-      return confessor_requests_url
-    else
-      return "" #Default page URL for priest
-    end
   end
 
+  # After signing out, redirect to the sign in page.
   def after_sign_out_path_for(resource)
     new_user_account_session_url
   end
 
+  ############
+  # Utility functions to be used as before filters.
+  ############
+  
   def restrict_to_admin
     if not user_account_signed_in? or not current_user_account.is_admin #current_user_account.account_role_ids.min <= 2
       respond_to do |format|
@@ -35,6 +43,10 @@ class ApplicationController < ActionController::Base
       end
     end 
   end
+  
+  ############
+  # Utilities used by subclasses
+  ############
   
   #Save off an audit of what changed.
   def save_confessor_history (comments)
@@ -70,6 +82,19 @@ class ApplicationController < ActionController::Base
   end
 
 private
+
+  # Set the correct layout
+  def set_layout
+    if current_user_account
+      if current_user_account.is_confessor
+        return "priest_inside"
+      else
+        return "admin_inside"
+      end      
+    else
+      return "application"
+    end
+  end
 =begin
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers

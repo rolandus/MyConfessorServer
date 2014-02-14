@@ -15,9 +15,14 @@ class ConfessorsController < ApplicationController
   def show
   end
 
-  # GET /confessors/1/status
+  # GET /priest/status
+  # GET /admin/confessors/1/status 
   def status
-    # Show status only
+    if params[:id]
+      @source = :confessor_status
+    else
+      @source = :priest_status
+    end
   end
   
   # GET /confessors/new
@@ -29,36 +34,7 @@ class ConfessorsController < ApplicationController
   # GET /confessors/1/edit/status
   # GET /confessors/1/edit/settings
   def edit
-    if params[:mode] == "status"
-      render action: "status"
-    elsif params[:mode] == "settings"
-      render action: "settings"
-    else
-      @edit_mode = :full
-    end
   end
-  
-  # GET /confessors/1/status/edit
-=begin
-  def edit_status
-    if @is_accessing_self
-      @edit_mode = :status
-      render action: 'edit'
-    else
-      redirect_to action: 'edit'
-    end
-  end
-  
-  # Get /confessors/1/settings/edit
-  def edit_settings
-    if @is_accessing_self
-      @edit_mode = :settings
-      render action: 'edit'
-    else
-      redirect_to action: 'edit'
-    end
-  end
-=end
 
   # POST /confessors
   # POST /confessors.json
@@ -86,7 +62,7 @@ class ConfessorsController < ApplicationController
       if current_user_account.is_admin and params[:confessor_change]
         change_comments = params[:confessor_change][:change_comments]
       end
-      
+
       #Perform the update
       if @confessor.update(confessor_params)
         # Hacky way of determining if the current update should be logged or not. 
@@ -94,7 +70,15 @@ class ConfessorsController < ApplicationController
         if (params[:confessor][:confessor_office_id])
           save_confessor_history(change_comments)
         end 
-        format.html { redirect_to @confessor, notice: 'Confessor was successfully updated.' }
+
+        redirect_target = @confessor
+        if params[:confessor][:source] == :priest_status
+          redirect_target = priest_status_url
+        elsif params[:confessor][:source] == :confessor_status
+          redirect_target = confessor_status_url
+        end
+        
+        format.html { redirect_to redirect_target }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -105,7 +89,11 @@ class ConfessorsController < ApplicationController
 
   private
     def set_confessor
-      @confessor = Confessor.find(params[:id])
+      if params[:id]
+        @confessor = Confessor.find(params[:id])
+      else
+        @confessor = current_user_account.confessor
+      end
     end
 
     # Confessor is accessing himself if he's logged in, is a confessor, and has the same confessor ID as the one requested.

@@ -7,19 +7,23 @@ class MainController < ApplicationController
     @confessors = Confessor.all
   end
   
-  #GET /test
-  def test
-  end
-  
   #GET /admin
   def admin
-    #render layout: "admin"  #This is the layout for the JS site
     redirect_to confessor_requests_url
   end
 
   #GET /priest
   def priest
-    #render layout: "priest"  #This is the layout for the JS site
+    if (current_user_account.is_confessor)
+      redirect_to priest_status_url(id: current_user_account.confessor)
+    else
+      redirect_to admin_url
+    end
+  end
+
+
+  #GET /test
+  def test
   end
   
   #GET /ping

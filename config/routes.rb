@@ -1,9 +1,19 @@
 MyConfessorServer::Application.routes.draw do
 
-  root 'main#index'                  #Main site page
-  get 'admin', to: 'main#admin'      #Admin home page
-  get 'priest', to: 'main#priest'    #Priest home page
+  root 'main#index'                            #Main site page
   
+  get 'admin' => 'main#admin', as: :admin      #Admin home page
+  get 'admin/confessors/:id/status' => 'confessors#status', as: :confessor_status
+
+  get 'priest' => 'main#priest', as: :priest   #Priest home page
+  get 'priest/status' => 'confessors#status', as: :priest_status
+
+
+
+
+
+
+  #TODO These were used by the json stuff. Delete?  
   get 'test', to: 'main#test'
   get 'ping', to: 'main#ping'
   
@@ -37,8 +47,8 @@ MyConfessorServer::Application.routes.draw do
   # Confessors
   resources :confessors, except: [:delete]
   resources :confessor_changes, only: [:index, :show]
-  get '/confessors/:id/edit/:mode(.:format)', to: 'confessors#edit'
 
+  #(.:format) means an optional param following a period, that becomes the :format param.
   #get '/confessors/:id/status(.:format)', to: 'confessors#status', as: 'confessor_status'
   #get '/confessors/:id/status/edit(.:format)', to: 'confessors#edit_status', as: 'edit_confessor_status'
   #get '/confessors/:id/settings/edit(.:format)', to: 'confessors#edit_settings', as: 'edit_confessor_settings'

@@ -114,7 +114,7 @@ body {
 }
 
 #footer {
-	margin: 20px 0px 50px 0px;
+	margin: 50px 0px 50px 0px;
 }
 
 ul {
@@ -184,5 +184,22 @@ a {
 	padding: 0px;
 }
 
+.status_container {
+}
 
+.status_item_container {
+}
 
+.status_item {
+	display: inline-block;
+  	width: 75%;
+}
+
+.status_item_icon {
+	display: inline-block;	
+}
+
+.status_item_icon img {
+	width: 75px;
+	height: 75px;	
+}

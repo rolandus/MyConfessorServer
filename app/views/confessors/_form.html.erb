@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-<% if @edit_mode == :full || @edit_mode == :status then %>
+<% if @edit_mode == :full || @edit_mode == :status %>
   <div class="field">
     <%= f.label :confession_status %><br>
     <%= collection_radio_buttons(:confessor, :confession_status_id, ConfessionStatus.all, :id, :name)%>
@@ -34,7 +34,7 @@
   </div>
 <% end %>
 
-<% if @edit_mode == :full || @edit_mode == :settings then %>
+<% if @edit_mode == :full || @edit_mode == :settings %>
   <div class="field">
     <%= f.label :confessor_office %><br>
     <%= collection_radio_buttons(:confessor, :confessor_office_id, ConfessorOffice.all, :id, :name)%>
@@ -53,7 +53,7 @@
   </div>
 <% end %>
 
-<% if @edit_mode == :full then %>
+<% if @edit_mode == :full %>
   <div class="field">
     <%= f.label :user_account %><br>
     <%= collection_select(:user_account, :user_account_id, UserAccount.all, :id, :username)%>
