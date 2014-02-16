@@ -19,9 +19,9 @@ class ConfessorsController < ApplicationController
   # GET /admin/confessors/1/status 
   def status
     if params[:id]
-      @source = :confessor_status
+      @source = "confessor_status"
     else
-      @source = :priest_status
+      @source = "priest_status"
     end
   end
   
@@ -72,9 +72,9 @@ class ConfessorsController < ApplicationController
         end 
 
         redirect_target = @confessor
-        if params[:confessor][:source] == :priest_status
+        if params[:confessor][:source] == "priest_status"
           redirect_target = priest_status_url
-        elsif params[:confessor][:source] == :confessor_status
+        elsif params[:confessor][:source] == "confessor_status"
           redirect_target = confessor_status_url
         end
         

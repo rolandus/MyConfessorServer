@@ -62,6 +62,14 @@ class UserAccount < ActiveRecord::Base
     self.first_name + ' ' + self.last_name
   end
   
+  def formal_name
+    if self.is_confessor
+      self.confessor.full_name_address
+    else
+      self.full_name
+    end
+  end
+  
 protected
   # Remove all instances of (,),- or whitespace from phone number
   def normalize_phone_numbers

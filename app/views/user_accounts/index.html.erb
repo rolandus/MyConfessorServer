@@ -1,3 +1,42 @@
+<% is_super = current_user_account.is_superadmin %>
+
+
+<h1><%= is_super ? "User Accounts" : "Confessor Accounts" %></h1>
+
+<div class="nav_links">
+	<% if is_super %>
+	<%= link_to "confessors", user_accounts_path(filter: 'confessors') %>
+	| <%= link_to "administrators", user_accounts_path(filter: 'admins') %>
+	| <%= link_to "new account", new_user_account_path %>
+	<% end %>
+</div>
+
+<ul id="confessor_request_list">
+<% @user_accounts.each do |user_account| %>
+	<li>
+		<div class="list_item">
+			<div class="col25"><%= user_account.formal_name %></div>
+			<div class="col33">
+				<% if user_account.is_confessor %>
+					<%= user_account.confessor.diocese.name_and_state_abbr %>
+				<% end %>
+			</div>
+			<div class="col10">
+				<% if !user_account.is_admin or is_super or (user_account.id == current_user_account.id) %>
+					<%= link_to "edit...", edit_user_account_path(id: user_account.id) %>
+				<% end %>
+			</div>
+		</div>
+	</li>
+<% end %>
+</ul>
+
+<% if !is_super %>
+	<%= link_to "create a new confessor...", new_user_account_path %>
+<% end %>
+
+<%
+=begin%>
 <h1>User Accounts</h1>
 
 <table>
@@ -57,9 +96,9 @@
 	    <% end %>
 	<% end %>
 </ul>
-<% 
-=end %>
 
 <br>
 
 <%= link_to 'New User account', new_user_account_path %>
+<% 
+=end %>

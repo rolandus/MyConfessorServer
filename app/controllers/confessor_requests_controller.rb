@@ -8,7 +8,14 @@ class ConfessorRequestsController < ApplicationController
   # GET /confessor_requests
   # GET /confessor_requests.json
   def index
-    @confessor_requests = ConfessorRequest.all
+    @filter = params[:filter]
+    if !@filter then @filter = "pending" end
+    case @filter
+    when "pending"
+      @confessor_requests = ConfessorRequest.where(confessor_request_status_id: 2)
+    when "new"
+      @confessor_requests = ConfessorRequest.where(confessor_request_status_id: 1)
+    end
   end
 
   # GET /confessor_requests/1

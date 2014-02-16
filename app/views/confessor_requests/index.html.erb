@@ -1,5 +1,25 @@
-<h1>Listing confessor_requests</h1>
+<h1>Confessor Requests</h1>
 
+<div class="nav_links">
+	<%= link_to "in progress", confessor_requests_path(filter: 'pending') %> |
+	<%= link_to "new", confessor_requests_path(filter: 'new') %>  
+</div>
+
+<ul id="confessor_request_list">
+<% @confessor_requests.each do |confessor_request| %>
+	<li>
+		<div class="list_item">
+			<div class="col15"><%= confessor_request.created_at.strftime('%b %d') %></div>
+			<div class="col25"><%= confessor_request.full_name %></div>
+			<div class="col33"><%= confessor_request.diocese.name_and_state_abbr %></div>
+			<div class="col"><%= link_to @filter == 'pending' ? "Continue..." : "Start...", confessor_request_path(id: confessor_request.id, start: 1) %></div>
+		</div>
+	</li>
+<% end %>
+</ul>
+
+<%
+=begin%>
 <table>
   <thead>
     <tr>
@@ -17,18 +37,21 @@
   <tbody>
     <% @confessor_requests.each do |confessor_request| %>
       <tr>
-        <td><%= confessor_request.first_name %></td>
-        <td><%= confessor_request.last_name %></td>
-        <td><%= confessor_request.email %></td>
-        <td><%= confessor_request.diocese.name %></td>
-        <td><%= confessor_request.state.name %></td>
-        <td><%= confessor_request.confessor_request_status.name %></td>
-        <td><%= link_to 'Show', confessor_request %></td>
-        <td><%= link_to 'Edit', edit_confessor_request_path(confessor_request) %></td>
+        <li><%= confessor_request.first_name %></li>
+        <li><%= confessor_request.last_name %></li>
+        <li><%= confessor_request.email %></li>
+        <li><%= confessor_request.diocese.name %></li>
+        <li><%= confessor_request.state.name %></li>
+        <li><%= confessor_request.confessor_request_status.name %></li>
+        <li><%= link_to 'Show', confessor_request %></li>
+        <li><%= link_to 'Edit', edit_confessor_request_path(confessor_request) %></li>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br>
+<%
+=end
+%>
 
 <%#= link_to 'New Confessor request', new_confessor_request_path %>

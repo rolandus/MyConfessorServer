@@ -203,3 +203,37 @@ a {
 	width: 75px;
 	height: 75px;	
 }
+
+
+.nav_links {
+	margin: 20px 0px 20px 0px;
+}
+
+
+/* General list item styles. */
+
+.list_item > div {
+	display: inline-block;
+}
+
+.col10 {
+	width: 10%;
+}
+
+.col15 {
+	width: 15%;
+}
+
+.col15 {
+	width: 15%;
+}
+
+.col25 {
+	width: 25%;
+}
+
+.col33 {
+	width: 33%;
+}
+
+

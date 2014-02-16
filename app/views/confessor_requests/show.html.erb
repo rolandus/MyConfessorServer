@@ -1,3 +1,15 @@
+<h1>
+	<a href="<%= @confessor_request.google_url %>">
+		<%= @confessor_request.full_name %> 
+	</a>
+</h1>
+
+<% @edit_mode = 'approve' %>
+<%= render 'form' %>
+
+<%
+=begin
+%>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -35,3 +47,6 @@
 
 <%= link_to 'Edit', edit_confessor_request_path(@confessor_request) %> |
 <%= link_to 'Back', confessor_requests_path %>
+<%
+=end 
+%>

@@ -1,20 +1,39 @@
 class UserAccountsController < ApplicationController
-  before_filter :authenticate_user_account! #One must be logged in to do anything with a UserAccount
-  before_filter :restrict_to_superuser, except: [:show, :edit, :update]
+  before_filter :authenticate_user_account! #Must be logged in to do anything with a UserAccount
+  
+  #before_filter :restrict_to_superuser, except: [:index, :show, :edit, :update]
 
   before_action :set_user_account, only: [:show, :edit, :update, :destroy]
-  before_action :restrict_to_self, only: [:show, :edit, :update]
+  
+  #before_action :restrict_to_self, only: [:show, :edit, :update]
   
   # GET /user_accounts
   # GET /user_accounts.json
   def index
-    @user_accounts = UserAccount.all
+    @filter = params[:filter]
+    if !@filter then @filter = "confessors" end
+    case @filter
+    when "confessors"
+      @user_accounts = UserAccount.joins(:account_roles ).where(account_roles: {id: 3})
+    when "admins"
+      if current_user_account.is_superadmin
+        @user_accounts = UserAccount.joins(:account_roles).where(account_roles: {id: 2}).where.not(id: 1)
+      else
+        redirect_to user_accounts_path
+      end
+    when "super"
+      if current_user_account.is_superadmin
+        @user_accounts = UserAccount.joins(:account_roles).where(account_roles: {id: 1}).where.not(id: 1)
+      else
+        redirect_to user_accounts_path
+      end
+    end
   end
 
   # GET /user_accounts/1
   # GET /user_accounts/1.json
-  def show
-  end
+  #def show    
+  #end
 
   # GET /user_accounts/new
   def new
@@ -34,8 +53,15 @@ class UserAccountsController < ApplicationController
   # POST /user_accounts
   # POST /user_accounts.json
   def create
+    if not validate_admin_priviledges
+      render text: '{ error: "401 You don\'t have the ability to create admin users." }', status: 401
+      return
+    end
+    
     @user_account = UserAccount.new(user_account_params)
+    
     @user_account.account_status_id = 2  #2 = Active. Always make new users active.
+    
     respond_to do |format|
       saved = @user_account.save()
       audited = save_to_history("Created")
@@ -81,9 +107,28 @@ class UserAccountsController < ApplicationController
   #end
 
   private
+  
+    # Validate admin priviledges
+    def validate_admin_priviledges
+      #Don't allow non-admin users to create admins
+      roles = user_account_params[:account_role_ids]
+      if (roles.include? '1' or roles.include? '2') and !current_user_account.is_superadmin
+        return false
+      end
+      return true
+    end
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_user_account
-      @user_account = UserAccount.find(params[:id])
+      if params[:id] == "1"
+        render text: '{ error: "401 Unauthorized access" }', status: 401  #Don't allow getting the system user.
+      else        
+        @user_account = UserAccount.find(params[:id])
+      end
+      
+      if @user_account.is_superadmin and !current_user_account.is_superadmin
+        render text: '{ error: "401 Unauthorized access" }', status: 401  #Only allow superadmins to access admins
+      end
     end
     
     # Helper to only allow this action on self, unless you are a superuser
