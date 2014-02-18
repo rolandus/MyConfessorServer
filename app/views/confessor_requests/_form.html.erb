@@ -8,6 +8,54 @@
 					<li><%= msg %></li>
 				<% end %>
 			</ul>
+		</div>
+	<% end %>
+	
+	<div class="field">
+		<%= f.label :first_name, "First name" %><br>
+		<%= f.text_field :first_name %>
+	</div>
+	<div class="field">
+		<%= f.label :last_name, "Last name" %><br>
+		<%= f.text_field :last_name %>
+	</div>
+	
+	<div class="field">
+		<%= f.label :diocese, "Diocese" %><br>
+		<%= collection_select(:confessor_request, :diocese_id, Diocese.all, :id, :name)%>
+	</div>
+
+	<div class="field">
+		<%= f.label :email, "Email" %><br>
+		<%= f.text_field :email %>
+	</div>
+	
+	<div class="actions">
+		<% if @edit_mode == "approval" %>
+			<%= f.submit 'Pend' %>
+			<%= f.submit 'Approve' %>
+			<%= f.submit 'Deny' %>
+		<% else %>
+			<%= f.submit 'Submit Request' %>
+		<% end %>
+	</div>	
+<% end %>
+
+
+
+
+<%
+=begin%>
+<%= form_for(@confessor_request) do |f| %>
+
+	<% if @confessor_request.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@confessor_request.errors.count, "error") %> prohibited this confessor_request from being saved:</h2>
+			<ul>
+				<% @confessor_request.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
 			</div>
 	<% end %>
 	  

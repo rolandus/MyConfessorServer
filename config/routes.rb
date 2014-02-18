@@ -9,6 +9,7 @@ MyConfessorServer::Application.routes.draw do
   # Priest pages
   get 'priest' => 'main#priest', as: :priest   #Priest home page
   get 'priest/status' => 'confessors#status', as: :priest_status
+  get 'priest/request_account' => 'confessor_requests#new', as: :new_confessor_request
 
   #TODO These were used by the json stuff. Delete?  
   get 'test', to: 'main#test'
@@ -22,7 +23,7 @@ MyConfessorServer::Application.routes.draw do
   #devise_for :user_accounts
   devise_for :user_accounts, :only => :sessions
   #:controllers => { :registrations => "user_accounts" } #Other controller optiopns are :sessions and :passwords. TODO: need to circle back and clean up all routes to the bare minimum needed.
-
+  
   scope '/admin' do
     # Begin Static Resources - can comment these out later, unless we still do the JS site.
     resources :states, only: [:index, :show]
@@ -47,7 +48,7 @@ MyConfessorServer::Application.routes.draw do
     resources :confessor_changes, only: [:index, :show]
     
     # Confessor Requests
-    resources :confessor_requests, except: [:delete]
+    resources :confessor_requests, except: [:delete, :new]
     resources :confessor_request_changes, only: [:index, :show]
   end
 

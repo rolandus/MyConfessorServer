@@ -1,7 +1,7 @@
 class ConfessorRequestsController < ApplicationController
-  before_action :set_confessor_request, only: [:show, :confirm, :edit, :update, :destroy]
-  before_filter :authenticate_user_account!, except: [:new, :create, :confirm]
-  before_filter :restrict_to_admin, except: [:new, :create, :confirm]
+  before_action :set_confessor_request, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user_account!, except: [:new, :create]
+  before_filter :restrict_to_admin, except: [:new, :create]
   
   layout "admin_inside"
     
@@ -25,15 +25,15 @@ class ConfessorRequestsController < ApplicationController
 
   # GET /confessor_requests/new
   def new
-    @confessor_request = ConfessorRequest.new
-    @edit_mode = :new
-    render layout: "application"
+    if params[:status] == "submitted"
+      @confessor_request = ConfessorRequest.find(params[:id])
+      render "confirm"
+    else
+      @confessor_request = ConfessorRequest.new
+      render layout: "application"
+    end
   end
   
-  # GET /confessor_requests/confirm
-  def confirm    
-  end
-
   # GET /confessor_requests/1/edit
   def edit
     @edit_mode = :edit
@@ -44,13 +44,12 @@ class ConfessorRequestsController < ApplicationController
   def create
     @confessor_request = ConfessorRequest.new(confessor_request_params)
     @confessor_request.confessor_request_status_id = 1 #Set the status to 1-Created.
-    @confessor_request.state_id = @confessor_request.diocese.state_id
-
+    @confessor_request.confirmation_number = SecureRandom.hex[0, 8]
+    
     respond_to do |format|
       if @confessor_request.save
-        save_to_history @confessor_request.id, "Created"
-        format.html { redirect_to @confessor_request, notice: "Your request has been submitted. We'll send you an email once we've verified your identity." }
-        format.html { redirect_to action: 'confirm' }
+        save_to_history @confessor_request.id
+        format.html { redirect_to new_confessor_request_path(:status => "submitted", :id => @confessor_request.id) }        
         #format.json { render action: 'show', status: :created, location: @confessor_request }
       else
         format.html { render action: 'new' }
@@ -58,17 +57,29 @@ class ConfessorRequestsController < ApplicationController
       end
     end
   end
-  
-  
-  def confirm_request  
-  end
 
   # PATCH/PUT /confessor_requests/1
   # PATCH/PUT /confessor_requests/1.json
   def update
+    case params[:commit]
+    when "Pend"
+      if @confessor_request.is_created?
+        @confessor_request.confessor_request_status_id = 2
+      end
+    when "Approve"        
+      @confessor_request.confessor_request_status_id = 3
+    when "Deny"
+      if @confessor_request.is_created? or @confessor_request.is_pending?
+        @confessor_request.confessor_request_status_id = 4
+      end
+    end
+
     respond_to do |format|
-      if @confessor_request.update(confessor_request_params) and save_to_history @confessor_request.id, params[:confessor_request_change][:change_comments]
-        format.html { redirect_to @confessor_request, notice: 'Confessor request was successfully updated.' }
+      if @confessor_request.update(confessor_request_params) and save_to_history @confessor_request.id
+        if @confessor_request.confessor_request_status_id_changed? and @confessor_request.is_approved?
+          #Factor our user creation code and call it from here. Needs to create a change audit.
+        end
+        format.html { redirect_to @confessor_request }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -83,10 +94,9 @@ class ConfessorRequestsController < ApplicationController
       @confessor_request = ConfessorRequest.find(params[:id])
     end
 
-    def save_to_history (confessor_request_id, comments)
+    def save_to_history (confessor_request_id)
       confessor_request_change = ConfessorRequestChange.new(confessor_request_params)
       confessor_request_change.confessor_request_id = confessor_request_id
-      confessor_request_change.change_comments = comments
       confessor_request_change.changed_by_user_account_id = 2 #TODO - This needs to be the logged-in user!
       confessor_request_change.save
     end

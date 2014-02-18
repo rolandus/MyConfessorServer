@@ -2,9 +2,10 @@
 	<a href="<%= @confessor_request.google_url %>">
 		<%= @confessor_request.full_name %> 
 	</a>
+	(<%= @confessor_request.display_status %>)
 </h1>
 
-<% @edit_mode = 'approve' %>
+<% @edit_mode = 'approval' %>
 <%= render 'form' %>
 
 <%

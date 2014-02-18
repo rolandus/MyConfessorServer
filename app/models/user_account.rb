@@ -7,6 +7,7 @@ class UserAccount < ActiveRecord::Base
   belongs_to :account_status, inverse_of: :user_accounts  
   has_one :confessor, inverse_of: :user_account
   has_and_belongs_to_many :account_roles
+  has_many :confessor_requests, inverse_of: :user_account
   
   # Association for changes to this UserAccount (NOT changes *made* by this UserAccount)
   has_many :user_account_changes, inverse_of: :user_account
@@ -17,6 +18,13 @@ class UserAccount < ActiveRecord::Base
   
   # Association for changes to a ConfessorRequest made by this user account
   has_many :confessor_request_changes, inverse_of: :user_account
+
+  # Association for changes to a ConfessionLocation made by this user account
+  has_many :confession_location_changes, inverse_of: :user_account
+  
+  #####################
+  # Validations, etc...
+  #####################
   
   validates :first_name, :last_name, :account_status, presence: true
   validates :first_name, :last_name, :email, :home_phone, :work_phone, :mobile_phone, length: { maximum: 64 }

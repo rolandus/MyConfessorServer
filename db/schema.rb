@@ -93,7 +93,8 @@ ActiveRecord::Schema.define(version: 20131129033211) do
     t.integer  "diocese_id"
     t.integer  "state_id"
     t.integer  "confessor_request_status_id"
-    t.text     "change_comments"
+    t.integer  "user_account_id"
+    t.text     "comments"
     t.integer  "changed_by_user_account_id"
     t.integer  "confessor_request_id"
     t.datetime "created_at"
@@ -115,6 +116,9 @@ ActiveRecord::Schema.define(version: 20131129033211) do
     t.integer  "diocese_id"
     t.integer  "state_id"
     t.integer  "confessor_request_status_id"
+    t.integer  "user_account_id"
+    t.text     "comments"
+    t.string   "confirmation_number"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -122,6 +126,7 @@ ActiveRecord::Schema.define(version: 20131129033211) do
   add_index "confessor_requests", ["confessor_request_status_id"], name: "index_confessor_requests_on_confessor_request_status_id"
   add_index "confessor_requests", ["diocese_id"], name: "index_confessor_requests_on_diocese_id"
   add_index "confessor_requests", ["state_id"], name: "index_confessor_requests_on_state_id"
+  add_index "confessor_requests", ["user_account_id"], name: "index_confessor_requests_on_user_account_id"
 
   create_table "confessors", force: true do |t|
     t.integer  "confessor_office_id"
