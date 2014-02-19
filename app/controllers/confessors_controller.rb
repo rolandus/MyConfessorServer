@@ -43,7 +43,7 @@ class ConfessorsController < ApplicationController
     @confessor.user_account_id = params[:user_account][:user_account_id]
     respond_to do |format|
       if @confessor.save 
-        save_confessor_history("Created")
+        save_confessor_history(@confessor, "Created")
         format.html { redirect_to @confessor, notice: 'Confessor was successfully created: ' + params[:user_account][:user_account_id] }
         format.json { render action: 'show', status: :created, location: @confessor }
       else
@@ -68,7 +68,7 @@ class ConfessorsController < ApplicationController
         # Hacky way of determining if the current update should be logged or not. 
         #The real way to check this would be to make sure something other than confession info was updated.        
         if (params[:confessor][:confessor_office_id])
-          save_confessor_history(change_comments)
+          save_confessor_history(@confessor, change_comments)
         end 
 
         redirect_target = @confessor

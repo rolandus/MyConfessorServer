@@ -30,18 +30,30 @@ class ConfessorRequest < ActiveRecord::Base
     end
   end
   
+  def set_created
+    self.confessor_request_status_id = 1
+  end  
   def is_created?
     self.confessor_request_status_id == 1
   end
   
+  def pend
+    self.confessor_request_status_id = 2
+  end
   def is_pending?
     self.confessor_request_status_id == 2
   end
 
+  def approve
+    self.confessor_request_status_id = 3
+  end  
   def is_approved?
     self.confessor_request_status_id == 3
   end
 
+  def deny
+    self.confessor_request_status_id = 4
+  end
   def is_denied?
     self.confessor_request_status_id == 4
   end

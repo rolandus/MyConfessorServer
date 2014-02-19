@@ -64,7 +64,7 @@ class UserAccountsController < ApplicationController
     
     respond_to do |format|
       saved = @user_account.save()
-      audited = save_to_history("Created")
+      audited = save_user_account_history(@user_account, "Created")
       confessor_handled = handle_confessor_info
       if saved && audited && confessor_handled
         format.html { redirect_to @user_account, notice: 'User account was successfully created.' }
@@ -85,7 +85,7 @@ class UserAccountsController < ApplicationController
       if params[:user_account_change]
         comments = params[:user_account_change][:change_comments]
       end
-      if @user_account.update(user_account_params) and save_to_history(comments) and handle_confessor_info
+      if @user_account.update(user_account_params) and save_user_account_history(@user_account, comments) and handle_confessor_info
         format.html { redirect_to @user_account, notice: 'User account was successfully updated.' }
         format.json { head :no_content }
       else
@@ -146,7 +146,7 @@ class UserAccountsController < ApplicationController
           @confessor = @user_account.confessor
           @confessor.update(confessor_params)
           if @confessor.changed?
-            save_confessor_history(params[:user_account_change][:change_comments]) #Copy change comments into confessor change, too.
+            save_confessor_history(@confessor, params[:user_account_change][:change_comments]) #Copy change comments into confessor change, too.
           end
         else
           # We are creating a new confessor...
@@ -154,7 +154,7 @@ class UserAccountsController < ApplicationController
           @confessor.user_account = @user_account
           @confessor.confession_status_id = 1
           @confessor.save()
-          save_confessor_history("Created")
+          save_confessor_history(@confessor, "Created")
           #@user_account.confessor = @confessor
           @user_account.save()
         end
@@ -164,6 +164,8 @@ class UserAccountsController < ApplicationController
     end
 
     #Helper to save UserAccount changes to the history
+    # Has been moved to the ApplicationController
+=begin
     def save_to_history (comments)
       user_account_change = UserAccountChange.new(user_account_change_params)
       user_account_change.user_account_id = @user_account.id
@@ -172,15 +174,17 @@ class UserAccountsController < ApplicationController
       user_account_change.changed_by_user_account_id = current_user_account.id
       user_account_change.save()
     end
+=end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_account_params
       params.require(:user_account).permit(:first_name, :last_name, :password, :account_status_id, :email, :home_phone, :work_phone, :mobile_phone, :account_role_ids => [])
     end
     
-    def user_account_change_params
-      params.require(:user_account).permit(:first_name, :last_name, :account_status_id, :home_phone, :work_phone, :mobile_phone)
-    end
+    # List is now spelled out in ApplicationController
+    #def user_account_change_params
+    #  params.require(:user_account).permit(:first_name, :last_name, :account_status_id, :home_phone, :work_phone, :mobile_phone)
+    #end
     
     # Allowed confessor params are defined in application_controller
 end

@@ -48,22 +48,38 @@ class ApplicationController < ActionController::Base
   # Utilities used by subclasses
   ############
   
-  #Save off an audit of what changed.
-  def save_confessor_history (comments)
-    confessor_change = ConfessorChange.new()
-    
-    # Make a copy of the current Confessor
-    confessor_change.confessor_id = @confessor.id
-    confessor_change.user_account_id = @confessor.user_account_id 
-    confessor_change.confessor_office_id = @confessor.confessor_office_id
-    confessor_change.diocese_id = @confessor.diocese_id
-    confessor_change.salutation = @confessor.salutation
-    confessor_change.biography = @confessor.biography
-    
-    #Add change information and save it
-    confessor_change.change_comments = comments
-    confessor_change.changed_by_user_account_id = current_user_account.id
+  def save_confessor_history (confessor, comments)
+    confessor_change = ConfessorChange.new({
+      # Make a copy of the current Confessor
+      :confessor_id => confessor.id,
+      :user_account_id => confessor.user_account_id,
+      :confessor_office_id => confessor.confessor_office_id,
+      :diocese_id => confessor.diocese_id,
+      :salutation => confessor.salutation,
+      :biography => confessor.biography,
+      # Add change information and save it
+      :change_comments => comments,
+      :changed_by_user_account_id => current_user_account.id
+    })
     confessor_change.save()
+  end
+  
+  def save_user_account_history (user_account, comments)
+      user_account_change = UserAccountChange.new({
+        # Copy the user_account information
+        :first_name => user_account.first_name,
+        :last_name => user_account.last_name,
+        :account_status_id => user_account.account_status_id,
+        :home_phone => user_account.home_phone,
+        :work_phone => user_account.work_phone,
+        :mobile_phone => user_account.mobile_phone,
+        :user_account_id => user_account.id,
+        :email => user_account.email,
+        # Add audit information
+        :change_comments => comments,
+        :changed_by_user_account_id => current_user_account.id
+      })
+      user_account_change.save()
   end
 
   # Allowed params for confessor create/update (shared by both confessor and user_account controllers)
