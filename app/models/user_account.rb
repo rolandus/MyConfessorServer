@@ -81,9 +81,9 @@ class UserAccount < ActiveRecord::Base
 protected
   # Remove all instances of (,),- or whitespace from phone number
   def normalize_phone_numbers
-    self.home_phone = format_phone_number self.home_phone.gsub!(/[\(\)\-\s]/, '')
-    self.mobile_phone = format_phone_number self.mobile_phone.gsub!(/[\(\)\-\s]/, '')
-    self.work_phone = format_phone_number self.work_phone.gsub!(/[\(\)\-\s]/, '')
+    self.home_phone = format_phone_number self.home_phone.gsub!(/[\(\)\-\s]/, '') if self.home_phone
+    self.mobile_phone = format_phone_number self.mobile_phone.gsub!(/[\(\)\-\s]/, '') if self.mobile_phone
+    self.work_phone = format_phone_number self.work_phone.gsub!(/[\(\)\-\s]/, '') if self.work_phone
   end
   
   def trim_strings

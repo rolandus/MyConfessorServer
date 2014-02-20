@@ -64,21 +64,23 @@ class ConfessorRequestsController < ApplicationController
       
     # Hacky way to get status from the submit button, rather than a radio button
     # TODO Is there a better way?
+    @confessor_request.user_account_id = current_user_account.id
+    is_newly_approved = false
     case params[:commit]
     when "Pend"
-      if @confessor_request.is_created?
-        @confessor_request.pend 
-        @confessor_request.user_account_id = current_user_account.id
+      @confessor_request.pend if @confessor_request.is_created?
+    when "Approve"
+      if not @confessor_request.is_approved?
+        @confessor_request.approve
+        is_newly_approved = true
       end
-    when "Approve"        
-      @confessor_request.approve
     when "Deny"
       @confessor_request.deny if @confessor_request.is_created? or @confessor_request.is_pending?
     when "Drop" 
       # Means this user isn't handling this request anymore.
       if @confessor_request.is_pending?
         @confessor_request.set_created
-        @confessor_request.user_account_id = ""
+        @confessor_request.user_account_id = nil
       end
     end
     
@@ -86,14 +88,7 @@ class ConfessorRequestsController < ApplicationController
       if @confessor_request.update(confessor_request_update_params) and save_to_history
         
         # If the request is newly approved, create a new user account with the stub information.
-        is_user_account_created = false
-        if @confessor_request.confessor_request_status_id_changed? and @confessor_request.is_approved?
-          errors = create_new_confessor
-          if !@new_user_account
-            render json: @confessor_request.errors, status: :unprocessable_entity
-            return
-          end
-        end
+        create_new_confessor if is_newly_approved
         
         # Redirect to the appropriate place based on what status was set.
         format.html { 
@@ -102,7 +97,9 @@ class ConfessorRequestsController < ApplicationController
             redirect_to confessor_requests_path
           when "Approve"        
             if @new_user_account
-              redirect_to @new_user_account
+              redirect_to edit_user_account_path @new_user_account
+            elsif is_newly_approved
+              # An error occurred, so figure out how to show it...
             else
               redirect_to confessor_requests_path
             end
@@ -124,30 +121,27 @@ class ConfessorRequestsController < ApplicationController
     
     # Create a new stub confessor based on this confessor request.
     def create_new_confessor
-      @new_user_account = UserAccount.new(
-        #first_name: "Johnny",
-        #last_name: "Jolly",
-        #account_status_id: 1, # Create as inactive at first.
-        #username: @confessor_request.email,
-        #password: "confessor"
+      @new_user_account = UserAccount.create(
+        first_name: @confessor_request.first_name,
+        last_name: @confessor_request.last_name,
+        account_status_id: 1, # Create as inactive at first.
+        email: @confessor_request.email,
+        password: "confessor"
       )
-      @new_user_account.save
-      return @new_user_account.errors
-=begin
       return false if !save_user_account_history(@new_user_account, "Created")
       
       @new_confessor = Confessor.create(
         confessor_office_id: 1, 
         diocese_id: @confessor_request.diocese, 
         user_account_id: @new_user_account.id, 
-        confession_status: 3
+        confession_status_id: 3
       )
       return false if !save_confessor_history(@new_confessor, "Created")
       
       return true
-=end
     end
 
+    # Save the confessor request information to the audit history
     def save_to_history
       # Copy confessor requests properties
       confessor_request_change = ConfessorRequestChange.new
