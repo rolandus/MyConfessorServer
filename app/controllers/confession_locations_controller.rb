@@ -20,6 +20,9 @@ class ConfessionLocationsController < ApplicationController
 
   # GET /confession_locations/1/edit
   def edit
+    #logger.debug "Location ID: " + @confession_location.id.to_s
+    #location = ConfessionLocationChange.find 1
+    #logger.debug "Location" + location
   end
 
   # POST /confession_locations
@@ -29,7 +32,10 @@ class ConfessionLocationsController < ApplicationController
 
     respond_to do |format|
       if @confession_location.save and save_to_history @confession_location.id, "created"
-        format.html { redirect_to @confession_location, notice: 'Confession location was successfully created.' }
+        format.html { 
+          redirect_to confession_locations_path
+          #redirect_to @confession_location, notice: 'Confession location was successfully created.' 
+        }
         format.json { render action: 'show', status: :created, location: @confession_location }
       else
         format.html { render action: 'new' }
@@ -43,7 +49,10 @@ class ConfessionLocationsController < ApplicationController
   def update
     respond_to do |format|
       if @confession_location.update(confession_location_params) and save_to_history @confession_location.id, params[:confession_location_change][:change_comments]
-        format.html { redirect_to @confession_location, notice: 'Confession location was successfully updated.' }
+        format.html { 
+          redirect_to confession_locations_path
+          #redirect_to @confession_location, notice: 'Confession location was successfully updated.' 
+        }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -66,6 +75,8 @@ class ConfessionLocationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_confession_location
       @confession_location = ConfessionLocation.find(params[:id])
+      @confession_location_change = ConfessionLocationChange.find_by(confession_location_id: @confession_location.id)
+      @created_by_user = @confession_location_change.user_account
     end
     
     def save_to_history (id, comments)

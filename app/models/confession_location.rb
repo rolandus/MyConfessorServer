@@ -12,6 +12,14 @@ class ConfessionLocation < ActiveRecord::Base
   end
   
   def address_line_2
-    return self.city + ", " + self.state.abbreviation + " " + self.postal_code
+    city_and_state_abbr + " " + self.postal_code
+  end
+  
+  def city_and_state_abbr
+    return self.city + ", " + self.state.abbreviation
+  end
+  
+  def short_name
+    self.nickname ? self.nickname : self.name
   end
 end

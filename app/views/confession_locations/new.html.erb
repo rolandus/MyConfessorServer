@@ -1,5 +1,5 @@
-<h1>New confession_location</h1>
+<h1>New Location (<%= link_to "back", confession_locations_path %>)</h1>
 
+<% @edit_mode = "new" %>
 <%= render 'form' %>
 
-<%= link_to 'Back', confession_locations_path %>

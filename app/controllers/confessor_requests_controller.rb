@@ -3,8 +3,6 @@ class ConfessorRequestsController < ApplicationController
   before_filter :authenticate_user_account!, except: [:new, :create]
   before_filter :restrict_to_admin, except: [:new, :create]
   
-  layout "admin_inside"
-    
   # GET /confessor_requests
   # GET /confessor_requests.json
   def index
@@ -31,7 +29,6 @@ class ConfessorRequestsController < ApplicationController
       render "confirm"
     else
       @confessor_request = ConfessorRequest.new
-      render layout: "application"
     end
   end
   

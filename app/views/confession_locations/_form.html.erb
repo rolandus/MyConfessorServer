@@ -19,6 +19,63 @@
     <%= f.label :nickname %><br>
     <%= f.text_field :nickname %>
   </div>
+
+  <div class="field">
+    <%= f.label :postal_code %><br>
+    <%= f.text_field :postal_code %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :state %><br>
+    <%= collection_select(:confession_location, :state_id, State.all, :id, :name, {include_blank: "Select a State"} )%>
+  </div>
+  
+  <div class="field">
+    <%= f.label :city %><br>
+    <%= f.text_field :city %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :street_address %><br>
+    <%= f.text_field :street_address %>
+  </div>
+
+  <% if current_user_account.is_admin and @edit_mode == "edit" %>
+  <div class="field">
+    <%= label :confession_location_change, :change_comments, "Change comments (what you changed, and why)" %><br>
+    <%= text_area :confession_location_change, :change_comments %>
+  </div>
+  <% end%>
+  
+  <div class="actions">
+    <%= f.submit "Save Changes" %>
+  </div>
+<% end %>
+
+<%
+=begin
+%>
+<%= form_for(@confession_location) do |f| %>
+  <% if @confession_location.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@confession_location.errors.count, "error") %> prohibited this confession_location from being saved:</h2>
+
+      <ul>
+      <% @confession_location.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :nickname %><br>
+    <%= f.text_field :nickname %>
+  </div>
   <div class="field">
     <%= f.label :street_address %><br>
     <%= f.text_field :street_address %>
@@ -49,3 +106,6 @@
     <%= f.submit %>
   </div>
 <% end %>
+<%
+=end
+%>

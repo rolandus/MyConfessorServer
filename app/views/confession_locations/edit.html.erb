@@ -1,7 +1,7 @@
-<h1>Editing confession_location</h1>
+<h1>Editing <%= @confession_location.short_name %> (<%= link_to "back", confession_locations_path %>)</h1>
 
-<% @is_edit = true %>
+<p>Created by: <%= @created_by_user.formal_name %></p>
+
+<% @edit_mode = "edit" %>
 <%= render 'form' %>
 
-<%= link_to 'Show', @confession_location %> |
-<%= link_to 'Back', confession_locations_path %>

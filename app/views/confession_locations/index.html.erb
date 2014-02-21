@@ -1,5 +1,31 @@
-<h1>Listing confession_locations</h1>
+<h1>Confession Locations</h1>
 
+<div class="nav_links">
+	<%= link_to "new location", new_confession_location_path %>
+</div>
+
+<ul>
+<% @confession_locations.each do |confession_location| %>
+	<li>
+		<div class="list_item">
+			<div class="col33">
+				<%= confession_location.name %>
+			</div>
+			<div class="col25">
+				<%= confession_location.city_and_state_abbr %>
+			</div>
+			<div>
+				<%= link_to "edit...", edit_confession_location_path(id: confession_location.id) %>
+			</div>
+		</div>
+	</li>
+<% end %>
+</ul>
+
+
+<%
+=begin
+%>
 <table>
   <thead>
     <tr>
@@ -33,3 +59,6 @@
 <br>
 
 <%= link_to 'New Confession location', new_confession_location_path %>
+<%
+=end
+%>
