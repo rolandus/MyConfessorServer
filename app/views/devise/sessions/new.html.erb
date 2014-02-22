@@ -1,4 +1,4 @@
-<h2>Sign in</h2>
+<h1>Priest Sign In</h1>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <div><%= f.label :email %><br />
@@ -14,5 +14,7 @@
 
   <div><%= f.submit "Sign in" %></div>
 <% end %>
+
+<% @is_login = true %>
 
 <%#= render "devise/shared/links" %>

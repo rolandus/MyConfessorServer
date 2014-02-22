@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   #protect_from_forgery with: :exception
   #skip_before_filter :verify_authenticity_token  #rscott - skip CSRF token check TODO: Figure out how to reenable this in tandem with Ajax.
 
-  layout :set_layout 
+  #layout :set_layout 
   before_action :set_namespace 
   
   # After signing in, decide whether to redirect to the priest page or the admin page. 
@@ -101,9 +101,9 @@ class ApplicationController < ActionController::Base
 private
 
   # Set the correct layout
-  def set_layout
-    user_account_signed_in? ? "user" : "penitent"
-  end
+  #def set_layout
+  #  user_account_signed_in? ? "user" : "penitent"
+  #end
   
   def set_namespace
     @namespace = request.fullpath.split("/")[1]

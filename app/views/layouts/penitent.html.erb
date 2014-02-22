@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MyConfessor - Login</title>
+    <title>MyConfessor</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
 	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     
-    <%= javascript_include_tag "jquery-1.10.2.js" %>
-  	
   	<%= csrf_meta_tags %>
 	<body>
         <div id="banner">
@@ -45,11 +43,10 @@
 	                <span class="icon_label">Find a Confessor</span>
 	            </a>
 	            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
-	                <%= image_tag "icon_gear.png" %>
+	                <%= image_tag "icon_chat.png" %>
 	                <span class="icon_label">Request an Account</span>
 	            </a>
 	    	</div>
         </div>
-		(application)
 	</body>
 <html>	

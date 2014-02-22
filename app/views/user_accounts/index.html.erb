@@ -5,10 +5,10 @@
 
 <div class="nav_links">
 	<% if is_super %>
-	<%= link_to "confessors", user_accounts_path(filter: 'confessors') %>
-	| <%= link_to "administrators", user_accounts_path(filter: 'admins') %>
-	| <%= link_to "new account", new_user_account_path %>
+		<%= link_to "confessors", user_accounts_path(filter: 'confessors') %> |
+		<%= link_to "administrators", user_accounts_path(filter: 'admins') %> |
 	<% end %>
+	<%= link_to is_super ? "new user" : "new confessor", new_user_account_path %>
 </div>
 
 <ul id="confessor_request_list">
@@ -30,10 +30,6 @@
 	</li>
 <% end %>
 </ul>
-
-<% if !is_super %>
-	<%= link_to "create a new confessor...", new_user_account_path %>
-<% end %>
 
 <%
 =begin%>

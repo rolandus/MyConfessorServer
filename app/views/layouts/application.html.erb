@@ -1,60 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MyConfessor - Login</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <% if !@namespace %>
+    	<title>MyConfessor</title>
+    <% elsif @namespace == "admin" %>
+    	<title>MyConfessor - Administrator</title>
+    <% elsif @namespace == "priest" %>
+    	<title>MyConfessor - Priest</title>
+    <% end %>
+    
 	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
 	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-    
-    <%= javascript_include_tag "jquery-1.10.2.js" %>
-  	
   	<%= csrf_meta_tags %>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
 	<body>
         <div id="banner">
         	<a href="/"><%= image_tag "banner.png" %></a>
         </div>
+        
     	<div id="login_container">
 			<% if user_account_signed_in? %>
-			  <strong><%= current_user_account.email %></strong><br />
-			  <% if current_user_account.is_confessor %>
-			  	<%= link_to "Priest", controller: "main", action: "priest" %> |
-			  <% end %>
-			  <% if current_user_account.is_admin %>
-			  	<%= link_to "Admin", controller: "main", action: "admin" %> |
-			  <% end %>
-			  <%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
-			<% else %>
-			  <%= link_to "Priest", "/priest" %> |
-			  <%= link_to "Admin", "/admin" %>
+				<strong><%= current_user_account.email %></strong><br />			  
+				<% if @namespace == "admin" %>
+					<%= link_to "Priest", controller: "main", action: "priest" %> |
+				<% elsif @namespace == "priest" and current_user_account.is_admin %>
+					<%= link_to "Admin", controller: "main", action: "admin" %> |
+				<% end %>			  
+				<%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
+			<% elsif not @is_login %>
+				<%= link_to "Priest Sign In", "/priest" %>
 			<% end %>
 		</div>
+		
         <div id="header">
         </div>
+        
         <div id="content">
 			<% if alert %>
-			<p class="alert alert-error"><%= alert %></p>
+				<p class="alert alert-error"><%= alert %></p>
 			<% end %>
 	
 			<%= yield %>
         </div>
+        
         <div id="footer">
         	<div id="toolbar">
-	            <a href="/" class="icon_container" data-page="confessor_requests">
-	                <%= image_tag "icon_person.png" %>
-	                <span class="icon_label">Find a Confessor</span>
-	            </a>
-	            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
-	                <%= image_tag "icon_gear.png" %>
-	                <span class="icon_label">Request an Account</span>
-	            </a>
-	            <a href="<%= new_user_account_session_url %>" class="icon_container" data-page="confessor_requests">
-	                <%= image_tag "icon_lock.png" %>
-	                <span class="icon_label">Sign In</span>
-	            </a>
+				<% if @namespace and @namespace == "admin" and user_account_signed_in? %>
+		            <a href="<%= confessor_requests_path %>" class="icon_container">
+		                <%= image_tag "icon_chat.png" %>
+		                <span class="icon_label">Requests</span>
+		            </a>
+		            <a href="<%= user_accounts_path %>" class="icon_container">
+		                <%= image_tag "icon_people.png" %>
+		                <span class="icon_label">Accounts</span>
+		            </a>
+		            <a href="<%= confession_locations_path %>" class="icon_container">
+		                <%= image_tag "icon_home1.png" %>
+		                <span class="icon_label">Locations</span>
+		            </a>
+			    <% elsif @namespace and @namespace == "priest" and user_account_signed_in? %>
+		            <a href="<%= confession_locations_path %>" class="icon_container">
+		                <%= image_tag "icon_home2.png" %>
+		                <span class="icon_label">Confessional</span>
+		            </a>
+		            <a href="<%= user_account_path current_user_account %>" class="icon_container">
+		                <%= image_tag "icon_gear.png" %>
+		                <span class="icon_label">Account Settings</span>
+		            </a>
+			    <% else  %>
+		            <a href="/" class="icon_container" data-page="confessor_requests">
+		                <%= image_tag "icon_person.png" %>
+		                <span class="icon_label">Find a Confessor</span>
+		            </a>
+		            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
+		                <%= image_tag "icon_chat.png" %>
+		                <span class="icon_label">Request an Account</span>
+		            </a>
+			    <% end %>
 	    	</div>
         </div>
-		(application)
 	</body>
 <html>	
 
