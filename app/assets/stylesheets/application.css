@@ -12,17 +12,18 @@
  *= require_tree .
  */
 
-body {
-  background-color: #fff;
-  color: #333;
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-  width: 800px;
+* {
+	font-family: tahoma, arial, helvetica, sans-serif;
 }
 
+body {
+  background-color: #fad5ba;
+  background-image: url('background_organ.jpg');
+  color: #ccc;
+}
+
+/*
 p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
@@ -59,7 +60,9 @@ div {
   background-color: red;
   display: table;
 }
+*/
 
+/*
 #error_explanation {
   width: 450px;
   border: 2px solid red;
@@ -82,14 +85,15 @@ div {
     list-style: square;
   }
 }
-
+*/
 
 
 
 /*===================================*/
+/*
 body {
 	padding-right: 50px;	
-}
+}/**/
 
 #banner {
 	margin: 20px 0px 0px 0px;
@@ -97,25 +101,53 @@ body {
 	width: 60%
 }
 
+/*
 #login_container {
 	margin: 20px 0px 0px 0px;
 	display: inline-block;
 	vertical-align: top;
 	text-align: right;
 	width: 39%;
-}
+}/**/
 
 #header {
-	text-align: right;
+	background-color:rgba(255,255,255,0.5);
+	width: 100%;
+	margin-top: 25px;
+	padding: 10px 0px 0px 20px;
+	position: absolute;
+	top: 0px;
+}
+
+#header .title {
+	font-family: "Trajan Pro", "Trebuchet MS";
+	font-size: 4em;
+	color: #ffefd5;
+}
+
+#login_container {
+	position: absolute;
+	top: 120px;
+	right: 20px;
 }
 
 #content {
-	margin: 0px 0px 0px 60px;
+	margin: 0px 0px 0px 77px;
+	padding: 165px 0px 0px 100px;
+	background-color:rgba(0,0,0,0.5);
+	position: absolute;
+	width: 700px;
+	min-height: 100%;
 }
 
 #footer {
-	margin: 50px 0px 50px 0px;
+	background-color:rgba(0,0,0,0.9);
+	width: 100%;
+	padding: 20px 0px 0px 100px;
+	position: fixed;
+	bottom: 15px;
 }
+
 
 ul {
 	list-style-type: none;
