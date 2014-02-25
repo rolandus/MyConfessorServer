@@ -45,6 +45,32 @@ class UserAccount < ActiveRecord::Base
   #############
   # Utilities
   #############
+  
+  # Save this model and audit the changes
+  def save_and_audit (comments, changed_by_user_id)
+    success = self.save()
+    self.save_to_history(comments, changed_by_user_id)
+    return success
+  end
+
+  # Save an audit of this UserAccount to the history table
+  def save_to_history (comments, changed_by_user_id)
+      user_account_change = UserAccountChange.new({
+        # Copy the user_account information
+        :first_name => self.first_name,
+        :last_name => self.last_name,
+        :account_status_id => self.account_status_id,
+        :home_phone => self.home_phone,
+        :work_phone => self.work_phone,
+        :mobile_phone => self.mobile_phone,
+        :user_account_id => self.id,
+        :email => self.email,
+        # Add audit information
+        :change_comments => comments,
+        :changed_by_user_account_id => changed_by_user_id
+      })
+      user_account_change.save()
+  end
 
   # Returns true if this user is an admin or superadmin
   def is_admin

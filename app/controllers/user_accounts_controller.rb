@@ -59,15 +59,12 @@ class UserAccountsController < ApplicationController
     end
     
     @user_account = UserAccount.new(user_account_params)
-    
     @user_account.account_status_id = 2  #2 = Active. Always make new users active.
     
     respond_to do |format|
-      saved = @user_account.save()
-      audited = save_user_account_history(@user_account, "Created")
-      confessor_handled = handle_confessor_info
-      if saved && audited && confessor_handled
-        format.html { redirect_to @user_account, notice: 'User account was successfully created.' }
+      if @user_account.save_and_audit("Created", current_user_account.id) and handle_confessor_info()       
+        format.html { redirect_to user_accounts_path }
+        #redirect_to @user_account, notice: 'User account was successfully created.' 
         format.json { render action: 'show', status: :created, location: @user_account }
       else
         @edit_mode = :new
@@ -85,8 +82,13 @@ class UserAccountsController < ApplicationController
       if params[:user_account_change]
         comments = params[:user_account_change][:change_comments]
       end
-      if @user_account.update(user_account_params) and save_user_account_history(@user_account, comments) and handle_confessor_info
-        format.html { redirect_to @user_account, notice: 'User account was successfully updated.' }
+      
+      if @user_account.update(user_account_params) and 
+         @user_account.save_to_history(comments, current_user_account.id) and 
+         handle_confessor_info()
+         
+        format.html { redirect_to user_accounts_path }
+        #redirect_to @user_account, notice: 'User account was successfully updated.' 
         format.json { head :no_content }
       else
         @edit_mode = :edit
@@ -152,7 +154,7 @@ class UserAccountsController < ApplicationController
           # We are creating a new confessor...
           @confessor = Confessor.new(confessor_params)
           @confessor.user_account = @user_account
-          @confessor.confession_status_id = 1
+          @confessor.confession_status_id = 3 #Default to OUT
           @confessor.save()
           save_confessor_history(@confessor, "Created")
           #@user_account.confessor = @confessor
@@ -162,19 +164,6 @@ class UserAccountsController < ApplicationController
         return true
       end
     end
-
-    #Helper to save UserAccount changes to the history
-    # Has been moved to the ApplicationController
-=begin
-    def save_to_history (comments)
-      user_account_change = UserAccountChange.new(user_account_change_params)
-      user_account_change.user_account_id = @user_account.id
-      user_account_change.email = @user_account.email
-      user_account_change.change_comments = comments
-      user_account_change.changed_by_user_account_id = current_user_account.id
-      user_account_change.save()
-    end
-=end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_account_params

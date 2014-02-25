@@ -35,7 +35,8 @@
         <!-- div id="banner">
         	<a href="/"><%= image_tag "banner.png" %></a>
         </div -->
-        
+        <div id="background"></div>
+	        
         <div id="content">
 			<% if alert %>
 				<p class="alert alert-error"><%= alert %></p>
@@ -48,57 +49,62 @@
         	<div id="toolbar">
 				<% if @namespace and @namespace == "admin" and user_account_signed_in? %>
 		            <a href="<%= confessor_requests_path %>" class="icon_container">
-		                <%= image_tag "icon_chat.png" %>
+		                <%= image_tag "appbar.chat.png" %>
 		                <span class="icon_label">Requests</span>
 		            </a>
 		            <a href="<%= user_accounts_path %>" class="icon_container">
-		                <%= image_tag "icon_people.png" %>
+		                <%= image_tag "appbar.group.png" %>
 		                <span class="icon_label">Accounts</span>
 		            </a>
 		            <a href="<%= confession_locations_path %>" class="icon_container">
-		                <%= image_tag "icon_home1.png" %>
+		                <%= image_tag "appbar.church.png" %>
 		                <span class="icon_label">Locations</span>
 		            </a>
 			    <% elsif @namespace and @namespace == "priest" and user_account_signed_in? %>
 		            <a href="<%= confession_locations_path %>" class="icon_container">
-		                <%= image_tag "icon_home2.png" %>
+		                <%= image_tag "appbar.church.png" %>
 		                <span class="icon_label">Confessional</span>
 		            </a>
 		            <a href="<%= user_account_path current_user_account %>" class="icon_container">
-		                <%= image_tag "icon_gear.png" %>
+		                <%= image_tag "appbar.settings.png" %>
 		                <span class="icon_label">Account Settings</span>
 		            </a>
 			    <% else  %>
 		            <a href="/" class="icon_container" data-page="confessor_requests">
-		                <%= image_tag "icon_person.png" %>
+		                <%= image_tag "appbar.group.png" %>
 		                <span class="icon_label">Find a Confessor</span>
 		            </a>
 		            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
-		                <%= image_tag "icon_chat.png" %>
+		                <%= image_tag "appbar.chat.png" %>
 		                <span class="icon_label">Request an Account</span>
 		            </a>
 			    <% end %>
 	    	</div>
         </div>
         
-        <div id="header">
-        	<span class="title">MyConfessor.org</span>
-        </div>        
+        <div id="scroll_shield"></div>    
 
-    	<div id="login_container">
-			<% if user_account_signed_in? %>
-				<strong><%= current_user_account.email %></strong><br />			  
-				<% if @namespace == "admin" %>
-					<%= link_to "Priest", controller: "main", action: "priest" %> |
-				<% elsif @namespace == "priest" and current_user_account.is_admin %>
-					<%= link_to "Admin", controller: "main", action: "admin" %> |
-				<% end %>			  
-				<%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
-			<% elsif not @is_login %>
-				<%= link_to "Priest Sign In", "/priest" %>
+        <div id="header">
+        	<a href="/" title="home">
+        		<span class="title">MyConfessor.org</span>
+        	</a>
+        </div>    
+        
+		<% if not @is_login%>
+	    	<div id="login_container">
+				<% if user_account_signed_in? %>
+					<strong><%= current_user_account.email %></strong><br />			  
+					<% if @namespace == "admin" %>
+						<%= link_to "Priest View", controller: "main", action: "priest" %> |
+					<% elsif @namespace == "priest" and current_user_account.is_admin %>
+						<%= link_to "Admin View", controller: "main", action: "admin" %> |
+					<% end %>			  
+					<%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>
+				<% else %>
+					<%= link_to "Priest Sign In", "/priest" %>
+				<% end %>
+			</div>
 			<% end %>
-		</div>
-		
 	</body>
 <html>	
 

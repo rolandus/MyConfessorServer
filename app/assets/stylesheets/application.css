@@ -17,83 +17,16 @@
 }
 
 body {
+  color: #fff;
+}
+
+#background {
   background-color: #fad5ba;
   background-image: url('background_organ.jpg');
-  color: #ccc;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
-
-/*
-p, ol, ul, td {
-  font-size: 13px;
-  line-height: 18px;
-}
-
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
-}
-
-a {
-  color: #000;
-  &:visited {
-    color: #666;
-  }
-  &:hover {
-    color: #fff;
-    background-color: #000;
-  }
-}
-
-div {
-  &.field, &.actions {
-    margin-bottom: 10px;
-  }
-}
-
-#notice {
-  color: green;
-}
-
-.field_with_errors {
-  padding: 2px;
-  background-color: red;
-  display: table;
-}
-*/
-
-/*
-#error_explanation {
-  width: 450px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-  h2 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #c00;
-    color: #fff;
-  }
-  ul li {
-    font-size: 12px;
-    list-style: square;
-  }
-}
-*/
-
-
-
-/*===================================*/
-/*
-body {
-	padding-right: 50px;	
-}/**/
 
 #banner {
 	margin: 20px 0px 0px 0px;
@@ -101,40 +34,64 @@ body {
 	width: 60%
 }
 
-/*
+
 #login_container {
-	margin: 20px 0px 0px 0px;
+	/*margin: 20px 0px 0px 0px;
 	display: inline-block;
 	vertical-align: top;
+width: 39%; /**/
 	text-align: right;
-	width: 39%;
+	position: fixed;
+	top: 120px;
+	right: 20px;
+	background-color:rgba(0,0,0,0.55);
+	border-radius: 5px;
+	padding: 7px;
 }/**/
 
 #header {
 	background-color:rgba(255,255,255,0.5);
 	width: 100%;
+	height: 80px;
 	margin-top: 25px;
 	padding: 10px 0px 0px 20px;
-	position: absolute;
+	position: fixed;
+	top: 0px;	
+}
+
+#header a {
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+#header a:hover {
+	text-decoration: none;
+}
+
+#scroll_shield {
+	background-color: #000;
 	top: 0px;
+	left: 0px;
+	position: fixed;
+	width: 750px;
+	height: 105px;
 }
 
 #header .title {
 	font-family: "Trajan Pro", "Trebuchet MS";
 	font-size: 4em;
 	color: #ffefd5;
-}
-
-#login_container {
-	position: absolute;
-	top: 120px;
-	right: 20px;
+	/* text-shadow: 1px 1px #fff, -1px -1px #777; */
+	text-shadow: 1px 1px #fff */
 }
 
 #content {
-	margin: 0px 0px 0px 77px;
-	padding: 165px 0px 0px 100px;
-	background-color:rgba(0,0,0,0.5);
+	margin: 0px 0px 0px 50px;
+	padding: 165px 0px 100px 100px;
+	background-color:rgba(0,0,0,0.55);
 	position: absolute;
 	width: 700px;
 	min-height: 100%;
@@ -143,15 +100,29 @@ body {
 #footer {
 	background-color:rgba(0,0,0,0.9);
 	width: 100%;
-	padding: 20px 0px 0px 100px;
+	padding: 0px 0px 0px 70px;
 	position: fixed;
-	bottom: 15px;
+	bottom: 0px;
 }
 
+a {
+	color:#edd;
+}
+a:hover {
+	color:#eee;
+}
+a:visited {
+	color:#edd;
+}
 
 ul {
 	list-style-type: none;
 	padding: 0px;
+}
+
+input,
+textarea {
+	color: #000;
 }
 
 .icon_container {
@@ -161,23 +132,15 @@ ul {
 	padding: 0px 10px 0px 10px;
 }
 
+.icon_container .icon_label {
+	margin: -10px 0px 10px 0px;
+	padding: 
+}
+
 .icon_label {
 	display: block;
 	margin: auto;
 	text-align: center;
-}
-
-a {
-	color: #333;
-}
-
-.todo {
-	margin-top: 30px;
-	border: 1px solid black;
-	background-color: #ABE1FF;
-}
-.todo:before {
-	content: "TODO"
 }
 
 
@@ -267,5 +230,75 @@ a {
 .col33 {
 	width: 33%;
 }
+
+
+/* Built-in rails stuff */
+
+/*
+p, ol, ul, td {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+a {
+  color: #000;
+  &:visited {
+    color: #666;
+  }
+  &:hover {
+    color: #fff;
+    background-color: #000;
+  }
+}
+
+div {
+  &.field, &.actions {
+    margin-bottom: 10px;
+  }
+}
+
+#notice {
+  color: green;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+*/
+
+/*
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    margin-bottom: 0px;
+    background-color: #c00;
+    color: #fff;
+  }
+  ul li {
+    font-size: 12px;
+    list-style: square;
+  }
+}
+*/
+
+
 
 
