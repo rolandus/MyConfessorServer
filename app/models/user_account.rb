@@ -73,17 +73,17 @@ class UserAccount < ActiveRecord::Base
   end
 
   # Returns true if this user is an admin or superadmin
-  def is_admin
+  def is_admin?
     self.account_role_ids.min <= 2
   end
   
   # Returns true only if this user is a superadmin
-  def is_superadmin
+  def is_superadmin?
     self.account_role_ids.include? 1
   end
   
   # Returns true only if this user is a confessor
-  def is_confessor
+  def is_confessor?
     self.account_role_ids.include? 3
   end
   
@@ -97,7 +97,7 @@ class UserAccount < ActiveRecord::Base
   end
   
   def formal_name
-    if self.is_confessor
+    if self.is_confessor?
       self.confessor.full_name_address
     else
       self.full_name

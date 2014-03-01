@@ -40,7 +40,7 @@
     <%= f.text_field :street_address %>
   </div>
 
-  <% if current_user_account.is_admin and @edit_mode == "edit" %>
+  <% if current_user_account.is_admin? and @edit_mode == "edit" %>
   <div class="field">
     <%= label :confession_location_change, :change_comments, "Change comments (what you changed, and why)" %><br>
     <%= text_area :confession_location_change, :change_comments %>

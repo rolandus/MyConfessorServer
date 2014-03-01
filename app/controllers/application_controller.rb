@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   
   # After signing in, decide whether to redirect to the priest page or the admin page. 
   def after_sign_in_path_for(resource)
-    if current_user_account.is_confessor
+    if current_user_account.is_confessor?
       return priest_url
     else
       return admin_url
@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   ############
   
   def restrict_to_admin
-    if not user_account_signed_in? or not current_user_account.is_admin #current_user_account.account_role_ids.min <= 2
+    if not user_account_signed_in? or not current_user_account.is_admin? #current_user_account.account_role_ids.min <= 2
       respond_to do |format|
         format.html { render text: 'Find a way to redirect to login.', status: 401 }
         format.json { render text: '{ error: "401 Unauthorized access" }', status: 401 }
@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
   
   def restrict_to_superuser
-    if not user_account_signed_in? or not current_user_account.is_superadmin #current_user_account.account_role_ids.include? 1
+    if not user_account_signed_in? or not current_user_account.is_superadmin? #current_user_account.account_role_ids.include? 1
       respond_to do |format|
         format.html { render text: 'Find a way to redirect to login.', status: 401 }
         format.json { render text: '{ error: "401 Unauthorized access" }', status: 401 }

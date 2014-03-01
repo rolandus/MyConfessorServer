@@ -15,10 +15,10 @@
     	<div id="login_container">
 			<% if user_account_signed_in? %>
 			  <strong><%= current_user_account.email %></strong><br />
-			  <% if current_user_account.is_confessor %>
+			  <% if current_user_account.is_confessor? %>
 			  	<%= link_to "Priest", controller: "main", action: "priest" %> |
 			  <% end %>
-			  <% if current_user_account.is_admin %>
+			  <% if current_user_account.is_admin? %>
 			  	<%= link_to "Admin", controller: "main", action: "admin" %> |
 			  <% end %>
 			  <%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>

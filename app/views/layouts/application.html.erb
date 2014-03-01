@@ -72,7 +72,7 @@
 			    <% else  %>
 		            <a href="/" class="icon_container" data-page="confessor_requests">
 		                <%= image_tag "appbar.group.png" %>
-		                <span class="icon_label">Find a Confessor</span>
+		                <span class="icon_label">Available Confessors</span>
 		            </a>
 		            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
 		                <%= image_tag "appbar.chat.png" %>
@@ -96,7 +96,7 @@
 					<strong><%= current_user_account.email %></strong><br />			  
 					<% if @namespace == "admin" %>
 						<%= link_to "Priest View", controller: "main", action: "priest" %> |
-					<% elsif @namespace == "priest" and current_user_account.is_admin %>
+					<% elsif @namespace == "priest" and current_user_account.is_admin? %>
 						<%= link_to "Admin View", controller: "main", action: "admin" %> |
 					<% end %>			  
 					<%= link_to "Sign Out", destroy_user_account_session_path, method: :delete, :class => 'navbar-link'  %>

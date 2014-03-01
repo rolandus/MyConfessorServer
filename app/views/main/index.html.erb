@@ -1,7 +1,12 @@
-<ul>
+<h1>Available Confessors</h1>
+<ul class="">
     <% @confessors.each do |confessor| %>
-	    <li class="item">
-	    	<h3><%= confessor.full_name_address %></h3>
+	    <li class="item enhanced">
+		    <h2><%= confessor.full_name_address %></h2>
+	    	<h3>
+	    		<%= confessor.confession_location.nickname %>, <%= confessor.confession_location.city %>:
+	    		<%= confessor.confession_start_time.strftime('%l:%M %P') %> - <%= confessor.confession_end_time.strftime('%l:%M %P') %>
+	    	</h3>
 		</li>
 	<% end %>
 </ul>	

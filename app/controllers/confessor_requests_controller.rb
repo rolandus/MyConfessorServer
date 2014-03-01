@@ -42,6 +42,7 @@ class ConfessorRequestsController < ApplicationController
     @confessor_request = ConfessorRequest.new(confessor_request_create_params)
     @confessor_request.confessor_request_status_id = 1 #Set the status to 1-Created.
     @confessor_request.confirmation_number = SecureRandom.hex[0, 8]
+    @confessor_request.comments = "Created"
     
     respond_to do |format|
       if @confessor_request.save

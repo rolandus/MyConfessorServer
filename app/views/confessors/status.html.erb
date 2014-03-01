@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @confessor.full_name_address %></h1>
+<h1><small><%= @confessor.full_name_address %></small></h1>
 
 <div class="status_container">
 	<div class="status_item_container">
@@ -12,7 +12,7 @@
 				<%= form_for(@confessor) do |f| %>
 					<%= f.hidden_field :confession_status_id, :value => "3" %>
 					<%= f.hidden_field :source, :value => @source %>
-					<%= f.submit "Leave Confessional", :id => "leave_confession_commit" %>
+					<%= f.submit "Leave Confessional", :id => "leave_confession_commit", class: "btn btn-danger" %>
 				<% end %>
 			</div>
 		<% else %>
@@ -20,7 +20,7 @@
 				<h2>You are OUT</h2>
 			</div>
 			<div class="status_item_icon">
-				<input type="button" value="Enter the Confessional" id="enter_confession_commit" />
+				<input type="button" value="Enter the Confessional" id="enter_confession_commit" class="btn btn-success"/>
 			</div>
 		<% end %>
 	</div>
@@ -35,7 +35,7 @@
 					<%= form_for(@confessor) do |f| %>
 						<%= f.hidden_field :confession_status_id, :value => "1" %>
 						<%= f.hidden_field :source, :value => @source %>
-						<%= f.submit "Turn Off", :id => "leave_confession_commit" %>
+						<%= f.submit "Turn Off", :id => "leave_confession_commit", class: "btn btn-danger" %>
 					<% end %>
 				</div>
 			<% else %>
@@ -46,7 +46,7 @@
 					<%= form_for(@confessor) do |f| %>
 						<%= f.hidden_field :confession_status_id, :value => "2" %>
 						<%= f.hidden_field :source, :value => @source %>
-						<%= f.submit "Turn On", :id => "leave_confession_commit" %>
+						<%= f.submit "Turn On", :id => "leave_confession_commit", class: "btn btn-success" %>
 					<% end %>
 				</div>
 			<% end %>
@@ -57,35 +57,44 @@
 				<div class="status_item">
 					<h2>Details...</h2>
 					<p><%= @confessor.confession_location.nickname %></p>
-					<p>From ? until ?</p>
+					<p>From <%= @confessor.confession_start_time.strftime('%l:%M %P') %> until <%= @confessor.confession_end_time.strftime('%l:%M %P') %></p>
 					<p><%= @confessor.confession_comments %></p>
 				</div>
 				<div class="status_item_icon">
-					<input type="button" value="Edit Details" id="edit_details_button" />
+					<input type="button" value="Edit Details" id="edit_details_button"  class="btn btn-default" />
 				</div>
 			</div>
 		</div>
 	<% end %>
 	
 	<div id="status_form_container" style="display:none;">
-		<%= form_for(@confessor) do |f| %>
-			<div class="field">
-		  		<%= f.label :confession_location, "Location:" %><br />
-		    	<%= collection_select(:confessor, :confession_location_id, ConfessionLocation.all, :id, :name, :prompt => "choose a location", :include_blank => true)%>
+		<%= form_for(@confessor, html: { class: "form-horizontal", role: "form"}) do |f| %>
+			<div class="field form-group">
+		  		<%= f.label :confession_location, "Location:", class: "col-sm-2 control-label" %>
+		  		<div class="col-sm-10">
+		    		<%= collection_select(:confessor, :confession_location_id, ConfessionLocation.all, :id, :name, {:include_blank => true}, {:class => "form-control"})%>
+		    	</div>
 		  	</div>
-		  	<div class="field">
-		    	<%= f.label :confession_end_time, "Until:" %><br />
-		    	<%= f.datetime_select :confession_end_time %>
+		  	<div class="field form-group">
+		    	<%= f.label :confession_end_time, "Until:", class: "col-sm-2 control-label" %>
+		    	<div class="col-sm-10">
+		    		<% end_time = @confessor.confession_end_time.strftime('%H:%M') %>
+		    		<%= f.text_field :confession_end_time, value: end_time, class: "form-control", type: "time" %>
+		    	</div>
 			</div>
-		  	<div class="field">
-		    	<%= f.label :confession_comments, "Comments/Instructions:" %><br />
-		    	<%= f.text_area :confession_comments %>
+		  	<div class="field form-group">
+		    	<%= f.label :confession_comments, "Comments:", class: "col-sm-2 control-label" %>
+		    	<div class="col-sm-10">
+			    	<%= f.text_area :confession_comments, class: "form-control", rows: "4" %>
+		    	</div>
 		  	</div>
-		  	<%= f.submit %>
+		  	<div class="field form-group text-right">
+		  		<%= f.submit "Update Details", class: "btn btn-primary" %>
+		  		<input type="button" name="cancel" value="Cancel" id="status_update_cancel" class="btn btn-default" />
+		  	</div>
 		  	<% val = @confessor.out? ? 1 : @confessor.confession_status_id %>
 		  	<%= f.hidden_field :confession_status_id, :value => val %>
 		  	<%= f.hidden_field :source, :value => @source %>
-		  	<input type="button" name="cancel" value="Cancel" id="status_update_cancel" />
 	  	<% end %>
 	</div>
 </div>

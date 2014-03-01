@@ -16,13 +16,13 @@ class UserAccountsController < ApplicationController
     when "confessors"
       @user_accounts = UserAccount.joins(:account_roles ).where(account_roles: {id: 3})
     when "admins"
-      if current_user_account.is_superadmin
+      if current_user_account.is_superadmin?
         @user_accounts = UserAccount.joins(:account_roles).where(account_roles: {id: 2}).where.not(id: 1)
       else
         redirect_to user_accounts_path
       end
     when "super"
-      if current_user_account.is_superadmin
+      if current_user_account.is_superadmin?
         @user_accounts = UserAccount.joins(:account_roles).where(account_roles: {id: 1}).where.not(id: 1)
       else
         redirect_to user_accounts_path
@@ -114,7 +114,7 @@ class UserAccountsController < ApplicationController
     def validate_admin_priviledges
       #Don't allow non-admin users to create admins
       roles = user_account_params[:account_role_ids]
-      if (roles.include? '1' or roles.include? '2') and !current_user_account.is_superadmin
+      if (roles.include? '1' or roles.include? '2') and !current_user_account.is_superadmin?
         return false
       end
       return true
@@ -128,21 +128,21 @@ class UserAccountsController < ApplicationController
         @user_account = UserAccount.find(params[:id])
       end
       
-      if @user_account.is_superadmin and !current_user_account.is_superadmin
+      if @user_account.is_superadmin? and !current_user_account.is_superadmin?
         render text: '{ error: "401 Unauthorized access" }', status: 401  #Only allow superadmins to access admins
       end
     end
     
     # Helper to only allow this action on self, unless you are a superuser
     def restrict_to_self
-      if not current_user_account.is_superadmin and @user_account.id != current_user_account.id
+      if not current_user_account.is_superadmin? and @user_account.id != current_user_account.id
         render text: '{ error: "401 Unauthorized access" }', status: 401
        end
     end
     
     #Helper to handle saving confessor info
     def handle_confessor_info
-      if @user_account.is_confessor  #Only allow this if user has the confessor role
+      if @user_account.is_confessor?  #Only allow this if user has the confessor role
         if @user_account.confessor
           # Confessor exists and we are updating it...
           @confessor = @user_account.confessor

@@ -1,4 +1,4 @@
-<% is_super = current_user_account.is_superadmin %>
+<% is_super = current_user_account.is_superadmin? %>
 
 
 <h1><%= is_super ? "User Accounts" : "Confessor Accounts" %></h1>
@@ -17,12 +17,12 @@
 		<div class="list_item">
 			<div class="col25"><%= user_account.formal_name %></div>
 			<div class="col33">
-				<% if user_account.is_confessor %>
+				<% if user_account.is_confessor? %>
 					<%= user_account.confessor.diocese.name_and_state_abbr %>
 				<% end %>
 			</div>
 			<div class="col10">
-				<% if !user_account.is_admin or is_super or (user_account.id == current_user_account.id) %>
+				<% if !user_account.is_admin? or is_super or (user_account.id == current_user_account.id) %>
 					<%= link_to "edit...", edit_user_account_path(id: user_account.id) %>
 				<% end %>
 			</div>
@@ -62,7 +62,7 @@
     		<%= role.name %>&nbsp;
     	<% end %>
         </td>
-        <% if user_account.is_confessor %>
+        <% if user_account.is_confessor? %>
         <td><%= user_account.confessor.id %></td>
         <td><%= user_account.confessor.salutation %></td>
         <% else %>

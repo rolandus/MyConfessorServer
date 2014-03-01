@@ -44,7 +44,7 @@ MyConfessorServer::Application.routes.draw do
     resources :confession_location_changes, only: [:index, :show]
     
     # Confessors
-    resources :confessors, except: [:delete]
+    resources :confessors, except: [:delete, :index, :show, :edit]
     resources :confessor_changes, only: [:index, :show]
     
     # Confessor Requests

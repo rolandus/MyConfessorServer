@@ -1,19 +1,20 @@
 class ConfessorsController < ApplicationController
   before_action :set_confessor, except: [:new, :create, :index]
   before_action :set_is_accessing_self, except: [:new, :create, :index]
-  before_filter :authenticate_user_account!, except: [:index, :show, :status]
+  before_filter :authenticate_user_account!  #Must be logged in to do anything
   before_filter :restrict_to_admin, only: [:edit, :new, :create]
+  before_filter :restrict_to_self, only: [:status]
 
   # GET /confessors
   # GET /confessors.json
-  def index
-    @confessors = Confessor.all
-  end
+  #def index
+  #  @confessors = Confessor.all
+  #end
 
   # GET /confessors/1
   # GET /confessors/1.json
-  def show
-  end
+  #def show
+  #end
 
   # GET /priest/status
   # GET /admin/confessors/1/status 
@@ -33,8 +34,8 @@ class ConfessorsController < ApplicationController
   # GET /confessors/1/edit
   # GET /confessors/1/edit/status
   # GET /confessors/1/edit/settings
-  def edit
-  end
+  #def edit
+  #end
 
   # POST /confessors
   # POST /confessors.json
@@ -59,22 +60,22 @@ class ConfessorsController < ApplicationController
     respond_to do |format|
       #Get change comments, if relevant
       change_comments = nil
-      if current_user_account.is_admin and params[:confessor_change]
+      if current_user_account.is_admin? and params[:confessor_change]
         change_comments = params[:confessor_change][:change_comments]
       end
 
       #Perform the update
       if @confessor.update(confessor_params)
-        # Hacky way of determining if the current update should be logged or not. 
+        #Hacky way of determining if the current update should be logged or not. 
         #The real way to check this would be to make sure something other than confession info was updated.        
         if (params[:confessor][:confessor_office_id])
           save_confessor_history(@confessor, change_comments)
         end 
 
         redirect_target = @confessor
-        if params[:confessor][:source] == "priest_status"
+        if params[:confessor]["source"] == "priest_status"
           redirect_target = priest_status_url
-        elsif params[:confessor][:source] == "confessor_status"
+        elsif params[:confessor]["source"] == "confessor_status"
           redirect_target = confessor_status_url
         end
         
@@ -99,11 +100,22 @@ class ConfessorsController < ApplicationController
     # Confessor is accessing himself if he's logged in, is a confessor, and has the same confessor ID as the one requested.
     def set_is_accessing_self
       @is_accessing_self = (
-        current_user_account and (
+        user_account_signed_in? and (
           current_user_account.confessor and current_user_account.confessor.id == @confessor.id
         )
       )
     end
     
-    # Allowed confessor params are defined in application_controller.
+    #Restrict the action to the record of the logged in user, unless they are an admin.
+    def restrict_to_self
+      is_self = (current_user_account.is_confessor? && (current_user_account.confessor.id == @confessor.id)) 
+      if not current_user_account.is_admin? and not is_self
+        respond_to do |format|
+          format.html { render text: 'Find a way to redirect to login.', status: 401 }
+          format.json { render text: '{ error: "401 Unauthorized access" }', status: 401 }
+        end
+      end 
+    end
+
+  # Allowed confessor params are defined in application_controller.
 end

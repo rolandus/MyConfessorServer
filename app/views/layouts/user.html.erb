@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MyConfessor - <%= current_user_account.is_confessor ? "Priest" : "Administrator" %></title>
+    <title>MyConfessor - <%= current_user_account.is_confessor? ? "Priest" : "Administrator" %></title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
@@ -14,7 +14,7 @@
         </div>
     	<div id="login_container">
 			<strong><%= current_user_account.email %></strong><br />
-			<% if current_user_account.is_confessor and current_user_account.is_admin %>
+			<% if current_user_account.is_confessor? and current_user_account.is_admin? %>
 				<%= link_to "Priest", "/priest" %> |
 				<%= link_to "Admin", "/admin" %> |
 			<% end %>

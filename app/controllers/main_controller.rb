@@ -14,8 +14,8 @@ class MainController < ApplicationController
 
   #GET /priest
   def priest
-    if (current_user_account.is_confessor)
-      redirect_to priest_status_url(id: current_user_account.confessor)
+    if (current_user_account.is_confessor?)
+      redirect_to priest_status_url
     else
       redirect_to admin_url
     end
