@@ -8,8 +8,10 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require bootstrap.min
+ *= require bootstrap-theme.min
  *= require_self
- *= require_tree .
+ *= requre scaffolds
  */
 
 * {
@@ -253,6 +255,21 @@ textarea {
 .col33 {
 	width: 33%;
 }
+
+/*
+
+div {
+	border: 1px solid yellow;
+}
+
+form {
+	border: 1px solid blue;
+}
+
+*/
+
+
+
 
 
 /* Built-in rails stuff */

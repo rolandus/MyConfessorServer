@@ -18,11 +18,11 @@
 	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">	
+	<!-- link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" -->	
 	<!-- Optional theme -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">	
+	<!-- link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" -->	
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>	
+	<!-- script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script -->	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -41,7 +41,7 @@
 			<% if alert %>
 				<p class="alert alert-error"><%= alert %></p>
 			<% end %>
-	
+
 			<%= yield %>
         </div>
         
@@ -74,7 +74,7 @@
 		                <%= image_tag "appbar.group.png" %>
 		                <span class="icon_label">Available Confessors</span>
 		            </a>
-		            <a href="<%= new_confessor_request_url %>" class="icon_container" data-page="confessor_requests">
+		            <a href="<%= priest_request_account_url %>" class="icon_container" data-page="confessor_requests">
 		                <%= image_tag "appbar.chat.png" %>
 		                <span class="icon_label">Request an Account</span>
 		            </a>
@@ -160,7 +160,7 @@
 <!--
 		</div>
 		<div id="footer">
-			<a href="/confessor_requests/new" class="icon_container" data-page="new_confessor_request">
+			<a href="/confessor_requests/new" class="icon_container" data-page="priest_request_account">
 				<%= image_tag "icon_chat.png", {class: "icon"} %>
 				<span class="icon_label">Request an Account</span>
 			</a>

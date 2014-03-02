@@ -24,7 +24,7 @@ class ConfessorRequestsController < ApplicationController
 
   # GET /confessor_requests/new
   def new
-    if params[:status] == "submitted"
+    if params[:status] == "submitted" and session[:confessor_request_id] == params[:id]
       @confessor_request = ConfessorRequest.find(params[:id])
       render "confirm"
     else
@@ -46,8 +46,9 @@ class ConfessorRequestsController < ApplicationController
     
     respond_to do |format|
       if @confessor_request.save
+        session[:confessor_request_id] = @confessor_request.id.to_s
         save_to_history
-        format.html { redirect_to new_confessor_request_path(:status => "submitted", :id => @confessor_request.id) }        
+        format.html { redirect_to priest_request_account_path(:status => "submitted", :id => @confessor_request.id) }        
         #format.json { render action: 'show', status: :created, location: @confessor_request }
       else
         format.html { render action: 'new' }

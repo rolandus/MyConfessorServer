@@ -32,8 +32,12 @@ class ConfessionLocationsController < ApplicationController
 
     respond_to do |format|
       if @confession_location.save and save_to_history @confession_location.id, "created"
-        format.html { 
-          redirect_to confession_locations_path
+        format.html {
+          if params[:confession_location][:source] == "priest"
+            redirect_to priest_status_path
+          else
+            go_home
+          end 
           #redirect_to @confession_location, notice: 'Confession location was successfully created.' 
         }
         format.json { render action: 'show', status: :created, location: @confession_location }

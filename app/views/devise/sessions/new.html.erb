@@ -1,6 +1,6 @@
 <h1>Priest Sign In</h1>
 
-<p class="lead">Don't have an account? No problem! Just <%= link_to 'request one.', new_confessor_request_path %></p>
+<p class="lead">Don't have an account? No problem! Just <%= link_to 'request one.', priest_request_account_path %></p>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), html: { class: "form-horizontal", role: "form" } ) do |f| %>
   
@@ -27,7 +27,7 @@
 =end %>
 	<div class="actions form-group">
   		<div class="col-sm-offset-2 col-sm-10">
-			<%= f.submit "Sign in", class: "btn btn-primary" %>
+			<%= f.submit "Sign In", class: "btn btn-primary" %>
 		</div>
   	</div>
 <% end %>

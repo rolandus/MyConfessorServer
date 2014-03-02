@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   #layout :set_layout 
   before_action :set_namespace 
+  rescue_from ActionController::RedirectBackError, :with => :go_home
   
   # After signing in, decide whether to redirect to the priest page or the admin page. 
   def after_sign_in_path_for(resource)
@@ -48,6 +49,16 @@ class ApplicationController < ActionController::Base
   ############
   # Utilities used by subclasses
   ############
+  
+  def go_home
+    if @namespace == "admin"
+      redirect_to admin_path
+    elsif @namespace == "priest"
+      redirect_to priest_path
+    else
+      redirect_to root_path
+    end
+  end
   
   def save_confessor_history (confessor, comments)
     confessor_change = ConfessorChange.new({

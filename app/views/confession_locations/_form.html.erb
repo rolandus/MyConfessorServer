@@ -1,4 +1,4 @@
-<%= form_for(@confession_location) do |f| %>
+<%= form_for(@confession_location, html: { class: "form-horizontal", role: "form" } ) do |f| %>
   <% if @confession_location.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@confession_location.errors.count, "error") %> prohibited this confession_location from being saved:</h2>
@@ -11,45 +11,63 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="field form-group">
+    <%= f.label :name, "Name", class: "control-label col-sm-2" %>
+    <div class="col-sm-10">
+    	<%= f.text_field :name, class: "form-control", type: "text" %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :nickname %><br>
-    <%= f.text_field :nickname %>
+  <div class="field form-group">
+    <%= f.label :nickname, "Nickname", class: "control-label col-sm-2" %>
+    <div class="col-sm-10">
+    	<%= f.text_field :nickname, class: "form-control", type: "text" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :postal_code %><br>
-    <%= f.text_field :postal_code %>
+  <div class="field form-group">
+    <%= f.label :postal_code, "Zip code", class: "control-label col-sm-2" %>
+    <div class="col-sm-10">
+    	<%= f.text_field :postal_code, class: "form-control", type: "text" %>
+    </div>
   </div>
   
-  <div class="field">
-    <%= f.label :state %><br>
-    <%= collection_select(:confession_location, :state_id, State.all, :id, :name, {include_blank: "Select a State"} )%>
+  <div class="field form-group">
+    <%= f.label :state, "State", class: "control-label col-sm-2" %>
+    <div class="col-sm-10">
+    	<%= collection_select(:confession_location, :state_id, State.all, :id, :name, {include_blank: "Select a State"}, {class: "form-control" } )%>
+    </div>
   </div>
   
-  <div class="field">
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
+  <div class="field form-group">
+    <%= f.label :city, "City", class: "control-label col-sm-2" %>
+    <div class="col-sm-10">
+    	<%= f.text_field :city, class: "form-control", type: "text" %>
+    </div>
   </div>
   
-  <div class="field">
-    <%= f.label :street_address %><br>
-    <%= f.text_field :street_address %>
+  <div class="field form-group">
+    <%= f.label :street_address, "Address", class: "control-label col-sm-2" %>
+    <div class="col-sm-10">
+    	<%= f.text_field :street_address, class: "form-control", type: "text" %>
+    </div>
   </div>
 
   <% if current_user_account.is_admin? and @edit_mode == "edit" %>
-  <div class="field">
-    <%= label :confession_location_change, :change_comments, "Change comments (what you changed, and why)" %><br>
-    <%= text_area :confession_location_change, :change_comments %>
+  <div class="field form-group">
+    <%= label :confession_location_change, :change_comments, "Change comments (what you changed, and why)" %>
+    <div class="col-sm-10">
+    	<%= text_area :confession_location_change, :change_comments %>
+    </div>
   </div>
   <% end%>
   
-  <div class="actions">
-    <%= f.submit "Save Changes" %>
+  <div class="actions form-group text-right">
+    <%= f.submit "Save", class: "btn btn-primary" %>
   </div>
+  
+  <% if @namespace == "priest" %>
+  	<%= hidden_field :confession_location, :source, value: :priest %>
+  <% end %>
 <% end %>
 
 <%

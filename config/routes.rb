@@ -2,37 +2,22 @@ MyConfessorServer::Application.routes.draw do
 
   root 'main#index'                            #Main site page
   
-  # Admin pages  
-  get 'admin' => 'main#admin', as: :admin      #Admin home page
-  get 'admin/confessors/:id/status' => 'confessors#status', as: :confessor_status
-
-  # Priest pages
-  get 'priest' => 'main#priest', as: :priest   #Priest home page
-  get 'priest/status' => 'confessors#status', as: :priest_status
-  get 'priest/request_account' => 'confessor_requests#new', as: :new_confessor_request
-
-  #TODO These were used by the json stuff. Delete?  
-  get 'test', to: 'main#test'
-  get 'ping', to: 'main#ping'
-  
-  #JS site stuff
-  get 'site/priest', to: 'main#priest'
-  get 'site/admin', to: 'main#admin'
-  get 'site', to: 'main#penitent'
-  
-  #devise_for :user_accounts
+   #devise_for :user_accounts
   devise_for :user_accounts, :only => :sessions
   #:controllers => { :registrations => "user_accounts" } #Other controller optiopns are :sessions and :passwords. TODO: need to circle back and clean up all routes to the bare minimum needed.
   
   scope '/admin' do
+    get '/' => 'main#admin', as: :admin      #Admin home page
+    get '/confessors/:id/status' => 'confessors#status', as: :confessor_status
+    
     # Begin Static Resources - can comment these out later, unless we still do the JS site.
-    resources :states, only: [:index, :show]
-    resources :dioceses, only: [:index, :show]
-    resources :account_statuses, only: [:index, :show]
-    resources :account_roles, only: [:index, :show]
-    resources :confessor_request_statuses, only: [:index, :show]
-    resources :confessor_offices, only: [:index, :show]
-    resources :confession_statuses, only: [:index, :show]
+    #resources :states, only: [:index, :show]
+    #resources :dioceses, only: [:index, :show]
+    #resources :account_statuses, only: [:index, :show]
+    #resources :account_roles, only: [:index, :show]
+    #resources :confessor_request_statuses, only: [:index, :show]
+    #resources :confessor_offices, only: [:index, :show]
+    #resources :confession_statuses, only: [:index, :show]
     # End Static Resources
     
     # User Accounts
@@ -51,6 +36,27 @@ MyConfessorServer::Application.routes.draw do
     resources :confessor_requests, except: [:delete, :new, :edit]
     resources :confessor_request_changes, only: [:index, :show]
   end
+  
+  scope '/priest', as: 'priest' do
+    # Priest pages
+    get '/' => 'main#priest'   #Priest home page
+    get '/status' => 'confessors#status'
+    get '/request_account' => 'confessor_requests#new'
+  
+    resources :confession_locations, only: [:new]
+  end
+  
+  
+
+ #TODO These were used by the json stuff. Delete?  
+  get 'test', to: 'main#test'
+  get 'ping', to: 'main#ping'
+  
+  #JS site stuff
+  get 'site/priest', to: 'main#priest'
+  get 'site/admin', to: 'main#admin'
+  get 'site', to: 'main#penitent'
+  
 
   #(.:format) means an optional param following a period, that becomes the :format param.
   #get '/confessors/:id/status(.:format)', to: 'confessors#status', as: 'confessor_status'
