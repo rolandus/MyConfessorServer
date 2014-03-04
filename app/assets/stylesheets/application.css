@@ -15,7 +15,7 @@
  */
 
 * {
-	font-family: 'tahoma', 'arial', 'sans-serif';
+	font-family: 'helvetica', 'arial', 'sans-serif';
 }
 
 body {
@@ -25,7 +25,9 @@ body {
 .subdued {
 	color: #ccc;
 }
-
+.popover {
+	color: #000;
+}
 #background {
   background-color: #fad5ba;
   background-image: url('background_organ.jpg');
@@ -58,7 +60,7 @@ width: 39%; /**/
 #header {
 	background-color:rgba(255,255,255,0.5);
 	width: 100%;
-	height: 80px;
+	height: 6em;
 	margin-top: 25px;
 	padding: 10px 0px 0px 20px;
 	position: fixed;
@@ -133,16 +135,29 @@ li.enhanced {
 	margin: 10px;
 }
 
+
 li.enhanced .title {
 	font-size: 2em;
 	padding: 0px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
 }
 
-li.enhanced .details {
-	font-size: 1.5em;
+li.enhanced .tagline {
+	font-size: 1.1em;
 	padding: 0px 0px 0px 0px;
-	margin: 0px 0px 0px 0px;
+	margin: 6px 0px 0px 0px;
+}
+
+li.enhanced .details {
+	font-style: italic;
+	padding: 0px 0px 0px 0px;
+	margin: 2px 0px 0px 0px;
+}
+li.enhanced .details:before {
+	content: "\""
+}
+li.enhanced .details:after {
+	content: "\""
 }
 
 input,

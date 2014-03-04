@@ -1,15 +1,37 @@
-<h1>Available Confessors</h1>
-<ul class="">
-    <% @confessors.each do |confessor| %>
+<h1>Find a Confessor</h1>
+<form role="form" action="<%= root_path %>" method="get">
+	<input id="srch_diocese" type="text" name="srch_diocese" class="form-control" placeholder="Need to use twitter typeahead for search">
+</form>
+<ul class="" id="confessor_list">
+    <% @available_locations.each do |location, confessors| %>
 	    <li class="item enhanced">
-		    <h2><%= confessor.full_name_address %></h2>
-	    	<h3>
-	    		<%= confessor.confession_location.nickname %>, <%= confessor.confession_location.city %>:
-	    		<%= confessor.confession_start_time.strftime('%l:%M %P') %> - <%= confessor.confession_end_time.strftime('%l:%M %P') %>
-	    	</h3>
+	    	<% address = location.address_line_1 + '<br />' + location.address_line_2 %>
+		    <p class="title" data-trigger="click" data-placement="bottom" data-title="Location" data-html="true" data-content="<%= address %>"><%= location.nickname %>, <%= location.city %> </p>
+	    	<% confessors.each do |confessor| %>
+		    	<p class="tagline" ><%= confessor.full_name_address %>  <%= confessor.confession_start_time.strftime('%l:%M %p') %> - <%= confessor.confession_end_time.strftime('%l:%M %p') %></p>
+		    	<% if confessor.confession_comments %>
+			    	<p class="details"><%= confessor.confession_comments %></p>
+		    	<% end %>
+	    	<% end %>
 		</li>
 	<% end %>
-</ul>	
+</ul>
+
+<script type="text/javascript">
+$(function() {
+	$('#confessor_list').find('.title').each(function() {
+		$(this).popover();
+	});
+//	$('#srch_diocese').autocomplete({
+//      source: [
+//      	<%# @dioceses.each do |diocese| %>
+//      		"<%#= diocese.name %>",
+//      	<%# end %>
+//      ]
+//    });
+    
+});
+</script>
 <%
 =begin
 %>

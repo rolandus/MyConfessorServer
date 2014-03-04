@@ -4,7 +4,16 @@ class MainController < ApplicationController
   
   # GET /
   def index
-    @confessors = Confessor.all
+    #@confessors = Confessor.all
+    @locations = ConfessionLocation.all
+    @available_locations = {}
+    @locations.each do |location|
+      confessors = Confessor.where(:confession_status_id => [1, 2], :confession_location_id => location.id)
+      if confessors.length > 0
+        @available_locations[location] = confessors
+      end
+    end
+    @dioceses = Diocese.all
   end
   
   #GET /admin

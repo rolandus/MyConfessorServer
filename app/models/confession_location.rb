@@ -1,5 +1,6 @@
 class ConfessionLocation < ActiveRecord::Base
   belongs_to :state, inverse_of: :confession_locations
+  belongs_to :diocese, inverse_of: :confession_locations
   has_many :confession_location_changes, inverse_of: :confession_location
   has_many :confessors, inverse_of: :confession_location
   

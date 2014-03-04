@@ -291,7 +291,7 @@ ConfessorOffice.create(name: "bishop")
 ConfessorOffice.create(name: "priest")
 # End ConfessorOffices
 
-# Begin ConfessorStatuses
+# Begin ConfessionStatus
 ConfessionStatus.create(name: "available")
 ConfessionStatus.create(name: "busy")
 ConfessionStatus.create(name: "out")
@@ -306,7 +306,8 @@ ConfessionLocation.create(name: "Saint Mary of Pine Bluff",
                           street_address: "3673 County Highway P",
                           city: "Cross Plains",
                           state_id: 51,
-                          postal_code: "53528")
+                          postal_code: "53528",
+                          diocese_id: 194)
 ConfessionLocationChange.create(name: "Saint Mary of Pine Bluff",
                           nickname: "Saint Mary's",
                           street_address: "3673 County Highway P",
@@ -315,14 +316,16 @@ ConfessionLocationChange.create(name: "Saint Mary of Pine Bluff",
                           postal_code: "53528",
                           change_comments: "created",
                           user_account_id: 1,
-                          confession_location_id: 1)
+                          confession_location_id: 1,
+                          diocese_id: 194)
 
 ConfessionLocation.create(name: "Saint Ignatius Catholic Church",
                           nickname: "Saint Ignatius",
                           street_address: "109 South 6th Street",
                           city: "Mount Horeb",
                           state_id: 51,
-                          postal_code: "53572")
+                          postal_code: "53572",
+                          diocese_id: 194)
 ConfessionLocationChange.create(name: "Saint Ignatius Catholic Church",
                           nickname: "Saint Ignatius",
                           street_address: "109 South 6th Street",
@@ -331,14 +334,16 @@ ConfessionLocationChange.create(name: "Saint Ignatius Catholic Church",
                           postal_code: "53572",
                           change_comments: "created",
                           user_account_id: 1,
-                          confession_location_id: 2)
+                          confession_location_id: 2,
+                          diocese_id: 194)
 
 ConfessionLocation.create(name: "Saint Christopher Catholic Parish",
                           nickname: "Saint Christopher",
                           street_address: "301 N Main St",
                           city: "Verona",
                           state_id: 51,
-                          postal_code: "53593")
+                          postal_code: "53593",
+                          diocese_id: 194)
 ConfessionLocationChange.create(name: "Saint Christopher Catholic Parish",
                           nickname: "Saint Christopher",
                           street_address: "301 N Main St",
@@ -347,14 +352,16 @@ ConfessionLocationChange.create(name: "Saint Christopher Catholic Parish",
                           postal_code: "53593",
                           change_comments: "created",
                           user_account_id: 1,
-                          confession_location_id: 3)
+                          confession_location_id: 3,
+                          diocese_id: 194)
 
 ConfessionLocation.create(name: "Saint Peter Cathedral",
                           nickname: "Saint Peter's",
                           street_address: "311 West Baraga Ave",
                           city: "Marquette",
                           state_id: 23,
-                          postal_code: "49855")
+                          postal_code: "49855",
+                          diocese: 89)
 ConfessionLocationChange.create(name: "Saint Peter Cathedral",
                           nickname: "Saint Peter's",
                           street_address: "311 West Baraga Ave",
@@ -363,7 +370,8 @@ ConfessionLocationChange.create(name: "Saint Peter Cathedral",
                           postal_code: "49855",
                           change_comments: "created",
                           user_account_id: 1,
-                          confession_location_id: 4)
+                          confession_location_id: 4,
+                          diocese_id: 89)
 # End Confession Locations
 
 # Begin UserAccounts
