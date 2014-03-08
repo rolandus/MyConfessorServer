@@ -4,8 +4,15 @@ class MainController < ApplicationController
   
   # GET /
   def index
-    #@confessors = Confessor.all
-    @locations = ConfessionLocation.all
+    @locations = {}
+    if params['search']
+      diocese = Diocese.find_by(:name => params['search'])
+      if diocese
+        @locations = ConfessionLocation.where(:diocese_id => diocese)
+      end
+    else
+      @locations = ConfessionLocation.all
+    end    
     @available_locations = {}
     @locations.each do |location|
       confessors = Confessor.where(:confession_status_id => [1, 2], :confession_location_id => location.id)
@@ -13,7 +20,6 @@ class MainController < ApplicationController
         @available_locations[location] = confessors
       end
     end
-    @dioceses = Diocese.all
   end
   
   #GET /admin
